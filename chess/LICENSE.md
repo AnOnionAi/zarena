@@ -1,7 +1,4 @@
 Copyright (c) 2021 Zeti LLC 
-
-All modifications hereby forward shall be copyrighted and restricted from any prior licenses. 
-
 Copyright (c) 2021 Evgeny Roskach
 
 Permission is hereby granted, free of charge, to any person obtaining
