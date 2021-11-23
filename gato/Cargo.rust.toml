@@ -1,12 +1,12 @@
 [package]
-name = "gym-tictactoe"
+name = "gym-gato"
 version = "0.2.0"
 authors = ["genyrosk <e.roskach@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "gym_tictactoe"
+name = "gym_gato"
 path = "src/lib.rs"
 
 [dependencies]
