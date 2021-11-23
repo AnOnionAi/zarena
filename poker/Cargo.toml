@@ -1,0 +1,23 @@
+[package]
+name = "gym_poker"
+version = "0.1.0"
+authors = ["Z <admin@zeti.ai>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "gym_poker"
+crate-type = ["cdylib"]
+
+[package.metadata.maturin]
+requires-dist = ["gym>=0,<1", "numpy>=1,<2", "six>=1,<2"]
+
+[dependencies]
+lazy_static = "1.4.0"
+rand = "0.8.3"
+
+[dependencies.pyo3]
+version = "0.13.0"
+
+[features]
+default = ["pyo3/extension-module"]
