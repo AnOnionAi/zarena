@@ -9,6 +9,7 @@ python = "3.7.11"
 maturin = "0.10.4"
 gym = "^0.18.3"
 gym-poker = {path = "target/wheels/gym_poker-0.1.0.tar.gz"}
+Pillow = "^8.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
