@@ -1,16 +1,22 @@
 [package]
-name = "gym-chess"
+name = "gym-gato"
 version = "0.2.0"
-authors = ["Zeti <contact@zeti.ai>"]
+authors = ["Z <Z@zeti.dev>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "gym_chess"
-crate-type = ["staticlib", "cdylib"]
+name = "gym_gato"
+path = "src/lib.rs"
 
 [dependencies]
 lazy_static = "1.4.0"
+itertools = "0.10.1"
+rand = "0.8.4"
+
+[dependencies.pyo3]
+version = "0.13.0"
+features = []
 
 [profile.dev]
 debug = 2

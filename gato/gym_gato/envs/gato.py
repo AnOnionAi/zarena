@@ -1,16 +1,16 @@
 import gym
-from gym_tictactoe import TictactoeEngine
+from gym_gato import GatoEngine
 
-# TICTACTOE GYM ENVIRONMENT CLASS
+# gato GYM ENVIRONMENT CLASS
 # ---------------------------
-class TictactoeEnv(gym.Env):
+class GatoEnv(gym.Env):
     """
     Game wrapper.
     """
 
     def __init__(self, n_players=1):
         # engine
-        self.engine = TictactoeEngine(n_players)
+        self.engine = GatoEngine(n_players)
 
     def step(self, action):
         """

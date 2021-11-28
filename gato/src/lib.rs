@@ -49,7 +49,7 @@ impl Player {
 
 
 #[derive(Debug)]
-pub struct Tictactoe {
+pub struct gato {
     turn: u8,
     player_turn: Player,
     pub board: [[TickType; 3]; 3],
@@ -57,10 +57,10 @@ pub struct Tictactoe {
     done: bool
 }
 
-impl Tictactoe {
+impl gato {
     
-    pub fn new() -> Tictactoe {
-        Tictactoe {
+    pub fn new() -> gato {
+        gato {
             turn: 0,
             player_turn: Player::Crosses,
             board: [[TickType::Nil; 3]; 3],
@@ -178,18 +178,18 @@ impl Tictactoe {
             return false;
         }
         for i in 0..3 {
-            if Tictactoe::check_all_same(&self.board[i]) {
+            if gato::check_all_same(&self.board[i]) {
                 return true;
             }
             let temp_array = [self.board[0][i], self.board[1][i], self.board[2][i]];
-            if Tictactoe::check_all_same(&temp_array) {
+            if gato::check_all_same(&temp_array) {
                 return true;
             }
         }
-        if Tictactoe::check_all_same(&[self.board[0][0], self.board[1][1], self.board[2][2]]) {
+        if gato::check_all_same(&[self.board[0][0], self.board[1][1], self.board[2][2]]) {
             return true;
         }
-        if Tictactoe::check_all_same(&[self.board[0][2], self.board[1][1], self.board[2][0]]) {
+        if gato::check_all_same(&[self.board[0][2], self.board[1][1], self.board[2][0]]) {
             return true;
         }
         return false;
@@ -204,7 +204,7 @@ impl Tictactoe {
     }
 }
 
-impl fmt::Display for Tictactoe {
+impl fmt::Display for gato {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         for row in self.board.iter() {
             let row_string = itertools::join(row, " | ");

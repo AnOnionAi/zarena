@@ -42,7 +42,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "gym_tictactoe"
+name = "gym_gato"
 version = "0.2.0"
 dependencies = [
  "itertools",

@@ -1,9 +1,9 @@
-use gym_tictactoe::{Tictactoe};
+use gym_gato::{gato};
 use rand::Rng;
 fn main() {
     let mut rng = rand::thread_rng();
     for _ in 0..10 {
-        let mut game = Tictactoe::new();
+        let mut game = gato::new();
         println!("{:}", game);
         let mut done = false;
         let mut reward = 0;
