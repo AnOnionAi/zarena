@@ -2,7 +2,7 @@
 name = "tictactoe"
 version = "0.2.0"
 description = ""
-authors = ["Z <matthew@zeti.dev>"]
+authors = ["Z <Z@zeti.dev>"]
 
 [tool.poetry.dependencies]
 python = "3.7.11"
@@ -10,6 +10,7 @@ maturin = "0.10.4"
 numpy = "^1.21.1"
 gym = "^0.18.3"
 six = "^1.16.0"
+Pillow = "^8.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
