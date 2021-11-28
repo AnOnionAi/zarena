@@ -1,1 +1,2 @@
-# Tic-tac-toe written in Rust
+# Game of Gato
+A game of X of O's 
