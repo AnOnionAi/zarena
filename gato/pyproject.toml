@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "tictactoe"
+name = "gato"
 version = "0.2.0"
-description = ""
+description = "The game of X's and O's"
 authors = ["Z <Z@zeti.dev>"]
 
 [tool.poetry.dependencies]
