@@ -1,13 +1,18 @@
 # Zarena 
 🦀 Rust Game Collection with Reninforcement Learning gym environments. 
-This library aims to serve the same purpose as OpenSpiel, except in Rust and more moedular. The current games are gato, blackjack, chess & poker. All of these additionally support Web Assembly. You can play gato & chess against our Ai at https://zeti.ai/playground 
+This library aims to serve the same purpose as OpenSpiel, except in Rust and more moedular. The current games are gato, blackjack, chess & poker. All of these additionally support Web Assembly. You can play gato & chess against our Artificial Intelligence at https://zeti.ai/playground 
 
 # Configurations
 
 Depending on the cargo file you want. You must change your cargo.toml to match that build.
 
+Cargo.py.toml -> Python Build
+Cargo.rs.toml -> Development Build
+Cargo.wa.toml -> Web Assembly Build
+Cargo.toml -> The actual file that Rust will build on. Copy from py/rs/wa to this file. 
+
 # Commands
-Download Rust for Linux or Windows Subsystem 
+If you don't have Rust, no worries. Download Rust for Linux or Windows Subsystem. [If you need more help.](https://www.rust-lang.org/tools/install)
 
 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
@@ -107,109 +112,8 @@ https://imgur.com/a/NmOfLmo
 
 # Chess
 
-![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
+![Fischer](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
 
-<table style="text-align:center;border-spacing:0pt;font-family:'Arial Unicode MS'; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 0pt">
-<tr>
-<td style="width:12pt">8</td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 1pt"><span style="font-size:150%;">♜</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt" bgcolor="silver"><span style="font-size:150%;">♞</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt"><span style="font-size:150%;">♝</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt" bgcolor="silver"><span style="font-size:150%;">♛</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt"><span style="font-size:150%;">♚</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt" bgcolor="silver"><span style="font-size:150%;">♝</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 0pt 0pt 0pt"><span style="font-size:150%;">♞</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 1pt 1pt 0pt 0pt" bgcolor="silver"><span style="font-size:150%;">♜</span></td>
-</tr>
-<tr>
-<td style="width:12pt">7</td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt" bgcolor="silver"><span style="font-size:150%;">♟</span></td>
-<td style="width:24pt; height:24pt;"><span style="font-size:150%;">♟</span></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"><span style="font-size:150%;">♟</span></td>
-<td style="width:24pt; height:24pt;"><span style="font-size:150%;">♟</span></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"><span style="font-size:150%;">♟</span></td>
-<td style="width:24pt; height:24pt;"><span style="font-size:150%;">♟</span></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"><span style="font-size:150%;">♟</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt"><span style="font-size:150%;">♟</span></td>
-</tr>
-<tr>
-<td style="width:12pt">6</td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt"><span style="font-size:150%;"><br /></span></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt" bgcolor="silver"></td>
-</tr>
-<tr>
-<td style="width:12pt">5</td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt" bgcolor="silver"><span style="font-size:150%;"><br /></span></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt"></td>
-</tr>
-<tr>
-<td style="width:12pt">4</td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt"><span style="font-size:150%;"><br /></span></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt" bgcolor="silver"></td>
-</tr>
-<tr>
-<td style="width:12pt">3</td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt" bgcolor="silver"><span style="font-size:150%;"><br /></span></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt;"></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt"></td>
-</tr>
-<tr>
-<td style="width:12pt">2</td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 1pt"><span style="font-size:150%;">♙</span></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"><span style="font-size:150%;">♙</span></td>
-<td style="width:24pt; height:24pt;"><span style="font-size:150%;">♙</span></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"><span style="font-size:150%;">♙</span></td>
-<td style="width:24pt; height:24pt;"><span style="font-size:150%;">♙</span></td>
-<td style="width:24pt; height:24pt;" bgcolor="silver"><span style="font-size:150%;">♙</span></td>
-<td style="width:24pt; height:24pt;"><span style="font-size:150%;">♙</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 0pt 0pt" bgcolor="silver"><span style="font-size:150%;">♙</span></td>
-</tr>
-<tr>
-<td style="width:12pt">1</td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 1pt" bgcolor="silver"><span style="font-size:150%;">♖</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt"><span style="font-size:150%;">♘</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt" bgcolor="silver"><span style="font-size:150%;">♗</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt"><span style="font-size:150%;">♕</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt" bgcolor="silver"><span style="font-size:150%;">♔</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt"><span style="font-size:150%;">♗</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 1pt 0pt" bgcolor="silver"><span style="font-size:150%;">♘</span></td>
-<td style="width:24pt; height:24pt; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 1pt 1pt 0pt"><span style="font-size:150%;">♖</span></td>
-</tr>
-<tr>
-<td></td>
-<td>a</td>
-<td>b</td>
-<td>c</td>
-<td>d</td>
-<td>e</td>
-<td>f</td>
-<td>g</td>
-<td>h</td>
-</tr>
-</table>
 
 
 ## Visualise the chess board and moves
@@ -350,3 +254,9 @@ Pull Request Are Welcomed!
 
 # License 
 MIT 
+
+# Social
+[Discord](https://zetiai.slack.com/archives/C01G0HRJWPK/p1637616128002100)
+[Twitter](https://twitter.com/ZetiAi)
+[Youtube](https://www.youtube.com/channel/UC4f1XKeAqBsTuKHXLywXpEQ)
+[Facebook](https://www.facebook.com/ZetiAI/)
