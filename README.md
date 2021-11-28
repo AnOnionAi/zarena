@@ -1,3 +1,8 @@
+# Zarena 
+🦀 Rust Game Collection with Reninforcement Learning gym environments. 
+This library aims to serve the same purpose as OpenSpiel, except in Rust. 
+The current games are gato, blackjack, chess & poker. All of these additionally support Web Assembly. You can play gato & chess against our Ai at https://zeti.ai/playground 
+
 # Game of Gato
 The game of X's & O's
 

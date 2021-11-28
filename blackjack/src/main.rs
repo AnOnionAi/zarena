@@ -1,14 +1,17 @@
-use gym_blackjack::{TwentyOne};
+use gym_blackjack::TwentyOne;
 // to read input
 use std::io;
 use std::io::Write;
+use std::num::ParseIntError;
 use std::str::FromStr;
-use std::num::ParseIntError; 
 
-fn read_input() -> Result<u32,ParseIntError> {
+fn read_input() -> Result<u32, ParseIntError> {
     io::stdout().flush().ok();
     let mut input = String::new();
-    io::stdin().read_line(&mut input).ok().expect("Failed to read line");
+    io::stdin()
+        .read_line(&mut input)
+        .ok()
+        .expect("Failed to read line");
     let input = input.trim();
     let edad: u32 = u32::from_str(&input)?;
     Ok(edad)
@@ -51,9 +54,13 @@ fn main() {
                 }
             }
             let result = game.step(option as u8, true);
-            println!("Observation {:?} current player {} ", result .0, game.to_play());
-            println!("Reward {:?} ", result .1);
-        } 
+            println!(
+                "Observation {:?} current player {} ",
+                result.0,
+                game.to_play()
+            );
+            println!("Reward {:?} ", result.1);
+        }
         'outer: loop {
             loop {
                 println!("{:?}", game.render());
@@ -78,22 +85,22 @@ fn main() {
                             break;
                         }
                         println!("Enter a valid option, please");
-                    }else{
+                    } else {
                         println!("Enter a valid option, please");
                     }
                 }
                 let done = game.step(option as u8, true);
-                println!("Observation {:?} current player {}", done .0, game.to_play());
-                println!("Reward {:?} ", done .1);
-                if done .2 {
+                println!("Observation {:?} current player {}", done.0, game.to_play());
+                println!("Reward {:?} ", done.1);
+                if done.2 {
                     println!("<-----------------Round Finished------------------->");
                     game.render();
                     let (_, rewards, _) = &done;
                     for player in 0..game.get_total_players() {
                         print!("Player {}: {} ", player, rewards[player as usize]);
                     }
-                    println!("");       
-                    println!("");       
+                    println!("");
+                    println!("");
                     game.reset();
                     break 'outer;
                 }

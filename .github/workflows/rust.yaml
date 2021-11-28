@@ -1,8 +1,6 @@
 name: Rust
 
 on:
-  push:
-    branches: [ develop, release/*, master ]
   pull_request:
     branches: [ develop, release/*, master ]
 
@@ -14,11 +12,25 @@ jobs:
     name: Rust project
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Create Rust ToolChain
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
+      - name: Format 
+      - uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+      - name: Production Build
       - uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --all-features
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply formatting changes
+          branch: ${{ github.head_ref }}
