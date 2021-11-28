@@ -3,16 +3,13 @@
 This library aims to serve the same purpose as OpenSpiel, except in Rust. 
 The current games are gato, blackjack, chess & poker. All of these additionally support Web Assembly. You can play gato & chess against our Ai at https://zeti.ai/playground 
 
-# Game of Gato
-The game of X's & O's
+# Configurations
 
-# Blackjack
+Depending on the cargo file you want. You must change your cargo.toml to match that build.
 
-![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
+# Commands
+Download Rust for Linux or Windows Subsystem 
 
-# Chess
-
-Download Rust for Linux
 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
 Download the C compiler
@@ -31,11 +28,11 @@ Build the Maturin Develop Build
 
 `poetry run maturin develop`
 
-Build the Maturin Unoptimized Build
+Build the Maturin Test Build 
 
 `poetry run maturin build`
 
-Build the Python Wheel
+Build the Maturin Production Build. The Python Wheel & source distribution. 
 
 `poetry run maturin build --release`
 
@@ -43,9 +40,72 @@ Build the WASM
 
 `wasm-pack build --target web -- --features wasm`
 
-Depending on the cargo file you want. You must change your cargo.toml to match that build. 
+## Usage
 
-A simple chess environment for gym. It computes all available moves, including castling, pawn promotions and 3-fold repetition draws.
+You can import the Python classes directly, or create pre-defined environments with `gym`:
+
+
+```python
+
+import gym
+from gym_chess import Zarena.ChessEnv
+
+env = ChessEnv() # Option 1
+env = gym.make('ChessEnv') # Option 2
+
+# current state
+state = env.state
+
+# select a move and convert it into an action
+moves = env.possible_moves
+action = env.move_to_actions(move)
+
+# or select an action directly
+actions = env.possible_actions
+
+# pass it to the env and get the next state
+new_state, reward, done, info = env.step(action)
+
+```
+
+Reset the environment:
+
+``` python
+
+initial_state = env.reset()
+
+# Testing
+
+Run all the tests with `pytest`.
+
+# Code linting and fixing
+
+Python code is formatted with [black](https://github.com/psf/black).
+
+Rust code is formatted with `cargo fmt`.
+
+
+# Building the Rust code
+
+The environment uses a chess engine implemented in Rust that uses [PyO3](https://github.com/PyO3/pyo3) Maturin to bind to the Python interpreter. Rust is an amazing compiled language and this project holds 2 configurations:
+
+- `Cargo.py.toml` is used to build the library into a Python module with maturin
+- `Cargo.rs.toml` is used to build directly with `cargo` in Rust to access the library in the `main.rs` script for development
+- `Cargo.wa.toml` is used to build to build for Javascript with Web Assembly. The games can be played via Web Assembly on Zeti's website https://zeti.ai 
+
+Note: we haven't found a way to specify the Cargo toml file to either process, so copy the contents of the config you want to use into `Cargo.toml` to make it work.
+
+
+# Game of Gato
+The game of Xs & Os
+
+# Blackjack
+
+![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
+
+# Chess
+
+![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
 
 <table style="text-align:center;border-spacing:0pt;font-family:'Arial Unicode MS'; border-collapse:collapse; border-color: black; border-style: solid; border-width: 0pt 0pt 0pt 0pt">
 <tr>
@@ -149,82 +209,6 @@ A simple chess environment for gym. It computes all available moves, including c
 </tr>
 </table>
 
-
-# Docs
-
-https://python-chess.readthedocs.io/en/v1.5.0/core.html
-
-Has the documentation for the python chess engine if any chess logic is needed
-
-## Environments
-
-There are 3 environments available: `v0`, `v1` and `v2`. The original `v0` version contains legacy code and is no longer supported, so it's recommended to use `v1` or `v2`.
-
-Both `v1` and `v2` share the same basic API so in most scenarios can be used interchangeably. The `v1` version is implemented in pure Python, while `v2` has its core logic implemented in Rust and is over 100 times faster. Hence, if performance and speed are of the essence, `v2` is the way to go.
-
-
-## Usage
-
-You can import the Python classes directly, or create pre-defined environments with `gym`:
-
-
-```python
-
-import gym
-from gym_chess import ChessEnvV1, ChessEnvV2
-
-env1 = ChessEnvV1()
-env2 = ChessEnvV2()
-
-env1 = gym.make('ChessVsSelf-v1')
-env2 = gym.make('ChessVsSelf-v2')
-
-```
-
-You can also play against a random bot:
-
-``` python
-
-env = gym.make('ChessVsSelf-v1')
-
-```
-
-
-## Play
-
-Moves are pre-calculated for the current state and can be accessed from the environment. You can also access them in the form of actions from the environment action space.
-
-Once you have chosen a move, make sure to convert it into an action (or select an action directly) and pass it to the environment to get the next state.
-
-``` python
-
-import random
-from gym_chess import ChessEnvV
-
-env = ChessEnvV()
-
-# current state
-state = env.state
-
-# select a move and convert it into an action
-moves = env.possible_moves
-action = env.move_to_actions(move)
-
-# or select an action directly
-actions = env.possible_actions
-
-# pass it to the env and get the next state
-new_state, reward, done, info = env.step(action)
-
-```
-
-Reset the environment:
-
-``` python
-
-initial_state = env.reset()
-
-```
 
 ## Visualise the chess board and moves
 
@@ -345,43 +329,23 @@ env.white_king_on_the_board
 env.black_king_on_the_board
 ```
 
-# Testing
-
-Run all the tests with `pytest`.
-
-# Code linting and fixing
-
-Python code is formatted with [black](https://github.com/psf/black).
-
-Rust code is formatted with `cargo fmt`.
-
-
-# Building the Rust code
-
-The environment uses a chess engine implemented in Rust that uses [PyO3](https://github.com/PyO3/pyo3) Maturin to bind to the Python interpreter. Rust is an amazing compiled language and this project holds 2 configurations:
-
-- `Cargo.py.toml` is used to build the library into a Python module with maturin
-- `Cargo.rs.toml` is used to build directly with `cargo` in Rust to access the library in the `main.rs` script for development
-- `Cargo.wa.toml` is used to build to build for Javascript with Web Assembly. The games can be played via Web Assembly on Zeti's website https://zeti.ai 
-
-Note: we haven't found a way to specify the Cargo toml file to either process, so copy the contents of the config you want to use into `Cargo.toml` to make it work.
-
-
 # Notes:
 
 En-passant has not been implemented yet. 
+
+# Blackjack
+
+![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
 
 # References
 
 - https://github.com/PyO3/maturin
 - https://github.com/werner-duvaud/muzero-general
 - https://github.com/genyrosk/gym-chess (Thanks to genyrosk for gym-chess)
+- https://github.com/deepmind/open_spiel
 
-![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
+# Contrbutions
+Pull Request Are Welcomed! 
 
-
-# Blackjack
-
-![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
-
-
+# License 
+MIT 
