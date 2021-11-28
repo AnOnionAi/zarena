@@ -1,9 +1,13 @@
-# gym-chess ♟️ # web-chess ♟️ # rust-chess ♟️ # mobile-chess ♟️
+# Game of Gato
+The game of X's & O's
 
-Install Windows WSL 2 Ubuntu 20.04 from the Microsoft Store 
+# Blackjack
 
-Download Rust for Windows Linux Subsystem
+![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
 
+# Chess
+
+Download Rust for Linux
 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
 Download the C compiler
@@ -407,3 +411,11 @@ env_v2 = ChessEnvV2()
 ```
 
 ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
+
+
+# Blackjack
+
+![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
+
+
+##### Thanks to genyrosk for gym-chess code 
