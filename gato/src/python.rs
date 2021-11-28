@@ -1,30 +1,30 @@
 use pyo3::prelude::*;
 
 use crate::{
-    Tictactoe
+    gato
 };
 
 // PYTHON MODULE
 // ---------------------------------------------------------
 // ---------------------------------------------------------
 #[pymodule]
-fn gym_tictactoe(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
-    m.add_class::<TictactoeEngine>()?;
+fn gym_gato(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+    m.add_class::<gatoEngine>()?;
 
     Ok(())
 }
 
 #[pyclass]
-pub struct TictactoeEngine {
-    game: Tictactoe
+pub struct gatoEngine {
+    game: gato
 }
 
 #[pymethods]
-impl TictactoeEngine {
+impl gatoEngine {
     #[new]
     fn new() -> Self {
-        TictactoeEngine {
-            game: Tictactoe::new()
+        gatoEngine {
+            game: gato::new()
         }
     }
 
