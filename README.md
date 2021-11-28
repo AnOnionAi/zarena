@@ -1,7 +1,6 @@
 # Zarena 
 🦀 Rust Game Collection with Reninforcement Learning gym environments. 
-This library aims to serve the same purpose as OpenSpiel, except in Rust. 
-The current games are gato, blackjack, chess & poker. All of these additionally support Web Assembly. You can play gato & chess against our Ai at https://zeti.ai/playground 
+This library aims to serve the same purpose as OpenSpiel, except in Rust and more moedular. The current games are gato, blackjack, chess & poker. All of these additionally support Web Assembly. You can play gato & chess against our Ai at https://zeti.ai/playground 
 
 # Configurations
 
@@ -95,9 +94,12 @@ The environment uses a chess engine implemented in Rust that uses [PyO3](https:/
 
 Note: we haven't found a way to specify the Cargo toml file to either process, so copy the contents of the config you want to use into `Cargo.toml` to make it work.
 
-
 # Game of Gato
 The game of Xs & Os
+
+![alt text](https://imgur.com/a/NmOfLmo)
+
+https://imgur.com/a/NmOfLmo
 
 # Blackjack
 
@@ -244,7 +246,6 @@ env.render_moves(moves[10:12] + moves[16:18])
 
 ```
 
-
 ## API
 
 ### Initialize environment
@@ -333,9 +334,9 @@ env.black_king_on_the_board
 
 En-passant has not been implemented yet. 
 
-# Blackjack
+# Poker
 
-![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
+![alt text](https://media.wired.com/photos/5fbe703e534553a88817f988/master/w_640,c_limit/Sec_poker_914262206.jpg)
 
 # References
 
