@@ -178,10 +178,10 @@ Moves are encoded as either:
 Moves are pre-calculated for every new state and stored in `possible_moves`.
 
 
-## State and differences between v1 and v2
+## Get State 
 
 ```python
->>> print(env.state['board']) # v2
+>>> print(env.state['board'])
 ```
 
 ```shell
