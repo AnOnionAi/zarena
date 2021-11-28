@@ -2,7 +2,7 @@
 name = "poker"
 version = "0.1.0"
 description = ""
-authors = ["Z <matthew@zeti.dev>"]
+authors = ["Z <Z@zeti.dev>"]
 
 [tool.poetry.dependencies]
 python = "3.7.11"
