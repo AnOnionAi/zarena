@@ -194,21 +194,19 @@ Once you have chosen a move, make sure to convert it into an action (or select a
 ``` python
 
 import random
-from gym_chess import ChessEnvV1
+from gym_chess import ChessEnvV
 
-env = ChessEnvV1() # or ChessEnvV2
+env = ChessEnvV()
 
 # current state
 state = env.state
 
 # select a move and convert it into an action
 moves = env.possible_moves
-move = random.choice(moves)
 action = env.move_to_actions(move)
 
 # or select an action directly
 actions = env.possible_actions
-action = random.choice(actions)
 
 # pass it to the env and get the next state
 new_state, reward, done, info = env.step(action)
@@ -262,7 +260,7 @@ env.render_moves(moves[10:12] + moves[16:18])
 
 ### Initialize environment
 
-#### `ChessEnvV1(player_color="WHITE", opponent="random", log=True, initial_state=DEFAULT_BOARD)`
+#### `ChessEnv(player_color="WHITE", opponent="random", log=True, initial_state=DEFAULT_BOARD)`
 
 - `opponent`: can be `"random"`, `"none"` or a function. Tells the environment whether to use a bot that picks a random move, play against self or use a specific bot policy (default: `"random"`)
 - `log`: `True` or `False`, specifies whether to log every move and render every new state (default: `True`)
@@ -276,8 +274,6 @@ This method will calculate the possible moves. By default they are calculated at
 
 - `state`: (optional) state for which to calculate the moves
 - `player`: (optional) "WHITE" or "BLACK", specifies the player
-- `attack`: if set to True, will return the **attacks** instead of moves
-
 
 ## Move specification:
 
@@ -290,14 +286,10 @@ Moves are pre-calculated for every new state and stored in `possible_moves`.
 
 ## State and differences between v1 and v2
 
-`v1` and `v2` share most of the API, but the internals a little bit different.
-
-For instance `v1` stores the board matrix directly in the state as `env.state`, while in `v2` the state is a dictionary where board can be accessed with `env.state['board']`.
-
 ```python
->>> print(env.state) # v1
 >>> print(env.state['board']) # v2
 ```
+
 ```shell
 [[-3, -5, -4, -2, -1, -4, -5, -3],
  [-6, -6, -6, -6, -6, -6, -6, -6],
@@ -309,13 +301,12 @@ For instance `v1` stores the board matrix directly in the state as `env.state`, 
  [3, 5, 4, 2, 1, 4, 5, 3]]
 ```
 
-
 Every integer represents a piece. Positive pieces are white and negative ones are black.
 
 Piece IDs are stored in constants that can be imported.
 
 ```python
-from gym_chess.envs.chess_v1 import (
+from gym_chess.envs.chess import (
     KING_ID,
     QUEEN_ID,
     ROOK_ID,
@@ -349,66 +340,37 @@ env.white_king_on_the_board
 env.black_king_on_the_board
 ```
 
-
-## Examples
-
-Examples can be found in `gym_chess/example`. The `v1` examples are valid for both the `v1` and `v2` environments.
-
-
 # Testing
 
 Run all the tests with `pytest`.
 
-
 # Code linting and fixing
 
-Code fixing is done with [black](https://github.com/psf/black) with max line width of 100 characters with the command `black -l 100 .` No config needed.
+Python code is formatted with [black](https://github.com/psf/black).
 
 Rust code is formatted with `cargo fmt`.
 
 
 # Building the Rust code
 
-The `v2` environment uses a chess engine implemented in Rust that uses [PyO3](https://github.com/PyO3/pyo3) to bind to the Python interpreter. Rust is an amazing compiled language and this project holds 2 configurations:
+The environment uses a chess engine implemented in Rust that uses [PyO3](https://github.com/PyO3/pyo3) Maturin to bind to the Python interpreter. Rust is an amazing compiled language and this project holds 2 configurations:
 
-- `Cargo.py.toml` is used to build the library into a Python module with `setup.py`
-- `Cargo.dev.toml` is used to build directly with `cargo` and to access the library in the `main.rs` script for development purposes
+- `Cargo.py.toml` is used to build the library into a Python module with maturin
+- `Cargo.rs.toml` is used to build directly with `cargo` in Rust to access the library in the `main.rs` script for development
+- `Cargo.wa.toml` is used to build to build for Javascript with Web Assembly. The games can be played via Web Assembly on Zeti's website https://zeti.ai 
 
 Note: we haven't found a way to specify the Cargo toml file to either process, so copy the contents of the config you want to use into `Cargo.toml` to make it work.
 
 
 # Notes:
 
-En-passant moves are not currently supported in the V1 environment.
-
+En-passant has not been implemented yet. 
 
 # References
 
-- https://pyo3.rs/v0.4.1/print.html
-- https://github.com/PyO3/pyo3
-- https://www.forrestthewoods.com/blog/how-to-debug-rust-with-visual-studio-code/
-
-
-# Benchmarks
-
-The `v2` environment is over 100 times faster than the `v1` environment. However, since most of the code is written in Rust, it's generally harder to debug.
-
-```python
-
-from gym_chess import ChessEnvV1, ChessEnvV2
-
-env_v1 = ChessEnvV1()
-env_v2 = ChessEnvV2()
-
-# v1: written in Python
->>> %timeit -n 50 -r 8 env_v1.get_possible_moves()
-## 29.5 ms ± 872 µs per loop (mean ± std. dev. of 8 runs, 50 loops each)
-
-# v2: compiled in Rust
->>> %timeit -n 50 -r 8 env_v2.get_possible_moves()
-## 240 µs ± 31.9 µs per loop (mean ± std. dev. of 8 runs, 50 loops each)
-
-```
+- https://github.com/PyO3/maturin
+- https://github.com/werner-duvaud/muzero-general
+- https://github.com/genyrosk/gym-chess (Thanks to genyrosk for gym-chess)
 
 ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
 
@@ -418,4 +380,3 @@ env_v2 = ChessEnvV2()
 ![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
 
 
-##### Thanks to genyrosk for gym-chess code 
