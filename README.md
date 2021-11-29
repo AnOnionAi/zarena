@@ -2,7 +2,7 @@
 🦀 Rust Game Collection with Reninforcement Learning gym environments. 
 This library aims to serve the same purpose as OpenSpiel, except in Rust to make it easier to use & maintain. The current games are gato, blackjack, chess & poker texas hold'em. All of these additionally support Web Assembly. You can play gato & chess against our Artificial Intelligence at [Zeti Games](https://zeti.ai/playground) 
 
-# Configurations
+## Configurations
 
 Depending on the cargo file you want. You must change your cargo.toml to match that build.
 
@@ -11,40 +11,40 @@ Depending on the cargo file you want. You must change your cargo.toml to match t
 `Cargo.wa.toml` -> Web Assembly Build
 `Cargo.toml` -> The actual file that Rust will build on. Copy from py/rs/wa to this file. 
 
-# Commands
+## Commands
 If you don't have Rust, no worries. Download Rust for Linux or Windows Subsystem. [If you need more help.](https://www.rust-lang.org/tools/install)
 
 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
-### Download the C compiler
+#### Download the C compiler
 
 `sudo apt-get update && sudo apt-get install build-essential`
 
-### Install poetry
+#### Install poetry
 
 `curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -`
 
-### Install Maturin via Poetry 
+#### Install Maturin via Poetry 
 
 `poetry install`
 
-### Build the Maturin Develop Build 
+#### Build the Maturin Develop Build 
 
 `poetry run maturin develop`
 
-### Build the Maturin Test Build 
+#### Build the Maturin Test Build 
 
 `poetry run maturin build`
 
-### Build the Maturin Production Build. The Python Wheel & source distribution. 
+#### Build the Maturin Production Build. The Python Wheel & source distribution. 
 
 `poetry run maturin build --release`
 
-### Build the Web Assembly file
+#### Build the Web Assembly file
 
 `wasm-pack build --target web -- --features wasm`
 
-## Usage
+### Usage
 
 You can import the Python classes directly, or create pre-defined environments with `gym`:
 
@@ -79,18 +79,18 @@ Reset the environment:
 initial_state = env.reset()
 ```
 
-# Testing
+## Testing
 
 Run all the tests with `pytest`.
 
-# Code linting and fixing
+## Code linting and fixing
 
 Python code is formatted with [black](https://github.com/psf/black).
 
 Rust code is formatted with `cargo fmt`.
 
 
-# Building the Rust code
+## Building the Rust code
 
 The environment uses a chess engine implemented in Rust that uses [PyO3](https://github.com/PyO3/pyo3) Maturin to bind to the Python interpreter. Rust is an amazing compiled language and this project holds 2 configurations:
 
@@ -100,22 +100,22 @@ The environment uses a chess engine implemented in Rust that uses [PyO3](https:/
 
 Note: we haven't found a way to specify the Cargo toml file to either process, so copy the contents of the config you want to use into `Cargo.toml` to make it work.
 
-# Game of Gato
+## Game of Gato
 The game of Xs & Os
 
 ![Una Gata](https://i.imgur.com/qqK1mBc.jpeg)
 
-# Blackjack
+## Blackjack
 
 ![21](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
 
-# Chess
+## Chess
 
 ![Fischer](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
 
 
 
-### See the chess board and moves
+#### See the chess board and moves
 
 Visualise the current state of the chess game:
 
@@ -149,9 +149,9 @@ env.render_moves(moves[10:12] + moves[16:18])
 
 ```
 
-## API
+### API
 
-### Initialize environment
+#### Initialize environment
 
 `ChessEnv(player_color="WHITE", opponent="random", log=True, initial_state=DEFAULT_BOARD)`
 
@@ -168,7 +168,7 @@ This method will calculate the possible moves. By default they are calculated at
 - `state`: (optional) state for which to calculate the moves
 - `player`: (optional) "WHITE" or "BLACK", specifies the player
 
-### Move specification:
+#### Move specification:
 
 Moves are encoded as either:
 - a tuple of coordinates `((from_x, from_y), (to_x, to_y))`
@@ -177,7 +177,7 @@ Moves are encoded as either:
 Moves are pre-calculated for every new state and stored in `possible_moves`.
 
 
-### Get State 
+#### Get State 
 
 ```python
 >>> print(env.state['board'])
@@ -233,28 +233,28 @@ env.white_king_on_the_board
 env.black_king_on_the_board
 ```
 
-### Notes:
+#### Notes:
 
 En-passant has not been implemented yet. 
 
-# Poker
+## Poker
 
 ![alt text](https://media.wired.com/photos/5fbe703e534553a88817f988/master/w_640,c_limit/Sec_poker_914262206.jpg)
 
-# References
+## References
 
 - https://github.com/PyO3/maturin
 - https://github.com/werner-duvaud/muzero-general
 - https://github.com/genyrosk/gym-chess (Thanks to genyrosk for gym-chess)
 - https://github.com/deepmind/open_spiel
 
-# Contrbutions
+## Contrbutions
 Pull Request Are Welcomed! 
 
-# License 
+## License 
 MIT 
 
-# Social
+## Social
 [Discord](https://zetiai.slack.com/archives/C01G0HRJWPK/p1637616128002100)
 [Twitter](https://twitter.com/ZetiAi)
 [Youtube](https://www.youtube.com/channel/UC4f1XKeAqBsTuKHXLywXpEQ)
