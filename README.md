@@ -111,10 +111,6 @@ The game of Xs & Os
 
 ## Chess
 
-![Fischer](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
-
-
-
 #### See the chess board and moves
 
 Visualise the current state of the chess game:
@@ -232,6 +228,7 @@ env.black_queen_castle_possible
 env.white_king_on_the_board
 env.black_king_on_the_board
 ```
+![Fischer](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
 
 #### Notes:
 
