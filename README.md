@@ -77,6 +77,7 @@ Reset the environment:
 ``` python
 
 initial_state = env.reset()
+```
 
 # Testing
 
@@ -120,7 +121,7 @@ https://imgur.com/a/NmOfLmo
 
 Visualise the current state of the chess game:
 
-``` python
+```python
 
 env.render()
 
