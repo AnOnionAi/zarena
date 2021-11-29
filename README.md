@@ -16,31 +16,31 @@ If you don't have Rust, no worries. Download Rust for Linux or Windows Subsystem
 
 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
 
-Download the C compiler
+### Download the C compiler
 
 `sudo apt-get update && sudo apt-get install build-essential`
 
-Install poetry
+### Install poetry
 
 `curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -`
 
-Install Maturin via Poetry 
+### Install Maturin via Poetry 
 
 `poetry install`
 
-Build the Maturin Develop Build 
+### Build the Maturin Develop Build 
 
 `poetry run maturin develop`
 
-Build the Maturin Test Build 
+### Build the Maturin Test Build 
 
 `poetry run maturin build`
 
-Build the Maturin Production Build. The Python Wheel & source distribution. 
+### Build the Maturin Production Build. The Python Wheel & source distribution. 
 
 `poetry run maturin build --release`
 
-Build the WASM 
+### Build the Web Assembly file
 
 `wasm-pack build --target web -- --features wasm`
 
@@ -107,7 +107,7 @@ The game of Xs & Os
 
 # Blackjack
 
-![alt text](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
+![21](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
 
 # Chess
 
@@ -115,7 +115,7 @@ The game of Xs & Os
 
 
 
-## Visualise the chess board and moves
+### See the chess board and moves
 
 Visualise the current state of the chess game:
 
@@ -153,7 +153,7 @@ env.render_moves(moves[10:12] + moves[16:18])
 
 ### Initialize environment
 
-#### `ChessEnv(player_color="WHITE", opponent="random", log=True, initial_state=DEFAULT_BOARD)`
+`ChessEnv(player_color="WHITE", opponent="random", log=True, initial_state=DEFAULT_BOARD)`
 
 - `opponent`: can be `"random"`, `"none"` or a function. Tells the environment whether to use a bot that picks a random move, play against self or use a specific bot policy (default: `"random"`)
 - `log`: `True` or `False`, specifies whether to log every move and render every new state (default: `True`)
@@ -161,14 +161,14 @@ env.render_moves(moves[10:12] + moves[16:18])
 - `player_color`: `"WHITE"` or `"BLACK"`, only useful if playing against a bot (default: `"WHITE"`)
 
 
-#### `env.get_possible_moves(state=state, player="WHITE", attack=False)`
+`env.get_possible_moves(state=state, player="WHITE", attack=False)`
 
 This method will calculate the possible moves. By default they are calculated at the current state for the current player (`state.current_player`).
 
 - `state`: (optional) state for which to calculate the moves
 - `player`: (optional) "WHITE" or "BLACK", specifies the player
 
-## Move specification:
+### Move specification:
 
 Moves are encoded as either:
 - a tuple of coordinates `((from_x, from_y), (to_x, to_y))`
@@ -177,7 +177,7 @@ Moves are encoded as either:
 Moves are pre-calculated for every new state and stored in `possible_moves`.
 
 
-## Get State 
+### Get State 
 
 ```python
 >>> print(env.state['board'])
@@ -233,7 +233,7 @@ env.white_king_on_the_board
 env.black_king_on_the_board
 ```
 
-# Notes:
+### Notes:
 
 En-passant has not been implemented yet. 
 
