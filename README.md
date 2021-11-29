@@ -103,9 +103,7 @@ Note: we haven't found a way to specify the Cargo toml file to either process, s
 # Game of Gato
 The game of Xs & Os
 
-![alt text](https://imgur.com/a/NmOfLmo)
-
-https://imgur.com/a/NmOfLmo
+![Una Gata](https://i.imgur.com/qqK1mBc.jpeg)
 
 # Blackjack
 
