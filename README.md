@@ -1,15 +1,15 @@
 # Zarena 
 🦀 Rust Game Collection with Reninforcement Learning gym environments. 
-This library aims to serve the same purpose as OpenSpiel, except in Rust and more moedular. The current games are gato, blackjack, chess & poker. All of these additionally support Web Assembly. You can play gato & chess against our Artificial Intelligence at https://zeti.ai/playground 
+This library aims to serve the same purpose as OpenSpiel, except in Rust to make it easier to use & maintain. The current games are gato, blackjack, chess & poker texas hold'em. All of these additionally support Web Assembly. You can play gato & chess against our Artificial Intelligence at [Zeti Games](https://zeti.ai/playground) 
 
 # Configurations
 
 Depending on the cargo file you want. You must change your cargo.toml to match that build.
 
-Cargo.py.toml -> Python Build
-Cargo.rs.toml -> Development Build
-Cargo.wa.toml -> Web Assembly Build
-Cargo.toml -> The actual file that Rust will build on. Copy from py/rs/wa to this file. 
+`Cargo.py.toml` -> Python Build
+`Cargo.rs.toml` -> Development Build
+`Cargo.wa.toml` -> Web Assembly Build
+`Cargo.toml` -> The actual file that Rust will build on. Copy from py/rs/wa to this file. 
 
 # Commands
 If you don't have Rust, no worries. Download Rust for Linux or Windows Subsystem. [If you need more help.](https://www.rust-lang.org/tools/install)
