@@ -1,19 +1,33 @@
-use gym_gato::{gato};
-use rand::Rng;
+use gym_tictactoe::{Tictactoe};
 fn main() {
-    let mut rng = rand::thread_rng();
-    for _ in 0..10 {
-        let mut game = gato::new();
-        println!("{:}", game);
+    // let mut rewards = Vec::new();
+    let mut wins = [0;3];
+    for _ in 0..10000 {
+        let mut game = Tictactoe::new();
         let mut done = false;
-        let mut reward = 0;
+        let mut reward = 0.0;
         while !done {
-            let (_, _reward, _done) = game.step(game.legal_actions()[rng.gen_range(0..game.legal_actions().len())]);
+            let action;
+            if game.to_play() == 0 {
+                action = game.expert_action();
+            } else {
+                action = game.random_action();
+            }
+            let (_, _reward, _done) = game.step(action);
             done = _done;
             reward = _reward;
-            println!("{:}", game);
-            println!("{}", reward);
+            // game.print();
+            // print!("Observation: {:?}", observation);
+            // println!();
         }
-        println!("{}", reward);
+        // println!("Game over {}", reward);
+        // rewards.push(reward);
+        if reward == 0.5 {
+            wins[2] += 1;
+        } else {
+            wins[game.to_play() as usize] += 1;
+        }
     }
+    let total_wins = wins[0] as f32 + wins[1] as f32 + wins[2] as f32;
+    println!("X wins {}% - O wins {}% - Draw {}%", wins[1] as f32 / total_wins, wins[0] as f32 / total_wins, wins[2] as f32 / total_wins);
 }

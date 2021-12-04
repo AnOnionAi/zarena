@@ -1,16 +1,16 @@
 import gym
-from gym_gato import GatoEngine
+from gym_tictactoe import TictactoeEngine
 
-# gato GYM ENVIRONMENT CLASS
+# TICTACTOE GYM ENVIRONMENT CLASS
 # ---------------------------
-class GatoEnv(gym.Env):
+class TictactoeEnv(gym.Env):
     """
     Game wrapper.
     """
 
     def __init__(self, n_players=1):
         # engine
-        self.engine = GatoEngine(n_players)
+        self.engine = TictactoeEngine(n_players)
 
     def step(self, action):
         """
@@ -61,4 +61,23 @@ class GatoEnv(gym.Env):
         Get the current state of the game
         """
         return self.engine.get_state()
+
+    def set_state(self, game_state):
+        """
+        Args: 
+            game_state: the state to be established in the game
+        Returns:
+            observation of the game.
+        """
+        state = (
+            game_state["to_play"],
+            game_state["board_int"]
+        )
+        return self.engine.set_state(state)
+
+    def expert_action(self):
+        return self.engine.expert_action()
+
+    def print(self):
+        self.engine.print()
 

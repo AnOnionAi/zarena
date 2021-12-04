@@ -1,16 +1,15 @@
 [tool.poetry]
-name = "gato"
+name = "tictactoe"
 version = "0.2.0"
-description = "The game of X's and O's"
-authors = ["Z <Z@zeti.dev>"]
+description = ""
+authors = ["Z <matthew@zeti.dev>"]
 
 [tool.poetry.dependencies]
-python = "3.7.11"
+python = "^3.7.12"
 maturin = "0.10.4"
 numpy = "^1.21.1"
 gym = "^0.18.3"
 six = "^1.16.0"
-Pillow = "^8.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

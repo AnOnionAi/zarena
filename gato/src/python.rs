@@ -1,30 +1,30 @@
 use pyo3::prelude::*;
 
 use crate::{
-    gato
+    Tictactoe
 };
 
 // PYTHON MODULE
 // ---------------------------------------------------------
 // ---------------------------------------------------------
 #[pymodule]
-fn gym_gato(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
-    m.add_class::<gatoEngine>()?;
+fn gym_tictactoe(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+    m.add_class::<TictactoeEngine>()?;
 
     Ok(())
 }
 
 #[pyclass]
-pub struct gatoEngine {
-    game: gato
+pub struct TictactoeEngine {
+    game: Tictactoe
 }
 
 #[pymethods]
-impl gatoEngine {
+impl TictactoeEngine {
     #[new]
     fn new() -> Self {
-        gatoEngine {
-            game: gato::new()
+        TictactoeEngine {
+            game: Tictactoe::new()
         }
     }
 
@@ -38,14 +38,14 @@ impl gatoEngine {
     pub fn step(
         &mut self,
         action: usize
-    ) -> PyResult<(Vec<Vec<Vec<usize>>>, usize, bool)> {
+    ) -> PyResult<(Vec<Vec<Vec<usize>>>, f32, bool)> {
         let (a, b, c) = self.game.step(action);
         Ok((a, b, c))
     }
 
     pub fn get_state(
         &self
-    ) -> PyResult<(u8, u8, Vec<Vec<u8>>, u8, bool)> {
+    ) -> PyResult<(u8, u8, Vec<Vec<isize>>, u8, bool)> {
         let (
             turn,
             to_play,
@@ -62,13 +62,30 @@ impl gatoEngine {
         ))
     }
 
+    pub fn set_state(
+        &mut self,
+        state: (u8, Vec<Vec<isize>>)
+    ) -> PyResult<Vec<Vec<Vec<usize>>>> {
+        let observation = self.game.set_state(state);
+        Ok(observation)
+    }
+
     pub fn to_play(&self) -> PyResult<u8> {
         Ok(self.game.to_play())
     }
 
     pub fn reset(&mut self) -> PyResult<Vec<Vec<Vec<usize>>>> {
-        let res = self.game.reset();
-        Ok(res)
+        let observation = self.game.reset();
+        Ok(observation)
+    }
+
+    pub fn expert_action(&self) -> PyResult<usize> {
+        let action = self.game.expert_action();
+        Ok(action)
+    }
+
+    pub fn print(&self) {
+        self.game.print();
     }
 
 }
