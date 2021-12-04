@@ -109,11 +109,16 @@ def highlight(string, background="white", color="gray"):
 # CHESS GYM ENVIRONMENT CLASS
 # ---------------------------
 class ChessEnvV3(gym.Env):
-    def __init__(self, player_color=WHITE, log=True):
+    def __init__(
+        self,
+        player_color=WHITE,
+        log=True,
+        initial_board=DEFAULT_BOARD
+    ):
 
         # constants
         self.log = log
-        self.initial_board = DEFAULT_BOARD
+        self.initial_board = initial_board
         self.board = self.initial_board
 
         # engine
@@ -200,6 +205,7 @@ class ChessEnvV3(gym.Env):
         """
 
         # action invalid in current state
+        self.possible_moves = self.get_possible_moves()
         if action not in self.possible_actions:
             return self.get_observation, INVALID_ACTION_REWARD, self.done, self.info
 
@@ -512,7 +518,7 @@ class ChessEnvV3(gym.Env):
         x1, y1 = _to // 8, _to % 8
         if not as_string:
             return ((x0, y0), (x1, y1))
-        return self.move_to_str_code(move)
+        return self.move_to_str_code(action)
 
     def move_to_str_code(self, move):
         if move in CASTLE_MOVES:

@@ -1,7 +1,7 @@
 [package]
 name = "gym_blackjack"
 version = "0.1.4"
-authors = ["Z <Z@zeti.dev>"]
+authors = ["Z <admin@zeti.ai>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
