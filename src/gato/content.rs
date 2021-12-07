@@ -1,5 +1,3 @@
-pub mod python; 
-
 use std::fmt;
 use rand::Rng;
 
@@ -40,23 +38,15 @@ impl Player {
             Player::Crosses => Player::Noughts
         }
     }
-
-    pub fn to_int(&self) -> isize {
-        match self {
-            Player::Noughts => 1,
-            Player::Crosses => -1
-        }
-    }
 }
-
 
 #[derive(Debug)]
 pub struct Tictactoe {
-    turn: u8,
-    current_player: Player,
+    pub turn: u8,
+    pub current_player: Player,
     pub board: [[TickType; 3]; 3],
-    winner: Option<Player>,
-    done: bool
+    pub winner: Option<Player>,
+    pub done: bool
 }
 
 impl Tictactoe {

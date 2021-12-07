@@ -11,7 +11,8 @@ path = "src/lib.rs"
 
 [dependencies]
 lazy_static = "1.4.0"
-Pillow = "^8.4.0"
+itertools = "0.10.1"
+rand = "0.8.4"
 
 [dependencies.pyo3]
 version = "0.13.0"

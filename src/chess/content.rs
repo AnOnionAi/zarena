@@ -13,7 +13,6 @@ use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "python")]
 use pyo3::prelude::*;
-#[cfg(feature = "python")]
 use pyo3::types::PyDict;
 //
 // Constants
@@ -41,6 +40,7 @@ const CASTLE_QUEEN_SIDE_WHITE: &str = "CASTLE_QUEEN_SIDE_WHITE";
 const CASTLE_KING_SIDE_BLACK: &str = "CASTLE_KING_SIDE_BLACK";
 const CASTLE_QUEEN_SIDE_BLACK: &str = "CASTLE_QUEEN_SIDE_BLACK";
 
+#[allow(dead_code)]
 pub const DEFAULT_BOARD: Board = [
     [-3, -5, -4, -2, -1, -4, -5, -3],
     [-6, -6, -6, -6, -6, -6, -6, -6],
@@ -83,6 +83,7 @@ impl Color {
 }
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum SquareColor {
     White,
     Black,
@@ -341,7 +342,6 @@ impl State {
         }
     }
 
-    #[cfg(feature = "python")]
     pub fn to_py_object(&self, dict: &PyDict) {
         dict.set_item(
             "white_king_castle_is_possible",
@@ -385,6 +385,7 @@ impl State {
     }
 }
 
+#[allow(dead_code)]
 pub fn render_state(state: &State) {
     render_board(&state.board);
 }
@@ -411,7 +412,7 @@ fn array2d_to_vec2d(arr: &[&[isize]]) -> Vec<Vec<isize>> {
     return vec;
 }
 
-fn player_string_to_enum(player: &str) -> Color {
+pub fn player_string_to_enum(player: &str) -> Color {
     let mut _player: Color = Color::White;
     match player {
         "WHITE" => {
@@ -1231,39 +1232,6 @@ fn square_tuple_to_flat(square: Square) -> usize {
 //     (row as isize, col as isize)
 // }
 
-#[cfg(feature = "python")]
-fn convert_py_state<'a>(_py: Python<'a>, state_py: &'a PyDict) -> PyResult<State> {
-    let board: Board = state_py.get_item("board").unwrap().extract()?;
-    let current_player: &str = state_py.get_item("current_player").unwrap().extract()?;
-    let white_king_castle_is_possible: bool = state_py
-        .get_item("white_king_castle_is_possible")
-        .unwrap()
-        .extract()?;
-    let white_queen_castle_is_possible: bool = state_py
-        .get_item("white_queen_castle_is_possible")
-        .unwrap()
-        .extract()?;
-    let black_king_castle_is_possible: bool = state_py
-        .get_item("black_king_castle_is_possible")
-        .unwrap()
-        .extract()?;
-    let black_queen_castle_is_possible: bool = state_py
-        .get_item("black_queen_castle_is_possible")
-        .unwrap()
-        .extract()?;
-
-    // create state
-    let state = State::new(
-        board,
-        current_player,
-        white_king_castle_is_possible,
-        white_queen_castle_is_possible,
-        black_king_castle_is_possible,
-        black_queen_castle_is_possible,
-    );
-    return Ok(state);
-}
-
 pub fn convert_move_to_string(_move: Move) -> String {
 
     let _from = (_move.0 .0 as usize, _move.0 .1 as usize);
@@ -1279,7 +1247,7 @@ pub fn convert_move_to_string(_move: Move) -> String {
     return from_str;
 }
 
-fn convert_castle_move_to_string(castle_move: Castle) -> String {
+pub fn convert_castle_move_to_string(castle_move: Castle) -> String {
     castle_move.to_string()
 }
 
@@ -1298,7 +1266,7 @@ fn convert_castle_move_to_string(castle_move: Castle) -> String {
 //     }
 // }
 
-fn convert_move_to_type(_move: &str) -> MoveStruct {
+pub fn convert_move_to_type(_move: &str) -> MoveStruct {
     let letters: HashMap<&str, isize> = [
         ("a", 0),
         ("b", 1),
@@ -1467,7 +1435,7 @@ pub fn in_threefold_repetition(states: &Vec<State>) -> bool {
     false
 }
 
-fn update_state(state: &mut State) {
+pub fn update_state(state: &mut State) {
     // white
     let squares_under_attack_by_black = get_squares_under_attack_by_player(state, Color::Black);
     state.update_player_king_checked(Color::White, &squares_under_attack_by_black);

@@ -11,7 +11,6 @@ numpy = "^1.21.1"
 gym = "^0.18.3"
 six = "^1.16.0"
 gy = "^1.0.2"
-gym-chess = {path = "target/wheels/gym_chess-0.4.0-cp37-cp37m-manylinux_2_24_x86_64.whl"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"

@@ -1,7 +1,8 @@
 use pyo3::prelude::*;
-mod tictactoe {
-    use 
-}
+
+mod content;
+
+use content::Tictactoe;
 
 // PYTHON MODULE
 // ---------------------------------------------------------

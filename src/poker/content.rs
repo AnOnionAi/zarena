@@ -1,6 +1,6 @@
 // The library 
-pub mod wasm;
-pub mod python; 
+// pub mod wasm;
+// pub mod python; 
 
 // use lazy_static::lazy_static;
 
@@ -425,7 +425,8 @@ impl Poker {
         self.current_player
     }
 
-    pub fn render(&self) {
+    #[allow(dead_code)]
+    fn render(&self) {
         println!("Phase {}", self.poker_phase);
         for i in 0..self.hole.len() {
             if i == 0 {
@@ -510,10 +511,11 @@ impl CardC {
         CardC::new(self.value, self.figure)
     }
 
-    fn card_to_int(&self) -> u8 {
+    pub fn card_to_int(&self) -> u8 {
         return self.figure * 15 + self.value;
     }
 
+    #[allow(dead_code)]
     pub fn card_to_string(&self) -> String {
         let v = match self.value {
             11 => "J".to_string(),
@@ -545,7 +547,7 @@ impl CardC {
 // Hand 
 #[derive(Debug)]
 pub struct HandC {
-    cards: Vec<CardC>
+    pub cards: Vec<CardC>
 }
 
 impl HandC {
@@ -602,6 +604,7 @@ impl HandC {
         hand
     }
 
+    #[allow(dead_code)]
     pub fn hand_to_string(&self) -> String {
         let mut s = "".to_string();
         for i in 0..self.cards.len() {
@@ -797,15 +800,15 @@ impl HandC {
 
 #[derive(Debug)]
 pub struct Player {
-    id: u8,
-    credits: u64,
-    hand: HandC,
-    hand_value: Vec<u8>,
-    bet: u64,
-    total_bet: u64,
-    in_hand: bool,
-    in_all_in: bool,
-    initial_credit: u64
+    pub id: u8,
+    pub credits: u64,
+    pub hand: HandC,
+    pub hand_value: Vec<u8>,
+    pub bet: u64,
+    pub total_bet: u64,
+    pub in_hand: bool,
+    pub in_all_in: bool,
+    pub initial_credit: u64
 }
 
 impl Player {
@@ -832,6 +835,7 @@ impl Player {
         self.in_all_in = false;
     }
 
+    #[allow(dead_code)]
     pub fn clone_player(&self) -> Self {
         let mut player = Player::new(self.id, self.credits);
         player.hand = self.hand.clone_hand();

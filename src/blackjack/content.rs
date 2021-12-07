@@ -1,9 +1,3 @@
-// The library 
-pub mod wasm;
-pub mod python; 
-
-// use lazy_static::lazy_static;
-
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 #[cfg(feature = "wasm")]
@@ -310,6 +304,7 @@ impl TwentyOne {
         }
     }
 
+    #[allow(dead_code)]
     pub fn render(&self) {
         for player in 1..self.total_players as usize {
             println!("Player {} Hand: {:?} Player value: {}", player, self.players_hand[player], self.players_value[player]);
