@@ -12,13 +12,6 @@ pub type Hand = Vec<Card>;
 // PYTHON MODULE
 // ---------------------------------------------------------
 // ---------------------------------------------------------
-#[pymodule]
-fn gym_blackjack(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
-    m.add_class::<BlackjackEngine>()?;
-
-    Ok(())
-}
-
 #[pyclass]
 pub struct BlackjackEngine {
     game: TwentyOne

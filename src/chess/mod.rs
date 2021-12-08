@@ -23,20 +23,6 @@ use content::{
 // PYTHON MODULE
 // ---------------------------------------------------------
 // ---------------------------------------------------------
-#[pymodule]
-fn gym_chess(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
-    m.add_class::<ChessEngine>()?;
-
-    // #[pyfn(m, "state_to_python_dict")]
-    // pub fn state_to_python_dict_py(_py: Python, state: State) -> PyResult<&PyDict> {
-    //     let dict = PyDict::new(_py);
-    //     let out = state_to_python_dict(dict, state);
-    //     Ok(out)
-    // }
-
-    Ok(())
-}
-
 #[pyclass]
 pub struct ChessEngine {}
 

@@ -9,13 +9,6 @@ use content::{Poker, Player, HandC};
 // PYTHON MODULE
 // ---------------------------------------------------------
 // ---------------------------------------------------------
-#[pymodule]
-fn gym_poker(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
-    m.add_class::<PokerEngine>()?;
-
-    Ok(())
-}
-
 #[pyclass]
 pub struct PokerEngine {
     game: Poker
