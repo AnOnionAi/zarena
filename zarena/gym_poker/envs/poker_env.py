@@ -23,7 +23,7 @@ class PokerEnv(gym.Env):
             The new observation, the reward and a boolean if the game has ended.
         """
         observation, reward, done = self.engine.step(action)
-        return observation, reward, done
+        return observation, reward, done, None
 
     def to_play(self):
         """
