@@ -8,9 +8,10 @@ authors = ["Z <matthew@zeti.dev>"]
 python = "^3.7"
 maturin = "0.10.4"
 numpy = "^1.21.1"
-gym = "^0.18.3"
+gym = "^0.21.0"
 six = "^1.16.0"
 gy = "^1.0.2"
+Pillow = "^8.4.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
