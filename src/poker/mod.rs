@@ -1,8 +1,5 @@
-// The library 
-// pub mod wasm;
+#[cfg(feature = "python")]
 pub mod python; 
-
-// use lazy_static::lazy_static;
 
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;

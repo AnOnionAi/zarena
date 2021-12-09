@@ -1,3 +1,4 @@
+#[cfg(feature = "python")]
 pub mod python;
 
 use std::fmt;
