@@ -1,6 +1,5 @@
 import gym
-import random
-from gym_poker import PokerEngine
+from zarena.zarena import PokerEngine  # rust module
 
 # POKER GYM ENVIRONMENT CLASS
 # ---------------------------

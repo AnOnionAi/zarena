@@ -1,5 +1,4 @@
-from gym_chess.gym_chess import ChessEngine  # rust module
-from gym_chess.envs import ChessEnvV1, ChessEnvV2, ChessEnvV3  # envs
+from .envs.chess_env import ChessEnv  # envs
 from gym.envs.registration import register  # to register envs
 
 register(
@@ -33,5 +32,5 @@ register(
 
 register(
     id="ChessVsSelf-v3",
-    entry_point="gym_chess.envs:ChessEnvV3"
+    entry_point="zarena.gym_chess:ChessEnv"
 )

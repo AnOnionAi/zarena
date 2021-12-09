@@ -7,13 +7,6 @@ use content::Tictactoe;
 // PYTHON MODULE
 // ---------------------------------------------------------
 // ---------------------------------------------------------
-#[pymodule]
-fn gym_tictactoe(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
-    m.add_class::<TictactoeEngine>()?;
-
-    Ok(())
-}
-
 #[pyclass]
 pub struct TictactoeEngine {
     game: Tictactoe

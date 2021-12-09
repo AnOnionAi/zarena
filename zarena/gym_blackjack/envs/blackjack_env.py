@@ -1,5 +1,5 @@
 import gym
-from gym_blackjack import BlackjackEngine
+from zarena.zarena import BlackjackEngine  # rust module
 
 # BLACKJACK GYM ENVIRONMENT CLASS
 # ---------------------------
