@@ -12,7 +12,6 @@ use wasm_bindgen::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "python")]
-use pyo3::prelude::*;
 use pyo3::types::PyDict;
 //
 // Constants
