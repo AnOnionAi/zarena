@@ -22,7 +22,7 @@ jobs:
     - name: Install poetry
       uses: abatilo/actions-poetry@v2.1.4
       with:
-        poetry-version: ${{ matrix.python-version }}
+        poetry-version: 1.1.12
 
     - name: Install dependencies
       run: poetry build 
