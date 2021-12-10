@@ -1,0 +1,15 @@
+name: Python-publish
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  publish_pypi:
+    runs-on: ubuntu-latest
+    needs: publish_lib_crate
+    steps:
+      - name: Publish
+        uses: actions/checkout@v2
+        run: pip install 'maturin>=0.9.2,<0.10'
+        run: maturin publish -u __token__ -p ${{ secrets.PYPI_PASSWORD }}
