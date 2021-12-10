@@ -39,6 +39,10 @@ jobs:
         commit_message: Apply formatting changes
         branch: ${{ github.head_ref }}
 
+
+
+name: Python-publish
+
 on:
   push:
     branches: [ master ]
