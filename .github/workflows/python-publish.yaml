@@ -10,6 +10,6 @@ jobs:
     needs: publish_lib_crate
     steps:
       - name: Publish
-      - uses: actions/checkout@v2
-      - run: pip install 'maturin>=0.9.2,<0.10'
-      - run: maturin publish -u __token__ -p ${{ secrets.PYPI_PASSWORD }}
+        uses: actions/checkout@v2
+        run: pip install 'maturin>=0.9.2,<0.10'
+        run: maturin publish -u __token__ -p ${{ secrets.PYPI_PASSWORD }}
