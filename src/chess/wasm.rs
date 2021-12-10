@@ -4,7 +4,7 @@ use wasm_bindgen::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "wasm")]
-use crate::{
+use super::{
     convert_castle_move_to_string, convert_move_to_string, convert_move_to_type,
     get_all_possible_moves, get_possible_castle_moves, next_state, player_string_to_enum,
     update_state, Castle, Color, Move, State, in_threefold_repetition, checkmate,
@@ -112,13 +112,12 @@ impl ChessEngine {
     }
 }
 
-/**
-     - print
-    [dependencies]
-    web-sys = { version="0.3.5", features=[ "console" ] }
 
-    :code
-    use web_sys::console;
-    let serde: JsValue = JsValue::from_serde(&count).unwrap();
-    console::log_1(&serde);
-**/
+    //  - print
+    // [dependencies]
+    // web-sys = { version="0.3.5", features=[ "console" ] }
+
+    // :code
+    // use web_sys::console;
+    // let serde: JsValue = JsValue::from_serde(&count).unwrap();
+    // console::log_1(&serde);
