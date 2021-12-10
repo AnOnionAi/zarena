@@ -37,7 +37,9 @@ def test_knight_basic_moves():
     env = ChessEnvV3(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
-    expected_attacks = set([(6, 5), (2, 3), (6, 3), (5, 6), (3, 6), (3, 2), (2, 5), (5, 2)])
+    expected_attacks = set(
+        [(6, 5), (2, 3), (6, 3), (5, 6), (3, 6), (3, 2), (2, 5), (5, 2)]
+    )
     squares_attacked = set([tuple(move[1]) for move in moves])
     assert squares_attacked == expected_attacks
 
@@ -149,7 +151,9 @@ def test_king_basic_moves():
     env = ChessEnvV3(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
-    expected_attacks = set([(5, 5), (3, 4), (4, 3), (5, 4), (4, 5), (3, 3), (5, 3), (3, 5)])
+    expected_attacks = set(
+        [(5, 5), (3, 4), (4, 3), (5, 4), (4, 5), (3, 3), (5, 3), (3, 5)]
+    )
     squares_attacked = set([tuple(move[1]) for move in moves])
     assert squares_attacked == expected_attacks
 

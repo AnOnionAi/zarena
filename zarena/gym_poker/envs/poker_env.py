@@ -66,14 +66,14 @@ class PokerEnv(gym.Env):
             community_cards = self.hand_to_string(state_a[0])
         players_hand = []
         for player in state_a[1]:
-            players_hand.append(self.hand_to_string(player['hand']['cards']))
+            players_hand.append(self.hand_to_string(player["hand"]["cards"]))
         lista_a = list(state_a)
         lista_a[0] = community_cards
         for player in lista_a[1]:
-            player['hand'] = players_hand[player['id']]
+            player["hand"] = players_hand[player["id"]]
         state_a = tuple(lista_a)
         state = state_a + state_b
-        return (state)
+        return state
 
     def get_total_players(self):
         """
@@ -95,7 +95,7 @@ class PokerEnv(gym.Env):
             v_str = "A"
         else:
             v_str = str(value)
-        
+
         if figure == 0:
             f_str = "-♥"
         elif figure == 1:
@@ -106,14 +106,15 @@ class PokerEnv(gym.Env):
             f_str = "-♦"
         else:
             f_str = "was over"
-        
+
         return v_str + f_str
-        
+
     def hand_to_string(self, hand):
         res = []
         for card in hand:
             res.append(self.card_to_string(card))
         return res
+
 
 # game = PokerEnv(2)
 # game.reset()

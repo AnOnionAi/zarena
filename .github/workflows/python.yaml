@@ -28,7 +28,7 @@ jobs:
       run: poetry build 
         
     - name: Format with Black
-      run: black . 
+      run: poetry run black .
         
     - name: Test with pytest
       run: pytest
