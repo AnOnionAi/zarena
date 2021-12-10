@@ -25,12 +25,6 @@ register(
     kwargs={"opponent": "none"},
 )
 
-register(
-    id="ChessVsRandomBot-v3",
-    entry_point="gym_chess.envs:ChessEnvV3"
-)
+register(id="ChessVsRandomBot-v3", entry_point="gym_chess.envs:ChessEnvV3")
 
-register(
-    id="ChessVsSelf-v3",
-    entry_point="zarena.gym_chess:ChessEnv"
-)
+register(id="ChessVsSelf-v3", entry_point="zarena.gym_chess:ChessEnv")

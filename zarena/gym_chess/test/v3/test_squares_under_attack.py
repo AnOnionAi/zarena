@@ -34,7 +34,9 @@ def test_pawn_moves():
     env = ChessEnvV3(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves(attack=True)
     env.render_moves(moves)
-    expected_attacks = set([(5, 5), (5, 4), (5, 1), (5, 7), (3, 3), (5, 6), (5, 3), (3, 5), (5, 2)])
+    expected_attacks = set(
+        [(5, 5), (5, 4), (5, 1), (5, 7), (3, 3), (5, 6), (5, 3), (3, 5), (5, 2)]
+    )
     squares_attacked = set([tuple(move[1]) for move in moves])
     print(squares_attacked)
     assert squares_attacked == expected_attacks
