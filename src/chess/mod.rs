@@ -41,6 +41,7 @@ const CASTLE_QUEEN_SIDE_WHITE: &str = "CASTLE_QUEEN_SIDE_WHITE";
 const CASTLE_KING_SIDE_BLACK: &str = "CASTLE_KING_SIDE_BLACK";
 const CASTLE_QUEEN_SIDE_BLACK: &str = "CASTLE_QUEEN_SIDE_BLACK";
 
+#[allow(dead_code)]
 pub const DEFAULT_BOARD: Board = [
     [-3, -5, -4, -2, -1, -4, -5, -3],
     [-6, -6, -6, -6, -6, -6, -6, -6],
@@ -83,6 +84,7 @@ impl Color {
 }
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum SquareColor {
     White,
     Black,
@@ -385,6 +387,7 @@ impl State {
     }
 }
 
+#[allow(dead_code)]
 pub fn render_state(state: &State) {
     render_board(&state.board);
 }
@@ -1231,6 +1234,7 @@ fn square_tuple_to_flat(square: Square) -> usize {
 //     (row as isize, col as isize)
 // }
 
+#[allow(dead_code)]
 #[cfg(feature = "python")]
 fn convert_py_state<'a>(_py: Python<'a>, state_py: &'a PyDict) -> PyResult<State> {
     let board: Board = state_py.get_item("board").unwrap().extract()?;

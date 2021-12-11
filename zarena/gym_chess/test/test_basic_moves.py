@@ -1,8 +1,8 @@
 from copy import copy
 
 import numpy as np
-from gym_chess import ChessEnvV3
-from gym_chess.envs.chess_v3 import (
+from zarena.gym_chess import ChessEnv 
+from zarena.gym_chess import (
     KING_ID,
     QUEEN_ID,
     ROOK_ID,
@@ -22,7 +22,7 @@ BASIC_BOARD = np.array([[0] * 8] * 8, dtype=np.int8)
 def test_pawn_basic_moves():
     BOARD = copy(BASIC_BOARD)
     BOARD[6, 0] = PAWN_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
     expected_attacks = set([(4, 0), (5, 0)])
@@ -34,7 +34,7 @@ def test_pawn_basic_moves():
 def test_knight_basic_moves():
     BOARD = copy(BASIC_BOARD)
     BOARD[4, 4] = KNIGHT_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
     expected_attacks = set(
@@ -48,7 +48,7 @@ def test_knight_basic_moves():
 def test_bishop_basic_moves():
     BOARD = copy(BASIC_BOARD)
     BOARD[4, 4] = BISHOP_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
     expected_attacks = set(
@@ -76,7 +76,7 @@ def test_bishop_basic_moves():
 def test_rook_basic_moves():
     BOARD = copy(BASIC_BOARD)
     BOARD[4, 4] = ROOK_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
     expected_attacks = set(
@@ -105,7 +105,7 @@ def test_rook_basic_moves():
 def test_queen_basic_moves():
     BOARD = copy(BASIC_BOARD)
     BOARD[4, 4] = QUEEN_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
     expected_attacks = set(
@@ -148,7 +148,7 @@ def test_king_basic_moves():
     BOARD = copy(BASIC_BOARD)
     BOARD[7, 7] = 0
     BOARD[4, 4] = KING_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(opponent="none", initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
     expected_attacks = set(

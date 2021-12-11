@@ -12,7 +12,8 @@ from six import StringIO
 from pprint import pprint
 from gym import spaces, error, utils
 from gym.utils import seeding
-from zarena.zarena import ChessEngine  # rust module
+
+from zarena.gym_chess import ChessEngine 
 
 EMPTY_SQUARE_ID = 0
 KING_ID = 1

@@ -32,7 +32,7 @@ jobs:
       run: poetry run black .
         
     - name: Test with pytest
-      run: pytest
+      run: poetry run pytest
 
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v4

@@ -1,5 +1,5 @@
 import gym
-from zarena.zarena import TictactoeEngine  # rust module
+from zarena import TictactoeEngine
 
 # TICTACTOE GYM ENVIRONMENT CLASS
 # ---------------------------
