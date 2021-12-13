@@ -1,16 +1,16 @@
 #[cfg(feature = "python")]
-pub mod python; 
+pub mod python;
 
 #[cfg(feature = "wasm")]
-use wasm_bindgen::prelude::*;
-#[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
 
 use rand::Rng;
 use std::{collections::HashMap, u64, usize, vec};
 
 // Types
-pub type ObservationVals = [[[u64;5];5];2];
+pub type ObservationVals = [[[u64; 5]; 5]; 2];
 
 #[derive(Debug)]
 pub struct Poker {
@@ -27,7 +27,7 @@ pub struct Poker {
     been_all_in: bool,
     hole: Vec<u64>,
     hole_limbs: Vec<Vec<u8>>,
-    infinite_credits: bool
+    infinite_credits: bool,
 }
 
 impl Poker {
@@ -51,13 +51,24 @@ impl Poker {
             been_all_in: false,
             hole: vec![0],
             hole_limbs: Vec::new(),
-            infinite_credits
+            infinite_credits,
         }
     }
 
     pub fn get_state(
-        &self
-    ) -> (Vec<u8>, &Vec<Player>, &Vec<u64>, u8, u8, u8, u8, u8, u8, u64) {
+        &self,
+    ) -> (
+        Vec<u8>,
+        &Vec<Player>,
+        &Vec<u64>,
+        u8,
+        u8,
+        u8,
+        u8,
+        u8,
+        u8,
+        u64,
+    ) {
         (
             self.community_cards.hand_to_vec(),
             &self.players,
@@ -68,7 +79,7 @@ impl Poker {
             self.button,
             self.poker_phase,
             self.turn_in_phase,
-            self.bet_phase
+            self.bet_phase,
         )
     }
 
@@ -78,7 +89,7 @@ impl Poker {
 
     pub fn step(&mut self, action: u8, change_player: bool) -> (ObservationVals, Vec<i64>, bool) {
         let c_p = self.current_player as usize;
-        let mut reward: Vec<i64> = vec![0;self.total_players as usize];
+        let mut reward: Vec<i64> = vec![0; self.total_players as usize];
         if action > 11 || !self.legal_actions().contains(&action) {
             panic!("invalid action");
         }
@@ -132,7 +143,7 @@ impl Poker {
             if self.poker_phase == 1 {
                 for _i in 0..3 {
                     self.community_cards.set_card(self.deck.get_card());
-                } 
+                }
             } else if self.poker_phase == 4 {
                 self.collect_bets();
                 if self.n_players_in_hand > 1 {
@@ -142,7 +153,7 @@ impl Poker {
                 self.next_dealer();
                 self.reset();
                 let all_done = self.button == 0;
-                return(self.get_observation(), reward, all_done);
+                return (self.get_observation(), reward, all_done);
             } else {
                 self.community_cards.set_card(self.deck.get_card());
             }
@@ -174,7 +185,7 @@ impl Poker {
     }
 
     fn get_reward(&mut self) -> Vec<i64> {
-        let mut reward: Vec<i64> = vec![0;self.total_players as usize];
+        let mut reward: Vec<i64> = vec![0; self.total_players as usize];
         for i in 0..self.hole.len() {
             let mut winner = vec![0];
             let mut w_players = vec![];
@@ -192,7 +203,13 @@ impl Poker {
                     }
                 }
             } else {
-                w_players.push(self.players.iter().filter(|p| p.in_hand).collect::<Vec<&Player>>()[0].id);
+                w_players.push(
+                    self.players
+                        .iter()
+                        .filter(|p| p.in_hand)
+                        .collect::<Vec<&Player>>()[0]
+                        .id,
+                );
             }
             let profit = self.hole[i] / w_players.len() as u64;
             for player in self.players.iter() {
@@ -259,7 +276,7 @@ impl Poker {
             if bet_levels.len() == 1 {
                 self.hole_limbs = vec![vec![]];
             } else {
-                self.hole_limbs = vec![vec![];bet_levels.len() - 1];
+                self.hole_limbs = vec![vec![]; bet_levels.len() - 1];
             }
             for i in 0..bet_levels.len() {
                 for player in self.players.iter_mut() {
@@ -284,7 +301,7 @@ impl Poker {
                     }
                 }
             }
-            println!("Hole limbs: {:?}" , self.hole_limbs);
+            println!("Hole limbs: {:?}", self.hole_limbs);
             println!("Holes: {:?}", self.hole);
             self.players.sort_by_key(|x| x.id);
         } else {
@@ -323,7 +340,7 @@ impl Poker {
     }
 
     fn get_observation(&self) -> ObservationVals {
-        let mut res: ObservationVals = [[[0;5];5];2];
+        let mut res: ObservationVals = [[[0; 5]; 5]; 2];
         let c_p = self.current_player as usize;
         for i in 0..self.community_cards.len() {
             res[0][0][i] = self.community_cards.cards[i].card_to_int() as u64;
@@ -357,7 +374,7 @@ impl Poker {
         let mut actions = Vec::new();
         if self.poker_phase == 0 && self.players[c_p].bet == 0 {
             if c_p as u8 == (self.button + 1) % self.total_players {
-               return vec![0];
+                return vec![0];
             }
             if c_p as u8 == (self.button + 2) % self.total_players {
                 return vec![1];
@@ -372,8 +389,8 @@ impl Poker {
             actions.push(6);
         }
         if self.players[c_p].bet < self.bet_phase {
-            let bets: [u64;5] = [25, 50, 100, 500, 1000];
-            let n_action: [u8;5] = [6, 7, 8, 9, 10];
+            let bets: [u64; 5] = [25, 50, 100, 500, 1000];
+            let n_action: [u8; 5] = [6, 7, 8, 9, 10];
             actions.push(2);
             if !self.been_all_in {
                 if self.players[c_p].credits >= self.bet_phase {
@@ -425,7 +442,7 @@ impl Poker {
         println!("Phase {}", self.poker_phase);
         for i in 0..self.hole.len() {
             if i == 0 {
-                print!("Main pot {} ", self.hole[i]);    
+                print!("Main pot {} ", self.hole[i]);
             } else {
                 print!(" Side pot {}", self.hole[i]);
             }
@@ -435,7 +452,12 @@ impl Poker {
             println!("Community cards {}", self.community_cards.hand_to_string());
         }
         for player in self.players.iter().filter(|x| x.in_hand) {
-            print!("Player {} Hand: {} Credits: ${:?},", player.id, player.hand.hand_to_string(), player.credits);
+            print!(
+                "Player {} Hand: {} Credits: ${:?},",
+                player.id,
+                player.hand.hand_to_string(),
+                player.credits
+            );
             print!(" Total bet {},", player.total_bet);
             if self.button == player.id {
                 print!(" ⨀ ");
@@ -461,7 +483,7 @@ impl Poker {
 // Deck
 #[derive(Debug)]
 pub struct DeckC {
-    cards: Vec<CardC>
+    cards: Vec<CardC>,
 }
 
 impl DeckC {
@@ -473,15 +495,16 @@ impl DeckC {
             c.push(CardC::new(i, 2));
             c.push(CardC::new(i, 3));
         }
-        DeckC {
-            cards: c
-        }
+        DeckC { cards: c }
     }
 
     pub fn get_card(&mut self) -> CardC {
         let mut rng = rand::thread_rng();
         if self.cards.len() == 0 {
-            return CardC{value: 0,figure: 4};
+            return CardC {
+                value: 0,
+                figure: 4,
+            };
         }
         self.cards.remove(rng.gen_range(0..self.cards.len()))
     }
@@ -491,14 +514,14 @@ impl DeckC {
 #[derive(Debug)]
 pub struct CardC {
     value: u8,
-    figure: u8
+    figure: u8,
 }
 
 impl CardC {
     pub fn new(v: u8, f: u8) -> CardC {
         CardC {
             value: v,
-            figure: f
+            figure: f,
         }
     }
 
@@ -517,40 +540,27 @@ impl CardC {
             12 => "Q".to_string(),
             13 => "K".to_string(),
             14 => "A".to_string(),
-            _ => self.value.to_string()
+            _ => self.value.to_string(),
         };
         match self.figure {
-            0 => {
-                v + "-♥"
-            },
-            1 => {
-                v + "-♠"
-            },
-            2 => {
-                v + "-♣"
-            },
-            3 => {
-                v + "-♦"
-            },
-            _ => {
-                "was over".to_string()
-            }
+            0 => v + "-♥",
+            1 => v + "-♠",
+            2 => v + "-♣",
+            3 => v + "-♦",
+            _ => "was over".to_string(),
         }
     }
 }
 
-// Hand 
+// Hand
 #[derive(Debug)]
 pub struct HandC {
-    pub cards: Vec<CardC>
+    pub cards: Vec<CardC>,
 }
 
 impl HandC {
-    
     pub fn new() -> HandC {
-        HandC {
-            cards: Vec::new()
-        }
+        HandC { cards: Vec::new() }
     }
 
     pub fn len(&self) -> usize {
@@ -572,7 +582,6 @@ impl HandC {
                 return;
             }
         }
-
     }
 
     pub fn remove_specific_card(&mut self, card: &CardC) -> CardC {
@@ -587,7 +596,7 @@ impl HandC {
     pub fn remove_a_card(&mut self) -> CardC {
         match self.cards.pop() {
             Some(x) => x,
-            None => CardC::new(0, 4)
+            None => CardC::new(0, 4),
         }
     }
 
@@ -649,8 +658,8 @@ impl HandC {
             // Two pair
             let mut kicker: u8 = 0;
             for card in pairs_value.iter() {
-                if *card .1 == 1 {
-                    kicker = card .0.clone();
+                if *card.1 == 1 {
+                    kicker = card.0.clone();
                     break;
                 }
             }
@@ -663,11 +672,11 @@ impl HandC {
         }
         if pairs.len() == 1 {
             // One pair
-            let mut kickers: [u8;3] = [0, 0, 0];
+            let mut kickers: [u8; 3] = [0, 0, 0];
             let mut count = 0;
             for card in pairs_value.iter() {
-                if *card .1 == 1 {
-                    kickers[count] = card .0.clone();
+                if *card.1 == 1 {
+                    kickers[count] = card.0.clone();
                     count += 1;
                     if count == 3 {
                         break;
@@ -679,11 +688,11 @@ impl HandC {
         }
         if third.len() == 1 {
             // Three of a kind
-            let mut kickers: [u8;2] = [0, 0];
+            let mut kickers: [u8; 2] = [0, 0];
             let mut count = 0;
             for card in pairs_value.iter() {
-                if *card .1 == 1 {
-                    kickers[count] = card .0.clone();
+                if *card.1 == 1 {
+                    kickers[count] = card.0.clone();
                     count += 1;
                     if count == 2 {
                         break;
@@ -697,12 +706,12 @@ impl HandC {
             // Four of a kind
             let mut kicker: u8 = 0;
             for card in pairs_value.iter() {
-                if *card .1 == 1 {
-                    kicker = card .0.clone();
+                if *card.1 == 1 {
+                    kicker = card.0.clone();
                     break;
                 }
             }
-            return vec![8, quartet[0], kicker]
+            return vec![8, quartet[0], kicker];
         }
         let color: bool;
         if pairs_figure.len() == 1 {
@@ -717,7 +726,7 @@ impl HandC {
             if i == 0 {
                 if self.cards[0].value == 2 && self.cards[4].value == 14 {
                     as_value = 1;
-                } 
+                }
                 x = self.cards[0].value;
             }
             if as_value == 14 {
@@ -760,7 +769,7 @@ impl HandC {
                     self.cards[3].value,
                     self.cards[2].value,
                     self.cards[1].value,
-                    self.cards[0].value
+                    self.cards[0].value,
                 ];
             }
         } else {
@@ -778,7 +787,7 @@ impl HandC {
                     self.cards[3].value,
                     self.cards[2].value,
                     self.cards[1].value,
-                    self.cards[0].value
+                    self.cards[0].value,
                 ];
             }
         }
@@ -803,7 +812,7 @@ pub struct Player {
     pub total_bet: u64,
     pub in_hand: bool,
     pub in_all_in: bool,
-    pub initial_credit: u64
+    pub initial_credit: u64,
 }
 
 impl Player {
@@ -817,7 +826,7 @@ impl Player {
             total_bet: 0,
             in_hand: true,
             in_all_in: false,
-            initial_credit: credits
+            initial_credit: credits,
         }
     }
 
