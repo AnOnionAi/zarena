@@ -1,5 +1,5 @@
 import gym
-from zarena.zarena import PokerEngine  # rust module
+from zarena import PokerEngine 
 
 # POKER GYM ENVIRONMENT CLASS
 # ---------------------------

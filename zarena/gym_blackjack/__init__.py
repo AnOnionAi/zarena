@@ -1,4 +1,5 @@
-from .envs.blackjack_env import BlackjackEnv  # envs
+from zarena.zarena import BlackjackEngine  # rust module
+from zarena.gym_blackjack.envs.blackjack_env import BlackjackEnv  # envs
 from gym.envs.registration import register  # to register envs
 
 register(

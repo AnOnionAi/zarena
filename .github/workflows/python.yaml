@@ -30,9 +30,12 @@ jobs:
         
     - name: Format with Black
       run: poetry run black .
+
+    - name: Build local package
+      run: poetry run maturin develop
         
     - name: Test with pytest
-      run: pytest
+      run: poetry run pytest
 
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v4
