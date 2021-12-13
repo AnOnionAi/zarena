@@ -40,7 +40,7 @@ def test_benchmark():
     print("Time per step (s)", diff / total_steps)
 
     # assert that it's less than 50 seconds
-    assert diff < 50
+    assert diff < 10
 
 
 # Total time (s) 0.5776240825653076
