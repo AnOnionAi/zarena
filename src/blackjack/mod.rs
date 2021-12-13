@@ -2,9 +2,9 @@
 pub mod python;
 
 #[cfg(feature = "wasm")]
-use wasm_bindgen::prelude::*;
-#[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
 
 use rand::Rng;
 
@@ -12,13 +12,13 @@ use rand::Rng;
 pub type Deck = Vec<u8>;
 pub type Card = u8;
 pub type Hand = Vec<Card>;
-pub type ObservationVals = [[[u8;3];3];3];
+pub type ObservationVals = [[[u8; 3]; 3]; 3];
 
 // Constants
-pub const DECK: [u8;52] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+pub const DECK: [u8; 52] = [
+    2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3,
+    4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+];
 #[derive(Debug)]
 pub struct TwentyOne {
     deck: Deck,
@@ -28,7 +28,7 @@ pub struct TwentyOne {
     players_planted: Vec<bool>,
     players_busted: Vec<bool>,
     total_players: u8,
-    current_player: u8
+    current_player: u8,
 }
 
 impl TwentyOne {
@@ -36,26 +36,24 @@ impl TwentyOne {
         let n_players = n_players + 1;
         TwentyOne {
             deck: DECK.to_vec(),
-            players_hand: vec![vec![];n_players],
-            players_value: vec![0;n_players],
-            players_bet: vec![0;n_players],
-            players_planted: vec![false;n_players],
-            players_busted: vec![false;n_players],
+            players_hand: vec![vec![]; n_players],
+            players_value: vec![0; n_players],
+            players_bet: vec![0; n_players],
+            players_planted: vec![false; n_players],
+            players_busted: vec![false; n_players],
             total_players: n_players as u8,
-            current_player: 1
+            current_player: 1,
         }
     }
 
-    pub fn get_state(
-        &self
-    ) -> (&Vec<Hand>, &Vec<u8>, &Vec<u64>, &Vec<bool>, &Vec<bool>, u8) {
+    pub fn get_state(&self) -> (&Vec<Hand>, &Vec<u8>, &Vec<u64>, &Vec<bool>, &Vec<bool>, u8) {
         (
             &self.players_hand,
             &self.players_value,
             &self.players_bet,
             &self.players_planted,
             &self.players_busted,
-            self.current_player
+            self.current_player,
         )
     }
 
@@ -70,7 +68,11 @@ impl TwentyOne {
         }
         if self.players_bet[c_p] == 0 {
             self.deal(action);
-            return (self.get_observation(), vec![0; self.total_players as usize], self.all_done());
+            return (
+                self.get_observation(),
+                vec![0; self.total_players as usize],
+                self.all_done(),
+            );
         }
         if !(self.players_busted[c_p] || self.players_planted[c_p]) {
             if action == 2 {
@@ -111,8 +113,9 @@ impl TwentyOne {
         let mut count = 1;
         for player in 1..total_players {
             if (self.players_value[player] > 21 && self.players_value[player] != 100)
-             || self.players_planted[player] 
-             || self.players_busted[player] {
+                || self.players_planted[player]
+                || self.players_busted[player]
+            {
                 count += 1;
             }
         }
@@ -127,18 +130,18 @@ impl TwentyOne {
                 2 => {
                     let reward = 3 * self.players_bet[player];
                     res.push((reward / 3 * 2) as i64);
-                },
+                }
                 1 => {
                     let reward = 2 * self.players_bet[player];
                     res.push((reward / 2) as i64);
-                },
+                }
                 0 => {
                     res.push(0);
-                },
+                }
                 -1 => {
                     let reward = self.players_bet[player];
                     res.push(-(reward as i64));
-                },
+                }
                 _ => {}
             }
         }
@@ -146,8 +149,8 @@ impl TwentyOne {
     }
 
     fn get_observation(&self) -> ObservationVals {
-        let mut res: ObservationVals = [[[0;3];3];3];
-        let vals: [u8;3] = [self.players_value[1], self.players_hand[0][0], 0];
+        let mut res: ObservationVals = [[[0; 3]; 3]; 3];
+        let vals: [u8; 3] = [self.players_value[1], self.players_hand[0][0], 0];
         for i in 0..3 {
             for j in 0..3 {
                 for k in 0..3 {
@@ -158,11 +161,13 @@ impl TwentyOne {
         res
     }
 
-    pub fn legal_actions(&self) -> [bool;12] {
+    pub fn legal_actions(&self) -> [bool; 12] {
         // <----bet---->
         // the first step is to bet
         if self.players_bet[self.current_player as usize] == 0 {
-            return [false, false, false, false, true, true, true, true, true, true, true, true];
+            return [
+                false, false, false, false, true, true, true, true, true, true, true, true,
+            ];
         }
         // <----plays---->
         // 0 = stand
@@ -171,12 +176,18 @@ impl TwentyOne {
         // 3 = pull apart (currently disabled)
         let c_p = self.current_player as usize;
         if self.players_hand[c_p].len() == 2 {
-            return [true, true, true, false, false, false, false, false, false, false, false, false];
+            return [
+                true, true, true, false, false, false, false, false, false, false, false, false,
+            ];
         }
         if self.players_busted[c_p] || self.players_planted[c_p] {
-            return [false, false, false, false, false, false, false, false, false, false, false, false];
+            return [
+                false, false, false, false, false, false, false, false, false, false, false, false,
+            ];
         }
-        [true, true, false, false, false, false, false, false, false, false, false, false]
+        [
+            true, true, false, false, false, false, false, false, false, false, false, false,
+        ]
     }
 
     fn double_down(&mut self) {
@@ -196,10 +207,14 @@ impl TwentyOne {
         if self.players_value[player] <= 21 && self.players_value[0] < self.players_value[player] {
             return 1;
         }
-        if self.players_value[player] <= 21 && (self.players_value[0] > 21 && self.players_value[0] != 100) {
+        if self.players_value[player] <= 21
+            && (self.players_value[0] > 21 && self.players_value[0] != 100)
+        {
             return 1;
         }
-        if self.players_value[player] > 21 && (self.players_value[0] > 21 && self.players_value[0] != 100) {
+        if self.players_value[player] > 21
+            && (self.players_value[0] > 21 && self.players_value[0] != 100)
+        {
             return 0;
         }
         if self.players_value[player] > 21 {
@@ -218,7 +233,7 @@ impl TwentyOne {
         }
         let c_p = self.current_player as usize;
         let bets = [1, 5, 10, 25, 50, 100, 500, 1000];
-        let playerbet= bets[bet as usize - 4];
+        let playerbet = bets[bet as usize - 4];
         self.players_bet[c_p] = playerbet;
         if self.current_player == 1 {
             for _i in 0..2 {
@@ -233,13 +248,13 @@ impl TwentyOne {
 
     pub fn reset(&mut self) -> ObservationVals {
         let t_p = self.total_players as usize;
-        let observation = [[[0;3];3];3];
+        let observation = [[[0; 3]; 3]; 3];
         self.deck = DECK.to_vec();
-        self.players_hand = vec![vec![];t_p];
-        self.players_value = vec![0;t_p];
-        self.players_bet = vec![0;t_p];
-        self.players_planted = vec![false;t_p];
-        self.players_busted = vec![false;t_p];
+        self.players_hand = vec![vec![]; t_p];
+        self.players_value = vec![0; t_p];
+        self.players_bet = vec![0; t_p];
+        self.players_planted = vec![false; t_p];
+        self.players_busted = vec![false; t_p];
         self.current_player = 1;
         observation
     }
@@ -250,8 +265,7 @@ impl TwentyOne {
 
     pub fn player_done(&self) -> bool {
         let c_p = self.current_player as usize;
-        self.players_busted[c_p]
-        || self.players_planted[c_p]
+        self.players_busted[c_p] || self.players_planted[c_p]
     }
 
     fn hit(&mut self, mut hand: Hand) -> Hand {
@@ -287,7 +301,12 @@ impl TwentyOne {
     }
 
     fn dealer_plays(&mut self) {
-        let players_still_alive = !self.players_value.iter().filter(|x| x <= &&21 || x == &&100).collect::<Vec<&u8>>().is_empty();
+        let players_still_alive = !self
+            .players_value
+            .iter()
+            .filter(|x| x <= &&21 || x == &&100)
+            .collect::<Vec<&u8>>()
+            .is_empty();
         if players_still_alive {
             while self.players_value[0] <= 16 {
                 self.players_hand[0] = self.hit(self.players_hand[0].clone());
@@ -308,8 +327,14 @@ impl TwentyOne {
     #[allow(dead_code)]
     pub fn render(&self) {
         for player in 1..self.total_players as usize {
-            println!("Player {} Hand: {:?} Player value: {}", player, self.players_hand[player], self.players_value[player]);
+            println!(
+                "Player {} Hand: {:?} Player value: {}",
+                player, self.players_hand[player], self.players_value[player]
+            );
         }
-        println!("Dealer Hand: {:?} Dealer value: {}", self.players_hand[0], self.players_value[0]);
+        println!(
+            "Dealer Hand: {:?} Dealer value: {}",
+            self.players_hand[0], self.players_value[0]
+        );
     }
 }

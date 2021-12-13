@@ -3,19 +3,9 @@ use pyo3::prelude::*;
 use pyo3::types::PyDict;
 
 use super::{
-    Castle,
-    Color,
-    Move,
-    State,
-    Board,
-    convert_castle_move_to_string,
-    convert_move_to_string,
-    convert_move_to_type,
-    is_game_over, get_all_possible_moves,
-    get_possible_castle_moves,
-    next_state,
-    player_string_to_enum,
-    update_state
+    convert_castle_move_to_string, convert_move_to_string, convert_move_to_type,
+    get_all_possible_moves, get_possible_castle_moves, is_game_over, next_state,
+    player_string_to_enum, update_state, Board, Castle, Color, Move, State,
 };
 
 // PYTHON MODULE
@@ -122,7 +112,13 @@ impl ChessEngine {
         return Ok(state_py);
     }
 
-    fn is_game_over<'a>(&mut self, _py: Python<'a>, states_py: Vec<&'a PyDict>, state_py: &'a PyDict, _player: &str) ->  PyResult<u8> {
+    fn is_game_over<'a>(
+        &mut self,
+        _py: Python<'a>,
+        states_py: Vec<&'a PyDict>,
+        state_py: &'a PyDict,
+        _player: &str,
+    ) -> PyResult<u8> {
         // parse state
         let state: State = convert_py_state(_py, state_py)?;
         // parse arguments
