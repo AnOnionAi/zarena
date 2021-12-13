@@ -2,18 +2,15 @@ from collections import defaultdict
 from copy import copy
 
 import numpy as np
-from gym_chess import ChessEnvV3
-from gym_chess.envs.chess_v3 import (
+from zarena.gym_chess import ChessEnv
+from zarena.gym_chess.envs.chess_env import (
     KING_ID,
-    QUEEN_ID,
     ROOK_ID,
-    BISHOP_ID,
-    KNIGHT_ID,
     PAWN_ID,
     CASTLE_KING_SIDE_WHITE,
     CASTLE_QUEEN_SIDE_WHITE,
 )
-from gym_chess.test.utils import run_test_funcs
+from zarena.gym_chess.test.utils import run_test_funcs
 
 
 # Blank board
@@ -33,7 +30,7 @@ def test_king_side_castle():
     BOARD = copy(BASIC_BOARD)
     BOARD[7, 4] = KING_ID
     BOARD[7, 7] = ROOK_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(initial_board=BOARD)
     moves = env.get_castle_moves(player=env.current_player)
     env.render_moves(moves)
     assert moves == [CASTLE_KING_SIDE_WHITE]
@@ -44,7 +41,7 @@ def test_queen_side_castle():
     BOARD = copy(BASIC_BOARD)
     BOARD[7, 0] = ROOK_ID
     BOARD[7, 4] = KING_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(initial_board=BOARD)
     moves = env.get_castle_moves(player=env.current_player)
     env.render_moves(moves)
     assert moves == [CASTLE_QUEEN_SIDE_WHITE]
@@ -57,7 +54,7 @@ def test_queen_side_castle():
 #     BOARD[6, 2] = 0
 #     BOARD[7, 0] = ROOK_ID
 #     BOARD[7, 4] = KING_ID
-#     env = ChessEnvV3(opponent="none", initial_board=BOARD)
+#     env = ChessEnv(initial_board=BOARD)
 
 #     opponent = env.get_other_player(env.current_player)
 #     moves = env.get_possible_moves(player=opponent, attack=True)
@@ -79,7 +76,7 @@ def test_queen_side_castle():
 # BOARD = copy(BASIC_BOARD)
 # BOARD[7, 0] = ROOK_ID
 # BOARD[7, 4] = KING_ID
-# env = ChessEnvV3(opponent="none", initial_board=BOARD)
+# env = ChessEnv(initial_board=BOARD)
 # king_moves = env.king_moves(env.current_player, np.array([7, 4]))
 # action = env.move_to_action(king_moves[0])
 # env.step(action)

@@ -30,6 +30,9 @@ jobs:
         
     - name: Format with Black
       run: poetry run black .
+
+    - name: Build local package
+      run: poetry run maturin develop
         
     - name: Test with pytest
       run: poetry run pytest

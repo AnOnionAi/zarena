@@ -1,16 +1,13 @@
 from copy import copy
 
 import numpy as np
-from gym_chess import ChessEnvV3
-from gym_chess.envs.chess_v3 import (
+from zarena.gym_chess import ChessEnv
+from zarena.gym_chess.envs.chess_env import (
     KING_ID,
-    QUEEN_ID,
     ROOK_ID,
-    BISHOP_ID,
-    KNIGHT_ID,
     PAWN_ID,
 )
-from gym_chess.test.utils import run_test_funcs
+from zarena.gym_chess.test.utils import run_test_funcs
 
 
 # Blank board
@@ -25,9 +22,11 @@ def test_king_moves_1():
     BOARD = copy(BASIC_BOARD)
     BOARD[4, 4] = KING_ID
     BOARD[0, 0] = ROOK_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(initial_board=BOARD)
+    env.reset()
     moves = env.get_possible_moves()
     env.render_moves(moves)
+    env.render()
     king_is_checked = env.white_king_is_checked
     expected_attacks = set([(5, 5), (3, 4), (4, 3), (5, 4), (4, 5), (5, 3)])
     squares_attacked = set([tuple(move[1]) for move in moves])
@@ -39,7 +38,7 @@ def test_king_moves_1():
 def test_king_moves_2():
     BOARD = copy(BASIC_BOARD)
     BOARD[3, 4] = KING_ID
-    env = ChessEnvV3(opponent="none", initial_board=BOARD)
+    env = ChessEnv(initial_board=BOARD)
     moves = env.get_possible_moves()
     env.render_moves(moves)
     king_is_checked = env.white_king_is_checked
