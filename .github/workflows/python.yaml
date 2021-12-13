@@ -1,8 +1,5 @@
 name: Python
 
-
-name: Publish
-
 on:
   pull_request:
     branches: [ develop, release/*, master ]
@@ -44,6 +41,9 @@ jobs:
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Apply formatting changes
+
+
+name: Publish
 
 on:
   push:
