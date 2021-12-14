@@ -1,5 +1,5 @@
 import gym
-from zarena.gym_blackjack import BlackjackEngine  
+from zarena.gym_blackjack import BlackjackEngine
 
 # BLACKJACK GYM ENVIRONMENT CLASS
 # ---------------------------

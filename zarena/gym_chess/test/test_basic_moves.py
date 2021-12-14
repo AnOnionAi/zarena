@@ -1,7 +1,7 @@
 from copy import copy
 
 import numpy as np
-from zarena.gym_chess import ChessEnv 
+from zarena.gym_chess import ChessEnv
 from zarena.gym_chess.envs.chess_env import (
     KING_ID,
     QUEEN_ID,
