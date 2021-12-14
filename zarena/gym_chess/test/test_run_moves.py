@@ -2,10 +2,7 @@ from copy import copy
 
 import numpy as np
 from zarena.gym_chess import ChessEnv
-from zarena.gym_chess.envs.chess_env import (
-    PAWN_ID,
-    DEFAULT_BOARD
-)
+from zarena.gym_chess.envs.chess_env import PAWN_ID, DEFAULT_BOARD
 from zarena.gym_chess.test.utils import run_test_funcs
 
 

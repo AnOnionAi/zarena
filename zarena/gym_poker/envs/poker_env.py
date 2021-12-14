@@ -1,5 +1,5 @@
 import gym
-from zarena import PokerEngine 
+from zarena import PokerEngine
 
 # POKER GYM ENVIRONMENT CLASS
 # ---------------------------
