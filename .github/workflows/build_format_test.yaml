@@ -9,7 +9,7 @@ env:
 
 jobs:
   build_and_test:
-    name: Rust project
+    name: Python test
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
