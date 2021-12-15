@@ -19,9 +19,20 @@ except ImportError:
 setup_requires = ["setuptools-rust>=0.9.2"]
 install_requires = []
 
+readme = open("./README.md", "r")
+
 setup(
-    name="zarena",
+    name='zarena',
+    packages=['zarena'],
     version="1.0.0",
+    description= '',
+    long_description=readme.read(),
+    long_description_content_type='text/markdown',
+    author='zetiworld',
+    author_email='',
+    url='',
+    download_url='',
+    keywords=[],
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Development Status :: 3 - Alpha",
@@ -34,8 +45,7 @@ setup(
     rust_extensions=[
         RustExtension("zarena.zarena", "Cargo.toml", binding=Binding.PyO3, debug=False)
     ],
-    packages=["zarena"],
     zip_safe=False,
     install_requires=["gym>=0,<1", "numpy>=1,<2", "six>=1,<2"],
-    extras_require={"dev": ["pytest", "black"]},
+    extras_require={"dev": ["pytest", "black"]}
 )

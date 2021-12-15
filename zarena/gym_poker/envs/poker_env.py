@@ -1,5 +1,6 @@
 import gym
-from zarena import PokerEngine 
+from zarena.gym_poker import PokerEngine 
+import random
 
 # POKER GYM ENVIRONMENT CLASS
 # ---------------------------
@@ -116,8 +117,9 @@ class PokerEnv(gym.Env):
         return res
 
 
-# game = PokerEnv(2)
-# game.reset()
-# for i in range(0, 1000):
-#     game.step(game.legal_actions()[random.randrange(0, len(game.legal_actions()))])
-#     print(game.get_state())
+game = PokerEnv(2)
+for i in range(0, 1000):
+    obs = game.reset()
+    for j in range(0, 10):
+        obs, _, _, _ = game.step(game.legal_actions()[random.randrange(0, len(game.legal_actions()))])
+        print(i * 10 + j)

@@ -5,6 +5,7 @@ use std::fmt;
 use rand::Rng;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
+#[allow(dead_code)]
 pub enum TickType {
     Nought,
     Cross,
@@ -22,19 +23,21 @@ impl fmt::Display for TickType {
 }
 
 #[derive(Debug, Copy, Clone)]
+#[allow(dead_code)]
 pub enum Player {
     Noughts,
     Crosses
 }
 
 impl Player {
+    #[allow(dead_code)]
     fn mark(&self) -> TickType {
         match self {
             Player::Noughts => TickType::Nought,
             Player::Crosses => TickType::Cross
         }
     }
-
+    #[allow(dead_code)]
     pub fn other(&self) -> Player {
         match self {
             Player::Noughts => Player::Crosses,
@@ -53,7 +56,7 @@ pub struct Tictactoe {
 }
 
 impl Tictactoe {
-    
+    #[allow(dead_code)]
     pub fn new() -> Tictactoe {
         Tictactoe {
             turn: 0,
@@ -63,7 +66,7 @@ impl Tictactoe {
             done: false
         }
     }
-
+    #[allow(dead_code)]
     pub fn get_state(&self) -> (u8, u8, Vec<Vec<isize>>, u8, bool) {
         (
             self.turn,
@@ -73,7 +76,7 @@ impl Tictactoe {
             self.done
         )
     }
-
+    #[allow(dead_code)]
     pub fn set_state(&mut self, state: (u8, Vec<Vec<isize>>)) -> Vec<Vec<Vec<usize>>> {
         let mut turn: u8 = 0;
         for row in state.1.iter() {
@@ -90,7 +93,7 @@ impl Tictactoe {
         self.done = false;
         self.get_observation()
     }
-
+    #[allow(dead_code)]
     fn set_to_play(&mut self, player_int: u8) {
         self.current_player = match player_int {
             0 => Player::Crosses,
@@ -148,7 +151,7 @@ impl Tictactoe {
             Player::Noughts => 1
         }
     }
-
+    #[allow(dead_code)]
     pub fn reset(&mut self) -> Vec<Vec<Vec<usize>>> {
         self.turn = 0;
         self.current_player = Player::Crosses;
@@ -156,7 +159,7 @@ impl Tictactoe {
         self.winner = None;
         self.get_observation()
     }
-
+    #[allow(dead_code)]
     pub fn step(&mut self, action: usize) -> (Vec<Vec<Vec<usize>>>, f32, bool) {
         let row = action / 3;
         let col = action % 3;
@@ -169,7 +172,7 @@ impl Tictactoe {
         let reward = self.get_reward();
         (self.get_observation(), reward, self.done)
     }
-
+    #[allow(dead_code)]
     fn get_reward(&self) -> f32 {
         if self.done {
             if self.winner.is_some() {
@@ -249,7 +252,7 @@ impl Tictactoe {
         }
         return slice[0] == slice[1] && slice[1] == slice[2];
     }
-
+    #[allow(dead_code)]
     pub fn expert_action(&self) -> usize {
         let winning = self.winning_move(self.current_player);
         if winning.0 {
@@ -318,7 +321,7 @@ impl Tictactoe {
         let action = self.legal_actions()[rng.gen_range(0..self.legal_actions().len())];
         return action;
     }
-
+    #[allow(dead_code)]
     pub fn print(&self) {
         for row in self.board.iter() {
             let mut row_string = String::new();

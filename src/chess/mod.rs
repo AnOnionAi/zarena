@@ -36,9 +36,13 @@ const BISHOP_DESC: &str = &"B";
 const KNIGHT_DESC: &str = &"N";
 const PAWN_DESC: &str = &" ";
 
+#[allow(dead_code)]
 const CASTLE_KING_SIDE_WHITE: &str = "CASTLE_KING_SIDE_WHITE";
+#[allow(dead_code)]
 const CASTLE_QUEEN_SIDE_WHITE: &str = "CASTLE_QUEEN_SIDE_WHITE";
+#[allow(dead_code)]
 const CASTLE_KING_SIDE_BLACK: &str = "CASTLE_KING_SIDE_BLACK";
+#[allow(dead_code)]
 const CASTLE_QUEEN_SIDE_BLACK: &str = "CASTLE_QUEEN_SIDE_BLACK";
 
 #[allow(dead_code)]
@@ -75,6 +79,7 @@ pub enum Color {
 }
 
 impl Color {
+    #[allow(dead_code)]
     fn to_int(&self) -> isize {
         match self {
             Self::White => 1,
@@ -92,6 +97,7 @@ pub enum SquareColor {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
+#[allow(dead_code)]
 pub enum Castle {
     KingSideWhite,
     QueenSideWhite,
@@ -100,6 +106,7 @@ pub enum Castle {
 }
 
 impl Castle {
+    #[allow(dead_code)]
     fn to_str(&self) -> &str {
         match self {
             Castle::KingSideWhite => CASTLE_KING_SIDE_WHITE,
@@ -108,7 +115,7 @@ impl Castle {
             Castle::QueenSideBlack => CASTLE_QUEEN_SIDE_BLACK,
         }
     }
-
+    #[allow(dead_code)]
     fn to_string(&self) -> String {
         self.to_str().to_string()
     }
@@ -251,11 +258,12 @@ pub type Board = [[isize; 8]; 8];
 pub type Square = (isize, isize);
 pub type Move = (Square, Square);
 
+#[allow(dead_code)]
 pub union MoveUnion {
     pub normal_move: Move,
     pub castle: Castle,
 }
-
+#[allow(dead_code)]
 pub struct MoveStruct {
     pub is_castle: bool,
     pub data: MoveUnion,
@@ -280,6 +288,7 @@ pub struct State {
 }
 
 impl State {
+    #[allow(dead_code)]
     pub fn new(
         board: [[isize; 8]; 8],
         current_player: &str,
@@ -322,10 +331,12 @@ impl State {
         };
     }
 
+    #[allow(dead_code)]
     pub fn get_board(&self) -> [[isize; 8]; 8] {
         self.board
     }
 
+    #[allow(dead_code)]
     fn update_player_king_checked(
         &mut self,
         player: Color,
@@ -406,6 +417,7 @@ pub fn render_board(board: &[[isize; 8]; 8]) {
     println!("    a  b  c  d  e  f  g  h");
 }
 
+#[allow(dead_code)]
 fn array2d_to_vec2d(arr: &[&[isize]]) -> Vec<Vec<isize>> {
     let mut vec: Vec<Vec<isize>> = Vec::new();
     for &row in arr.iter() {
@@ -430,6 +442,7 @@ fn player_string_to_enum(player: &str) -> Color {
     return _player;
 }
 
+#[allow(dead_code)]
 fn player_enum_to_string<'a>(player: &Color) -> &'a str {
     let mut _player: &str = "";
     match player {
@@ -447,6 +460,7 @@ fn player_enum_to_string<'a>(player: &Color) -> &'a str {
 // ---------------------------------------------------------
 
 // shortcut
+#[allow(dead_code)]
 pub fn get_all_possible_moves(
     state: &State,
     player: Color,
@@ -476,6 +490,7 @@ pub fn _get_all_possible_moves(
 }
 
 // shortcut function
+#[allow(dead_code)]
 pub fn get_possible_moves(state: &State, player: Color, attack: bool) -> Vec<Move> {
     // squares under attack
     let other_player: Color = get_other_player(player);
@@ -553,6 +568,7 @@ pub fn _get_possible_moves(
 }
 
 // shortcut function
+#[allow(dead_code)]
 pub fn get_possible_castle_moves(state: &State, player: Color, attack: bool) -> Vec<Castle> {
     // squares under attack
     let other_player: Color = get_other_player(player);
@@ -1268,6 +1284,7 @@ fn convert_py_state<'a>(_py: Python<'a>, state_py: &'a PyDict) -> PyResult<State
     return Ok(state);
 }
 
+#[allow(dead_code)]
 pub fn convert_move_to_string(_move: Move) -> String {
 
     let _from = (_move.0 .0 as usize, _move.0 .1 as usize);
@@ -1283,6 +1300,7 @@ pub fn convert_move_to_string(_move: Move) -> String {
     return from_str;
 }
 
+#[allow(dead_code)]
 fn convert_castle_move_to_string(castle_move: Castle) -> String {
     castle_move.to_string()
 }
@@ -1302,6 +1320,7 @@ fn convert_castle_move_to_string(castle_move: Castle) -> String {
 //     }
 // }
 
+#[allow(dead_code)]
 fn convert_move_to_type(_move: &str) -> MoveStruct {
     let letters: HashMap<&str, isize> = [
         ("a", 0),
@@ -1366,6 +1385,7 @@ fn convert_move_to_type(_move: &str) -> MoveStruct {
     }
 }
 
+#[allow(dead_code)]
 pub fn insufficient_material(board: &Board) -> bool {
     let mut sq_color = 0;
     let mut num_pieces = 0;
@@ -1429,6 +1449,7 @@ fn piece_is_on_board(board: &[[isize; 8]; 8], piece_id: isize) -> bool {
     return false;
 }
 
+#[allow(dead_code)]
 pub fn is_game_over(states: &Vec<State>, state: &State, player: Color) -> u8 {
     if checkmate(state, player) {
         return 1;
@@ -1445,6 +1466,7 @@ pub fn is_game_over(states: &Vec<State>, state: &State, player: Color) -> u8 {
     return 0;
 }
 
+#[allow(dead_code)]
 pub fn in_stalemate(state: &State, player: Color) -> bool {
     if !king_is_checked(state, player) && get_possible_moves(state, player, false).len() == 0 {
         return true;
@@ -1452,6 +1474,7 @@ pub fn in_stalemate(state: &State, player: Color) -> bool {
     false
 }
 
+#[allow(dead_code)]
 pub fn checkmate(state: &State, player: Color) -> bool {
     if king_is_checked(state, player) && get_possible_moves(state, player, false).len() == 0 {
         return true;
@@ -1459,6 +1482,7 @@ pub fn checkmate(state: &State, player: Color) -> bool {
     false
 }
 
+#[allow(dead_code)]
 pub fn in_threefold_repetition(states: &Vec<State>) -> bool {
     let mut states_hash: HashMap<State, isize> = HashMap::new();
     for state in states.iter() {
@@ -1471,6 +1495,7 @@ pub fn in_threefold_repetition(states: &Vec<State>) -> bool {
     false
 }
 
+#[allow(dead_code)]
 fn update_state(state: &mut State) {
     // white
     let squares_under_attack_by_black = get_squares_under_attack_by_player(state, Color::Black);
