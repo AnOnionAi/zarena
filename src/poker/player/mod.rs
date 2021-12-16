@@ -29,13 +29,16 @@ impl Player {
         }
     }
 
-    pub fn reset(&mut self) {
+    pub fn reset(&mut self, pay_back_credit: bool) {
         self.hand = HandC::new();
         self.hand_value = vec![];
         self.bet = 0;
         self.total_bet = 0;
         self.in_hand = true;
         self.in_all_in = false;
+        if pay_back_credit {
+            self.credits = self.initial_credit;
+        }
     }
 
     #[allow(dead_code)]

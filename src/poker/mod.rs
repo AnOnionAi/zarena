@@ -35,7 +35,8 @@ pub struct Poker {
     been_all_in: bool,
     hole: Vec<u64>,
     hole_limbs: Vec<Vec<u8>>,
-    infinite_credits: bool
+    infinite_credits: bool,
+    round_number: u8
 }
 
 impl Poker {
@@ -60,7 +61,8 @@ impl Poker {
             been_all_in: false,
             hole: vec![0],
             hole_limbs: Vec::new(),
-            infinite_credits
+            infinite_credits,
+            round_number: 0 
         }
     }
 
@@ -153,8 +155,7 @@ impl Poker {
                 reward = self.get_reward();
                 self.next_dealer();
                 self.reset();
-                let all_done = self.button == 0;
-                return(self.get_observation(), reward, all_done);
+                return(self.get_observation(), reward, self.is_done());
             } else {
                 self.community_cards.set_card(self.deck.get_card());
             }
@@ -167,6 +168,10 @@ impl Poker {
             self.next_player();
         }
         (self.get_observation(), reward, false)
+    }
+
+    fn is_done(&self) -> bool {
+        self.button == 0
     }
 
     fn all_in(&mut self) {
@@ -225,12 +230,8 @@ impl Poker {
 
     fn return_ernings(&mut self, reward: &Vec<i64>) {
         for player in self.players.iter_mut() {
-            if self.infinite_credits {
-                player.credits = player.initial_credit;
-            } else {
-                if reward[player.id as usize] > 0 {
-                    player.credits += reward[player.id as usize] as u64;
-                }
+            if reward[player.id as usize] > 0 {
+                player.credits += reward[player.id as usize] as u64;
             }
         }
     }
@@ -264,7 +265,6 @@ impl Poker {
                     }
                 }
             }
-            println!("Bet levels: {:?}", bet_levels);
             for _i in 1..bet_levels.len() - 1 {
                 self.hole.push(0);
             }
@@ -296,8 +296,6 @@ impl Poker {
                     }
                 }
             }
-            println!("Hole limbs: {:?}" , self.hole_limbs);
-            println!("Holes: {:?}", self.hole);
             self.players.sort_by_key(|x| x.id);
         } else {
             self.hole_limbs = vec![vec![]];
@@ -311,9 +309,10 @@ impl Poker {
 
     fn to_bet(&mut self, bet: u64) {
         let c_p = self.current_player as usize;
+        if bet > self.players[c_p].credits {
+            panic!("the bet cannot be greater than the credit");
+        }
         self.players[c_p].bet += bet;
-        println!("bet->{}", bet);
-        println!("player{}->{}", c_p, self.players[c_p].credits);
         self.players[c_p].credits -= bet;
         self.players[c_p].total_bet += bet;
         if self.players[c_p].bet > self.bet_phase {
@@ -408,7 +407,7 @@ impl Poker {
 
     pub fn reset(&mut self) -> ObservationVals {
         let mut hands: Vec<HandC> = Vec::new();
-        for _i in 0..self.total_players {
+        for _ in 0..self.total_players {
             hands.push(HandC::new());
         }
         let observation = self.get_observation();
@@ -417,10 +416,12 @@ impl Poker {
         self.turn_in_phase = 0;
         self.poker_phase = 0;
         self.bet_phase = 0;
+        self.button = 0;
         self.been_all_in = false;
         self.hole = vec![0];
-        self.players.iter_mut().for_each(|x| x.reset());
-        self.current_player = (self.button + 1) % self.total_players;
+        let pay_back_credit = self.infinite_credits;
+        self.players.iter_mut().for_each(|x| x.reset(pay_back_credit));
+        self.current_player = 1;
         self.n_players_in_hand = self.total_players;
         for player in self.players.iter_mut() {
             player.hand.set_card(self.deck.get_card());
