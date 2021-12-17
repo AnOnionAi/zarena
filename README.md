@@ -200,10 +200,8 @@ env.render()
 You can also visualise multiple moves:
 
 ```python
-
-moves = env.possible_moves
-env.render_moves(moves[10:12] + moves[16:18])
-
+>>> moves = env.possible_moves
+>>> env.render_moves(moves[10:12] + moves[16:18])
 ```
 
 ### API
