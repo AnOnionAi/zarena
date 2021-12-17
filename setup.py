@@ -30,7 +30,7 @@ setup(
     long_description_content_type='text/markdown',
     author='zetiworld',
     author_email='zetiapp@gmail.com',
-    url='https://github.com/ZetiAi/zarena/tree/feature/clean-code',
+    url='https://github.com/ZetiAi/zarena',
     download_url='https://github.com/ZetiAi/zarena/releases',
     keywords=["rust", "performance", "games", "wasm", "gym-environments", "gyms", "maturin"],
     classifiers=[
@@ -40,7 +40,7 @@ setup(
         "Programming Language :: Python",
         "Programming Language :: Rust",
         "Operating System :: POSIX",
-        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: MacOS :: MacOS X"
     ],
     rust_extensions=[
         RustExtension("zarena.zarena", "Cargo.toml", binding=Binding.PyO3, debug=False)
