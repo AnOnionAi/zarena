@@ -15,8 +15,7 @@ use poker::python::PokerEngine;
 use blackjack::python::BlackjackEngine;
 #[cfg(feature = "python")]
 use chess::python::ChessEngine;
-use gato::python::TictactoeEngine;
-use poker::python::PokerEngine;
+
 
 // PYTHON MODULE
 // ---------------------------------------------------------
