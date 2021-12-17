@@ -1,10 +1,10 @@
 #[cfg(feature = "python")]
 use pyo3::prelude::*;
 
-mod gato;
-mod poker;
 mod blackjack;
 mod chess;
+mod gato;
+mod poker;
 
 // GYMS
 #[cfg(feature = "python")]
@@ -15,6 +15,8 @@ use poker::python::PokerEngine;
 use blackjack::python::BlackjackEngine;
 #[cfg(feature = "python")]
 use chess::python::ChessEngine;
+use gato::python::TictactoeEngine;
+use poker::python::PokerEngine;
 
 // PYTHON MODULE
 // ---------------------------------------------------------

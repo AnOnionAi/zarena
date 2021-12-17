@@ -9,9 +9,9 @@ use player::Player;
 use hand_c::HandC;
 
 #[cfg(feature = "wasm")]
-use wasm_bindgen::prelude::*;
-#[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
 
 use std::{u64, usize, vec};
 
@@ -68,8 +68,19 @@ impl Poker {
 
     #[allow(dead_code)]
     pub fn get_state(
-        &self
-    ) -> (Vec<u8>, &Vec<Player>, &Vec<u64>, u8, u8, u8, u8, u8, u8, u64) {
+        &self,
+    ) -> (
+        Vec<u8>,
+        &Vec<Player>,
+        &Vec<u64>,
+        u8,
+        u8,
+        u8,
+        u8,
+        u8,
+        u8,
+        u64,
+    ) {
         (
             self.community_cards.hand_to_vec(),
             &self.players,
@@ -80,7 +91,7 @@ impl Poker {
             self.button,
             self.poker_phase,
             self.turn_in_phase,
-            self.bet_phase
+            self.bet_phase,
         )
     }
 
@@ -92,7 +103,7 @@ impl Poker {
     #[allow(dead_code)]
     pub fn step(&mut self, action: u8, change_player: bool) -> (ObservationVals, Vec<i64>, bool) {
         let c_p = self.current_player as usize;
-        let mut reward: Vec<i64> = vec![0;self.total_players as usize];
+        let mut reward: Vec<i64> = vec![0; self.total_players as usize];
         if action > 11 || !self.legal_actions().contains(&action) {
             panic!("invalid action");
         }
@@ -146,7 +157,7 @@ impl Poker {
             if self.poker_phase == 1 {
                 for _i in 0..3 {
                     self.community_cards.set_card(self.deck.get_card());
-                } 
+                }
             } else if self.poker_phase == 4 {
                 self.collect_bets();
                 if self.n_players_in_hand > 1 {
@@ -191,7 +202,7 @@ impl Poker {
     }
 
     fn get_reward(&mut self) -> Vec<i64> {
-        let mut reward: Vec<i64> = vec![0;self.total_players as usize];
+        let mut reward: Vec<i64> = vec![0; self.total_players as usize];
         for i in 0..self.hole.len() {
             let mut winner = vec![0];
             let mut w_players = vec![];
@@ -209,7 +220,13 @@ impl Poker {
                     }
                 }
             } else {
-                w_players.push(self.players.iter().filter(|p| p.in_hand).collect::<Vec<&Player>>()[0].id);
+                w_players.push(
+                    self.players
+                        .iter()
+                        .filter(|p| p.in_hand)
+                        .collect::<Vec<&Player>>()[0]
+                        .id,
+                );
             }
             let profit = self.hole[i] / w_players.len() as u64;
             for player in self.players.iter() {
@@ -271,7 +288,7 @@ impl Poker {
             if bet_levels.len() == 1 {
                 self.hole_limbs = vec![vec![]];
             } else {
-                self.hole_limbs = vec![vec![];bet_levels.len() - 1];
+                self.hole_limbs = vec![vec![]; bet_levels.len() - 1];
             }
             for i in 0..bet_levels.len() {
                 for player in self.players.iter_mut() {
@@ -336,7 +353,7 @@ impl Poker {
     }
 
     fn get_observation(&self) -> ObservationVals {
-        let mut res: ObservationVals = [[[0;5];5];2];
+        let mut res: ObservationVals = [[[0; 5]; 5]; 2];
         let c_p = self.current_player as usize;
         for i in 0..self.community_cards.len() {
             res[0][0][i] = self.community_cards.cards[i].card_to_int() as u64;
@@ -370,7 +387,7 @@ impl Poker {
         let mut actions = Vec::new();
         if self.poker_phase == 0 && self.players[c_p].bet == 0 {
             if c_p as u8 == (self.button + 1) % self.total_players {
-               return vec![0];
+                return vec![0];
             }
             if c_p as u8 == (self.button + 2) % self.total_players {
                 return vec![1];
@@ -385,8 +402,8 @@ impl Poker {
             actions.push(6);
         }
         if self.players[c_p].bet < self.bet_phase {
-            let bets: [u64;5] = [25, 50, 100, 500, 1000];
-            let n_action: [u8;5] = [6, 7, 8, 9, 10];
+            let bets: [u64; 5] = [25, 50, 100, 500, 1000];
+            let n_action: [u8; 5] = [6, 7, 8, 9, 10];
             actions.push(2);
             if !self.been_all_in {
                 if self.players[c_p].credits >= self.bet_phase {
@@ -441,7 +458,7 @@ impl Poker {
         println!("Phase {}", self.poker_phase);
         for i in 0..self.hole.len() {
             if i == 0 {
-                print!("Main pot {} ", self.hole[i]);    
+                print!("Main pot {} ", self.hole[i]);
             } else {
                 print!(" Side pot {}", self.hole[i]);
             }
@@ -451,7 +468,12 @@ impl Poker {
             println!("Community cards {}", self.community_cards.hand_to_string());
         }
         for player in self.players.iter().filter(|x| x.in_hand) {
-            print!("Player {} Hand: {} Credits: ${:?},", player.id, player.hand.hand_to_string(), player.credits);
+            print!(
+                "Player {} Hand: {} Credits: ${:?},",
+                player.id,
+                player.hand.hand_to_string(),
+                player.credits
+            );
             print!(" Total bet {},", player.total_bet);
             if self.button == player.id {
                 print!(" ⨀ ");

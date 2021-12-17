@@ -12,7 +12,7 @@ pub type Hand = Vec<Card>;
 // ---------------------------------------------------------
 #[pyclass]
 pub struct BlackjackEngine {
-    game: TwentyOne
+    game: TwentyOne,
 }
 
 #[pymethods]
@@ -20,13 +20,11 @@ impl BlackjackEngine {
     #[new]
     fn new(n_players: usize) -> Self {
         BlackjackEngine {
-            game: TwentyOne::new(n_players)
+            game: TwentyOne::new(n_players),
         }
     }
-    
-    pub fn legal_actions(
-        &self
-    ) -> PyResult<Vec<u8>> {
+
+    pub fn legal_actions(&self) -> PyResult<Vec<u8>> {
         // <----bet---->
         // the first step is to bet
         // 4 - 11
@@ -48,10 +46,7 @@ impl BlackjackEngine {
         Ok(py_legal_actions)
     }
 
-    pub fn step(
-        &mut self,
-        action: u8
-    ) -> PyResult<(Vec<Vec<Vec<u8>>>, i64, bool)> {
+    pub fn step(&mut self, action: u8) -> PyResult<(Vec<Vec<Vec<u8>>>, i64, bool)> {
         // a = observation
         // b = reward
         // c = done
@@ -60,16 +55,14 @@ impl BlackjackEngine {
         Ok((a, b[1], c))
     }
 
-    pub fn get_state(
-        &self
-    ) -> PyResult<(Vec<Hand>, Vec<u8>, Vec<u64>, Vec<bool>, Vec<bool>, u8)> {
+    pub fn get_state(&self) -> PyResult<(Vec<Hand>, Vec<u8>, Vec<u64>, Vec<bool>, Vec<bool>, u8)> {
         let (
             players_hand,
             players_value,
             players_bet,
             players_planted,
             players_busted,
-            current_player
+            current_player,
         ) = self.game.get_state();
         Ok((
             players_hand.clone(),
@@ -77,13 +70,11 @@ impl BlackjackEngine {
             players_bet.clone(),
             players_planted.clone(),
             players_busted.clone(),
-            current_player
+            current_player,
         ))
     }
 
-    pub fn get_total_players(
-        &self
-    ) -> PyResult<u8> {
+    pub fn get_total_players(&self) -> PyResult<u8> {
         Ok(self.game.get_total_players())
     }
 
@@ -95,11 +86,10 @@ impl BlackjackEngine {
         let res = array_to_vector(self.game.reset());
         Ok(res)
     }
-
 }
 
 // conversion functions
-pub fn array_to_vector(_a: [[[u8;3]; 3]; 3]) -> Vec<Vec<Vec<u8>>> {
+pub fn array_to_vector(_a: [[[u8; 3]; 3]; 3]) -> Vec<Vec<Vec<u8>>> {
     let mut a = Vec::new();
     for i in 0..3 {
         let mut x = Vec::new();

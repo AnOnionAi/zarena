@@ -1,15 +1,15 @@
+#[cfg(feature = "python")]
+pub mod python;
 #[cfg(feature = "wasm")]
 pub mod wasm;
-#[cfg(feature = "python")]
-pub mod python; 
 
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 #[cfg(feature = "wasm")]
-use wasm_bindgen::prelude::*;
-#[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "python")]
 use pyo3::prelude::*;
@@ -675,7 +675,7 @@ fn _king_is_checked(
 fn get_squares_under_attack_by_player(state: &State, player: Color) -> HashMap<usize, bool> {
     let mut squares_under_attack_map: HashMap<usize, bool> = HashMap::new();
     // bug
-    
+
     let moves = _get_possible_moves(&state, player, true, &squares_under_attack_map);
     for _move in moves.iter() {
         let square_flat = square_tuple_to_flat(_move.1);
@@ -926,7 +926,7 @@ fn pawn_moves(state: &State, player: Color, coords: Square, attack: bool) -> Vec
     let attack_squares: [Square; 2] = [
         (coords.0 - player_int, coords.1 + 1),
         (coords.0 - player_int, coords.1 - 1),
-        ];
+    ];
     let one_step_square: Square = (coords.0 + (1 * -player_int), coords.1);
     let two_step_square: Square = (coords.0 + (2 * -player_int), coords.1);
 
@@ -1286,7 +1286,6 @@ fn convert_py_state<'a>(_py: Python<'a>, state_py: &'a PyDict) -> PyResult<State
 
 #[allow(dead_code)]
 pub fn convert_move_to_string(_move: Move) -> String {
-
     let _from = (_move.0 .0 as usize, _move.0 .1 as usize);
     let _to = (_move.1 .0 as usize, _move.1 .1 as usize);
     let cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -1411,28 +1410,28 @@ pub fn insufficient_material(board: &Board) -> bool {
     }
     // k vs. kn .... or .... k vs. kb
     match num_pieces {
-        3 => match (pieces.get(&BISHOP_ID),  pieces.get(&KNIGHT_ID)) {
-                (Some(1), ..) | (.., Some(1)) => return true,
-                _ => ()
+        3 => match (pieces.get(&BISHOP_ID), pieces.get(&KNIGHT_ID)) {
+            (Some(1), ..) | (.., Some(1)) => return true,
+            _ => (),
         },
-        _ => ()
+        _ => (),
     }
     // kb vs. kb where any number of bishops are all on the same color
     match pieces.get(&BISHOP_ID) {
         Some(x) => match num_pieces - x {
             2 => {
                 let mut sum = 0;
-                    let len = bishops.len();
-                    for elem in bishops {
-                        sum += elem;
-                    }
-                    if sum == 0 || sum == len as i32 {
-                        return true;
-                    }
-            },
-            _ => ()
+                let len = bishops.len();
+                for elem in bishops {
+                    sum += elem;
+                }
+                if sum == 0 || sum == len as i32 {
+                    return true;
+                }
+            }
+            _ => (),
         },
-        None => ()
+        None => (),
     }
 
     false
@@ -1456,7 +1455,7 @@ pub fn is_game_over(states: &Vec<State>, state: &State, player: Color) -> u8 {
     }
     if in_stalemate(state, player) {
         return 2;
-    } 
+    }
     if in_threefold_repetition(states) {
         return 3;
     }
@@ -1470,7 +1469,7 @@ pub fn is_game_over(states: &Vec<State>, state: &State, player: Color) -> u8 {
 pub fn in_stalemate(state: &State, player: Color) -> bool {
     if !king_is_checked(state, player) && get_possible_moves(state, player, false).len() == 0 {
         return true;
-    } 
+    }
     false
 }
 
@@ -1478,7 +1477,7 @@ pub fn in_stalemate(state: &State, player: Color) -> bool {
 pub fn checkmate(state: &State, player: Color) -> bool {
     if king_is_checked(state, player) && get_possible_moves(state, player, false).len() == 0 {
         return true;
-    } 
+    }
     false
 }
 
