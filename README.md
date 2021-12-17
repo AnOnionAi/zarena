@@ -50,33 +50,36 @@ You can import the Python classes directly, or create pre-defined environments w
 
 
 ```python
-
+# import gym to use training environments
 import gym
+# from zarena import the training environment of your choice, for: 
+# option 1.- use the python class directly 
+# option 2.- register the environment in gym and use it with gym.make(environment_name)
 from zarena import gym_chess
 
 env = gym_chess.ChessEnv() # Option 1
 env = gym.make('ChessEnv') # Option 2
 
-# current state
-state = env.state
+# reset the environment and get the initial state observation
+observation = env.reset()
 
-# select a move and convert it into an action
-moves = env.possible_moves
-action = env.move_to_actions(move)
+# obtain legal actions
+actions = env.legal_actions()
 
-# or select an action directly
-actions = env.possible_actions
+# select action according to a criterion, in this case random
+action = random.choice(actions)
 
-# pass it to the env and get the next state
-new_state, reward, done, info = env.step(action)
+# pass it to the env and get the next state observation, reward, if the game is over and environment information
+observation, reward, done, info = env.step(action)
 
-```
+# get the player to play
+env.to_play()
 
-Reset the environment:
+# properly close the game
+env.close()
 
-``` python
-
-initial_state = env.reset()
+# display the game ovservation
+env.render()
 ```
 
 ## Testing
