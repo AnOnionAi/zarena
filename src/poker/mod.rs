@@ -35,8 +35,7 @@ pub struct Poker {
     been_all_in: bool,
     hole: Vec<u64>,
     hole_limbs: Vec<Vec<u8>>,
-    infinite_credits: bool,
-    round_number: u8
+    infinite_credits: bool
 }
 
 impl Poker {
@@ -61,8 +60,7 @@ impl Poker {
             been_all_in: false,
             hole: vec![0],
             hole_limbs: Vec::new(),
-            infinite_credits,
-            round_number: 0 
+            infinite_credits
         }
     }
 
