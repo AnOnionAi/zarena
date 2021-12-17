@@ -130,7 +130,7 @@ The game of Xs & Os
 > 6 | 7 | 8 
 ```
 
-#### Oponents
+#### Available opponents
     
 * random
 * expert
