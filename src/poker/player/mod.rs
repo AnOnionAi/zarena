@@ -1,5 +1,5 @@
-use super::hand_c::HandC;
 use super::hand_c::card_c::CardC;
+use super::hand_c::HandC;
 
 #[derive(Debug)]
 pub struct Player {
@@ -11,7 +11,7 @@ pub struct Player {
     pub total_bet: u64,
     pub in_hand: bool,
     pub in_all_in: bool,
-    pub initial_credit: u64
+    pub initial_credit: u64,
 }
 
 impl Player {
@@ -25,7 +25,7 @@ impl Player {
             total_bet: 0,
             in_hand: true,
             in_all_in: false,
-            initial_credit: credits
+            initial_credit: credits,
         }
     }
 

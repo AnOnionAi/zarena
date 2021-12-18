@@ -1,19 +1,16 @@
 pub mod card_c;
 
-use std::collections::HashMap;
 use card_c::CardC;
+use std::collections::HashMap;
 
 #[derive(Debug)]
 pub struct HandC {
-    pub cards: Vec<CardC>
+    pub cards: Vec<CardC>,
 }
 
 impl HandC {
-    
     pub fn new() -> HandC {
-        HandC {
-            cards: Vec::new()
-        }
+        HandC { cards: Vec::new() }
     }
 
     pub fn len(&self) -> usize {
@@ -35,7 +32,6 @@ impl HandC {
                 return;
             }
         }
-
     }
 
     pub fn remove_specific_card(&mut self, card: &CardC) -> CardC {
@@ -50,7 +46,7 @@ impl HandC {
     pub fn remove_a_card(&mut self) -> CardC {
         match self.cards.pop() {
             Some(x) => x,
-            None => CardC::new(0, 4)
+            None => CardC::new(0, 4),
         }
     }
 
@@ -112,8 +108,8 @@ impl HandC {
             // Two pair
             let mut kicker: u8 = 0;
             for card in pairs_value.iter() {
-                if *card .1 == 1 {
-                    kicker = card .0.clone();
+                if *card.1 == 1 {
+                    kicker = card.0.clone();
                     break;
                 }
             }
@@ -126,11 +122,11 @@ impl HandC {
         }
         if pairs.len() == 1 {
             // One pair
-            let mut kickers: [u8;3] = [0, 0, 0];
+            let mut kickers: [u8; 3] = [0, 0, 0];
             let mut count = 0;
             for card in pairs_value.iter() {
-                if *card .1 == 1 {
-                    kickers[count] = card .0.clone();
+                if *card.1 == 1 {
+                    kickers[count] = card.0.clone();
                     count += 1;
                     if count == 3 {
                         break;
@@ -142,11 +138,11 @@ impl HandC {
         }
         if third.len() == 1 {
             // Three of a kind
-            let mut kickers: [u8;2] = [0, 0];
+            let mut kickers: [u8; 2] = [0, 0];
             let mut count = 0;
             for card in pairs_value.iter() {
-                if *card .1 == 1 {
-                    kickers[count] = card .0.clone();
+                if *card.1 == 1 {
+                    kickers[count] = card.0.clone();
                     count += 1;
                     if count == 2 {
                         break;
@@ -160,12 +156,12 @@ impl HandC {
             // Four of a kind
             let mut kicker: u8 = 0;
             for card in pairs_value.iter() {
-                if *card .1 == 1 {
-                    kicker = card .0.clone();
+                if *card.1 == 1 {
+                    kicker = card.0.clone();
                     break;
                 }
             }
-            return vec![8, quartet[0], kicker]
+            return vec![8, quartet[0], kicker];
         }
         let color: bool;
         if pairs_figure.len() == 1 {
@@ -180,7 +176,7 @@ impl HandC {
             if i == 0 {
                 if self.cards[0].value == 2 && self.cards[4].value == 14 {
                     as_value = 1;
-                } 
+                }
                 x = self.cards[0].value;
             }
             if as_value == 14 {
@@ -223,7 +219,7 @@ impl HandC {
                     self.cards[3].value,
                     self.cards[2].value,
                     self.cards[1].value,
-                    self.cards[0].value
+                    self.cards[0].value,
                 ];
             }
         } else {
@@ -241,7 +237,7 @@ impl HandC {
                     self.cards[3].value,
                     self.cards[2].value,
                     self.cards[1].value,
-                    self.cards[0].value
+                    self.cards[0].value,
                 ];
             }
         }
@@ -255,4 +251,3 @@ impl HandC {
         res
     }
 }
-
