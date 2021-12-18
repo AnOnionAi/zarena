@@ -1,14 +1,14 @@
 #[derive(Debug)]
 pub struct CardC {
     pub value: u8,
-    pub figure: u8
+    pub figure: u8,
 }
 
 impl CardC {
     pub fn new(v: u8, f: u8) -> CardC {
         CardC {
             value: v,
-            figure: f
+            figure: f,
         }
     }
 
@@ -27,24 +27,14 @@ impl CardC {
             12 => "Q".to_string(),
             13 => "K".to_string(),
             14 => "A".to_string(),
-            _ => self.value.to_string()
+            _ => self.value.to_string(),
         };
         match self.figure {
-            0 => {
-                v + "-♥"
-            },
-            1 => {
-                v + "-♠"
-            },
-            2 => {
-                v + "-♣"
-            },
-            3 => {
-                v + "-♦"
-            },
-            _ => {
-                "was over".to_string()
-            }
+            0 => v + "-♥",
+            1 => v + "-♠",
+            2 => v + "-♣",
+            3 => v + "-♦",
+            _ => "was over".to_string(),
         }
     }
 }
