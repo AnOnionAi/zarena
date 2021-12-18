@@ -40,12 +40,12 @@ classifiers = [
     "Operating System :: Microsoft :: Windows :: Windows 3.1 or Earlier"
 ]
 dependencies = [
-    "numpy^1.21.1",
-    "gym^0.21.0",
-    "six^1.16.0",
-    "gy^1.0.2",
-    "Pillow^8.4.0",
-    "tqdm^4.62.3"
+    "numpy>=1,<2",
+    "gym>=0,<1",
+    "six>=1,<2",
+    "gy>=1,<2",
+    "Pillow>=8,<9",
+    "tqdm>=4,<5"
 ]
 
 [project.urls]
