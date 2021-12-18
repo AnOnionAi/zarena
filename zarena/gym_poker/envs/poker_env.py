@@ -1,5 +1,6 @@
 import gym
-from zarena.gym_poker import PokerEngine 
+from zarena.gym_poker import PokerEngine
+
 # import random
 # from tqdm import tqdm
 
@@ -116,4 +117,3 @@ class PokerEnv(gym.Env):
         for card in hand:
             res.append(self.card_to_string(card))
         return res
-

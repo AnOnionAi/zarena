@@ -1,12 +1,12 @@
+mod deck_c;
+mod hand_c;
+mod player;
 #[cfg(feature = "python")]
 pub mod python;
-mod deck_c;
-mod player;
-mod hand_c;
 
 use deck_c::DeckC;
-use player::Player;
 use hand_c::HandC;
+use player::Player;
 
 #[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
@@ -17,7 +17,7 @@ use std::{u64, usize, vec};
 
 // Types
 #[allow(dead_code)]
-pub type ObservationVals = [[[u64;5];5];2];
+pub type ObservationVals = [[[u64; 5]; 5]; 2];
 
 #[derive(Debug)]
 #[allow(dead_code)]
@@ -35,7 +35,7 @@ pub struct Poker {
     been_all_in: bool,
     hole: Vec<u64>,
     hole_limbs: Vec<Vec<u8>>,
-    infinite_credits: bool
+    infinite_credits: bool,
 }
 
 impl Poker {
@@ -60,7 +60,7 @@ impl Poker {
             been_all_in: false,
             hole: vec![0],
             hole_limbs: Vec::new(),
-            infinite_credits
+            infinite_credits,
         }
     }
 
@@ -164,7 +164,7 @@ impl Poker {
                 reward = self.get_reward();
                 self.next_dealer();
                 self.reset();
-                return(self.get_observation(), reward, self.is_done());
+                return (self.get_observation(), reward, self.is_done());
             } else {
                 self.community_cards.set_card(self.deck.get_card());
             }
@@ -435,7 +435,9 @@ impl Poker {
         self.been_all_in = false;
         self.hole = vec![0];
         let pay_back_credit = self.infinite_credits;
-        self.players.iter_mut().for_each(|x| x.reset(pay_back_credit));
+        self.players
+            .iter_mut()
+            .for_each(|x| x.reset(pay_back_credit));
         self.current_player = 1;
         self.n_players_in_hand = self.total_players;
         for player in self.players.iter_mut() {
