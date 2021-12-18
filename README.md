@@ -58,7 +58,7 @@ import gym
 from zarena import gym_chess
 
 env = gym_chess.ChessEnv() # Option 1
-env = gym.make('ChessEnv') # Option 2
+env = gym.make('ChessEnv-v3') # Option 2
 
 # reset the environment and get the initial state observation
 observation = env.reset()
