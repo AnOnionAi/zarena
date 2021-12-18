@@ -12,14 +12,17 @@ use rand::Rng;
 pub type Deck = Vec<u8>;
 pub type Card = u8;
 pub type Hand = Vec<Card>;
+#[allow(dead_code)]
 pub type ObservationVals = [[[u8; 3]; 3]; 3];
 
 // Constants
+#[allow(dead_code)]
 pub const DECK: [u8; 52] = [
     2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3,
     4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
 ];
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct TwentyOne {
     deck: Deck,
     players_hand: Vec<Hand>,
@@ -32,6 +35,7 @@ pub struct TwentyOne {
 }
 
 impl TwentyOne {
+    #[allow(dead_code)]
     pub fn new(n_players: usize) -> TwentyOne {
         let n_players = n_players + 1;
         TwentyOne {
@@ -46,6 +50,7 @@ impl TwentyOne {
         }
     }
 
+    #[allow(dead_code)]
     pub fn get_state(&self) -> (&Vec<Hand>, &Vec<u8>, &Vec<u64>, &Vec<bool>, &Vec<bool>, u8) {
         (
             &self.players_hand,
@@ -57,10 +62,12 @@ impl TwentyOne {
         )
     }
 
+    #[allow(dead_code)]
     pub fn get_total_players(&self) -> u8 {
         self.total_players
     }
 
+    #[allow(dead_code)]
     pub fn step(&mut self, action: u8, change_player: bool) -> (ObservationVals, Vec<i64>, bool) {
         let c_p = self.current_player as usize;
         if action > 12 || !self.legal_actions()[action as usize] {
@@ -246,6 +253,7 @@ impl TwentyOne {
         true
     }
 
+    #[allow(dead_code)]
     pub fn reset(&mut self) -> ObservationVals {
         let t_p = self.total_players as usize;
         let observation = [[[0; 3]; 3]; 3];
@@ -259,6 +267,7 @@ impl TwentyOne {
         observation
     }
 
+    #[allow(dead_code)]
     pub fn to_play(&self) -> u8 {
         self.current_player
     }

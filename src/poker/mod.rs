@@ -1,18 +1,26 @@
+mod deck_c;
+mod hand_c;
+mod player;
 #[cfg(feature = "python")]
 pub mod python;
+
+use deck_c::DeckC;
+use hand_c::HandC;
+use player::Player;
 
 #[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
-use rand::Rng;
-use std::{collections::HashMap, u64, usize, vec};
+use std::{u64, usize, vec};
 
 // Types
+#[allow(dead_code)]
 pub type ObservationVals = [[[u64; 5]; 5]; 2];
 
 #[derive(Debug)]
+#[allow(dead_code)]
 pub struct Poker {
     deck: DeckC,
     players: Vec<Player>,
@@ -31,6 +39,7 @@ pub struct Poker {
 }
 
 impl Poker {
+    #[allow(dead_code)]
     pub fn new(p_credits: Vec<u64>, infinite_credits: bool) -> Self {
         let n_players = p_credits.len();
         let mut players: Vec<Player> = Vec::new();
@@ -55,6 +64,7 @@ impl Poker {
         }
     }
 
+    #[allow(dead_code)]
     pub fn get_state(
         &self,
     ) -> (
@@ -83,10 +93,12 @@ impl Poker {
         )
     }
 
+    #[allow(dead_code)]
     pub fn get_total_players(&self) -> u8 {
         self.total_players
     }
 
+    #[allow(dead_code)]
     pub fn step(&mut self, action: u8, change_player: bool) -> (ObservationVals, Vec<i64>, bool) {
         let c_p = self.current_player as usize;
         let mut reward: Vec<i64> = vec![0; self.total_players as usize];
@@ -152,8 +164,7 @@ impl Poker {
                 reward = self.get_reward();
                 self.next_dealer();
                 self.reset();
-                let all_done = self.button == 0;
-                return (self.get_observation(), reward, all_done);
+                return (self.get_observation(), reward, self.is_done());
             } else {
                 self.community_cards.set_card(self.deck.get_card());
             }
@@ -166,6 +177,10 @@ impl Poker {
             self.next_player();
         }
         (self.get_observation(), reward, false)
+    }
+
+    fn is_done(&self) -> bool {
+        self.button == 0
     }
 
     fn all_in(&mut self) {
@@ -230,12 +245,8 @@ impl Poker {
 
     fn return_ernings(&mut self, reward: &Vec<i64>) {
         for player in self.players.iter_mut() {
-            if self.infinite_credits {
-                player.credits = player.initial_credit;
-            } else {
-                if reward[player.id as usize] > 0 {
-                    player.credits += reward[player.id as usize] as u64;
-                }
+            if reward[player.id as usize] > 0 {
+                player.credits += reward[player.id as usize] as u64;
             }
         }
     }
@@ -269,7 +280,6 @@ impl Poker {
                     }
                 }
             }
-            println!("Bet levels: {:?}", bet_levels);
             for _i in 1..bet_levels.len() - 1 {
                 self.hole.push(0);
             }
@@ -301,8 +311,6 @@ impl Poker {
                     }
                 }
             }
-            println!("Hole limbs: {:?}", self.hole_limbs);
-            println!("Holes: {:?}", self.hole);
             self.players.sort_by_key(|x| x.id);
         } else {
             self.hole_limbs = vec![vec![]];
@@ -316,6 +324,9 @@ impl Poker {
 
     fn to_bet(&mut self, bet: u64) {
         let c_p = self.current_player as usize;
+        if bet > self.players[c_p].credits {
+            panic!("the bet cannot be greater than the credit");
+        }
         self.players[c_p].bet += bet;
         self.players[c_p].credits -= bet;
         self.players[c_p].total_bet += bet;
@@ -411,7 +422,7 @@ impl Poker {
 
     pub fn reset(&mut self) -> ObservationVals {
         let mut hands: Vec<HandC> = Vec::new();
-        for _i in 0..self.total_players {
+        for _ in 0..self.total_players {
             hands.push(HandC::new());
         }
         let observation = self.get_observation();
@@ -420,10 +431,14 @@ impl Poker {
         self.turn_in_phase = 0;
         self.poker_phase = 0;
         self.bet_phase = 0;
+        self.button = 0;
         self.been_all_in = false;
         self.hole = vec![0];
-        self.players.iter_mut().for_each(|x| x.reset());
-        self.current_player = (self.button + 1) % self.total_players;
+        let pay_back_credit = self.infinite_credits;
+        self.players
+            .iter_mut()
+            .for_each(|x| x.reset(pay_back_credit));
+        self.current_player = 1;
         self.n_players_in_hand = self.total_players;
         for player in self.players.iter_mut() {
             player.hand.set_card(self.deck.get_card());
@@ -433,6 +448,7 @@ impl Poker {
         observation
     }
 
+    #[allow(dead_code)]
     pub fn to_play(&self) -> u8 {
         self.current_player
     }
@@ -465,426 +481,6 @@ impl Poker {
             print!(" Bet {}", player.bet);
             println!();
         }
-    }
-
-    fn winner(&self, value_a: &Vec<u8>, value_b: &Vec<u8>) -> u8 {
-        for i in 0..value_a.len() {
-            if value_a[i] > value_b[i] {
-                return 1;
-            }
-            if value_b[i] > value_a[i] {
-                return 2;
-            }
-        }
-        return 0;
-    }
-}
-
-// Deck
-#[derive(Debug)]
-pub struct DeckC {
-    cards: Vec<CardC>,
-}
-
-impl DeckC {
-    pub fn new() -> DeckC {
-        let mut c = Vec::<CardC>::new();
-        for i in 2..=14 {
-            c.push(CardC::new(i, 0));
-            c.push(CardC::new(i, 1));
-            c.push(CardC::new(i, 2));
-            c.push(CardC::new(i, 3));
-        }
-        DeckC { cards: c }
-    }
-
-    pub fn get_card(&mut self) -> CardC {
-        let mut rng = rand::thread_rng();
-        if self.cards.len() == 0 {
-            return CardC {
-                value: 0,
-                figure: 4,
-            };
-        }
-        self.cards.remove(rng.gen_range(0..self.cards.len()))
-    }
-}
-
-// Card
-#[derive(Debug)]
-pub struct CardC {
-    value: u8,
-    figure: u8,
-}
-
-impl CardC {
-    pub fn new(v: u8, f: u8) -> CardC {
-        CardC {
-            value: v,
-            figure: f,
-        }
-    }
-
-    pub fn clone_card(&self) -> CardC {
-        CardC::new(self.value, self.figure)
-    }
-
-    pub fn card_to_int(&self) -> u8 {
-        return self.figure * 15 + self.value;
-    }
-
-    #[allow(dead_code)]
-    pub fn card_to_string(&self) -> String {
-        let v = match self.value {
-            11 => "J".to_string(),
-            12 => "Q".to_string(),
-            13 => "K".to_string(),
-            14 => "A".to_string(),
-            _ => self.value.to_string(),
-        };
-        match self.figure {
-            0 => v + "-♥",
-            1 => v + "-♠",
-            2 => v + "-♣",
-            3 => v + "-♦",
-            _ => "was over".to_string(),
-        }
-    }
-}
-
-// Hand
-#[derive(Debug)]
-pub struct HandC {
-    pub cards: Vec<CardC>,
-}
-
-impl HandC {
-    pub fn new() -> HandC {
-        HandC { cards: Vec::new() }
-    }
-
-    pub fn len(&self) -> usize {
-        self.cards.len()
-    }
-
-    pub fn set_card(&mut self, card: CardC) {
-        if self.cards.is_empty() {
-            self.cards.push(card);
-            return;
-        }
-        for i in 0..self.cards.len() {
-            if card.value < self.cards[i].value {
-                self.cards.insert(i, card);
-                return;
-            }
-            if i == self.cards.len() - 1 {
-                self.cards.push(card);
-                return;
-            }
-        }
-    }
-
-    pub fn remove_specific_card(&mut self, card: &CardC) -> CardC {
-        for i in 0..self.cards.len() {
-            if self.cards[i].value == card.value && self.cards[i].figure == card.figure {
-                return self.cards.remove(i);
-            }
-        }
-        CardC::new(0, 4)
-    }
-
-    pub fn remove_a_card(&mut self) -> CardC {
-        match self.cards.pop() {
-            Some(x) => x,
-            None => CardC::new(0, 4),
-        }
-    }
-
-    pub fn clone_hand(&self) -> HandC {
-        let mut hand = HandC::new();
-        for i in 0..self.cards.len() {
-            hand.set_card(self.cards[i].clone_card());
-        }
-        hand
-    }
-
-    #[allow(dead_code)]
-    pub fn hand_to_string(&self) -> String {
-        let mut s = "".to_string();
-        for i in 0..self.cards.len() {
-            s += &(" ".to_string() + &self.cards[i].card_to_string());
-        }
-        s
-    }
-
-    pub fn get_value(&self) -> Vec<u8> {
-        if self.cards.len() != 5 {
-            panic!("hand must be size 5");
-        }
-        for i in 0..5 {
-            if self.cards[i].value == 0 {
-                return vec![0];
-            }
-        }
-        let mut pairs_value: HashMap<u8, u8> = HashMap::new();
-        for card in self.cards.iter() {
-            let counter = pairs_value.entry(card.value).or_insert(0);
-            *counter += 1;
-        }
-        let mut pairs_figure: HashMap<u8, u8> = HashMap::new();
-        for card in self.cards.iter() {
-            let counter = pairs_figure.entry(card.figure).or_insert(0);
-            *counter += 1;
-        }
-        let mut pairs: Vec<u8> = Vec::new();
-        for (key, value) in pairs_value.iter() {
-            if *value == 2 {
-                pairs.push(key.clone());
-            }
-        }
-        let mut third: Vec<u8> = Vec::new();
-        for (key, value) in pairs_value.iter() {
-            if *value == 3 {
-                third.push(key.clone());
-            }
-        }
-        let mut quartet: Vec<u8> = Vec::new();
-        for (key, value) in pairs_value.iter() {
-            if *value == 4 {
-                quartet.push(key.clone());
-            }
-        }
-        if pairs.len() == 2 {
-            // Two pair
-            let mut kicker: u8 = 0;
-            for card in pairs_value.iter() {
-                if *card.1 == 1 {
-                    kicker = card.0.clone();
-                    break;
-                }
-            }
-            pairs.sort();
-            return vec![3, pairs[1], pairs[0], kicker];
-        }
-        if pairs.len() == 1 && third.len() == 1 {
-            // Full house
-            return vec![7, third[0], pairs[0]];
-        }
-        if pairs.len() == 1 {
-            // One pair
-            let mut kickers: [u8; 3] = [0, 0, 0];
-            let mut count = 0;
-            for card in pairs_value.iter() {
-                if *card.1 == 1 {
-                    kickers[count] = card.0.clone();
-                    count += 1;
-                    if count == 3 {
-                        break;
-                    }
-                }
-            }
-            kickers.sort();
-            return vec![2, pairs[0], kickers[2], kickers[1], kickers[0]];
-        }
-        if third.len() == 1 {
-            // Three of a kind
-            let mut kickers: [u8; 2] = [0, 0];
-            let mut count = 0;
-            for card in pairs_value.iter() {
-                if *card.1 == 1 {
-                    kickers[count] = card.0.clone();
-                    count += 1;
-                    if count == 2 {
-                        break;
-                    }
-                }
-            }
-            kickers.sort();
-            return vec![4, third[0], kickers[1], kickers[0]];
-        }
-        if quartet.len() == 1 {
-            // Four of a kind
-            let mut kicker: u8 = 0;
-            for card in pairs_value.iter() {
-                if *card.1 == 1 {
-                    kicker = card.0.clone();
-                    break;
-                }
-            }
-            return vec![8, quartet[0], kicker];
-        }
-        let color: bool;
-        if pairs_figure.len() == 1 {
-            color = true;
-        } else {
-            color = false;
-        }
-        let mut consecutive: bool = true;
-        let mut x = 0;
-        let mut as_value = 14;
-        for i in 0..5 {
-            if i == 0 {
-                if self.cards[0].value == 2 && self.cards[4].value == 14 {
-                    as_value = 1;
-                }
-                x = self.cards[0].value;
-            }
-            if as_value == 14 {
-                if self.cards[i].value != x {
-                    consecutive = false;
-                    break;
-                }
-            }
-            if as_value == 1 {
-                if i == 4 {
-                    if self.cards[i].value != 14 {
-                        consecutive = false;
-                        break;
-                    }
-                } else {
-                    if self.cards[i].value != x {
-                        consecutive = false;
-                        break;
-                    }
-                }
-            }
-            x += 1;
-        }
-        if color {
-            if consecutive {
-                if self.cards[4].value == 14 && self.cards[0].value == 10 {
-                    // Five of a kind
-                    return vec![10, self.cards[4].value];
-                }
-                // Straight flush
-                if as_value == 1 {
-                    return vec![9, self.cards[3].value];
-                }
-                return vec![9, self.cards[4].value];
-            } else {
-                // Flush
-                return vec![
-                    6,
-                    self.cards[4].value,
-                    self.cards[3].value,
-                    self.cards[2].value,
-                    self.cards[1].value,
-                    self.cards[0].value,
-                ];
-            }
-        } else {
-            if consecutive {
-                // Straight
-                if as_value == 1 {
-                    return vec![5, self.cards[3].value];
-                }
-                return vec![5, self.cards[4].value];
-            } else {
-                // High card
-                return vec![
-                    1,
-                    self.cards[4].value,
-                    self.cards[3].value,
-                    self.cards[2].value,
-                    self.cards[1].value,
-                    self.cards[0].value,
-                ];
-            }
-        }
-    }
-
-    pub fn hand_to_vec(&self) -> Vec<u8> {
-        let mut res: Vec<u8> = Vec::new();
-        for card in self.cards.iter() {
-            res.push(card.card_to_int());
-        }
-        res
-    }
-}
-
-#[derive(Debug)]
-pub struct Player {
-    pub id: u8,
-    pub credits: u64,
-    pub hand: HandC,
-    pub hand_value: Vec<u8>,
-    pub bet: u64,
-    pub total_bet: u64,
-    pub in_hand: bool,
-    pub in_all_in: bool,
-    pub initial_credit: u64,
-}
-
-impl Player {
-    pub fn new(id: u8, credits: u64) -> Self {
-        Player {
-            id,
-            credits,
-            hand: HandC::new(),
-            hand_value: vec![],
-            bet: 0,
-            total_bet: 0,
-            in_hand: true,
-            in_all_in: false,
-            initial_credit: credits,
-        }
-    }
-
-    pub fn reset(&mut self) {
-        self.hand = HandC::new();
-        self.hand_value = vec![];
-        self.bet = 0;
-        self.total_bet = 0;
-        self.in_hand = true;
-        self.in_all_in = false;
-    }
-
-    #[allow(dead_code)]
-    pub fn clone_player(&self) -> Self {
-        let mut player = Player::new(self.id, self.credits);
-        player.hand = self.hand.clone_hand();
-        player.hand_value = self.hand_value.clone();
-        player.bet = self.bet;
-        player.total_bet = self.total_bet;
-        player.in_hand = self.in_hand;
-        player.in_all_in = self.in_all_in;
-        player
-    }
-
-    pub fn set_winner_combination(&mut self, community_hand: &HandC) {
-        let n_c = community_hand.len() + 2;
-        let mut my_hand = self.hand.clone_hand();
-        let mut community_hand = community_hand.clone_hand();
-        let mut hand = HandC::new();
-        for _i in 0..2 {
-            hand.set_card(my_hand.remove_a_card());
-        }
-        for _i in 2..n_c {
-            hand.set_card(community_hand.remove_a_card());
-        }
-        let mut max_hand = HandC::new();
-        for _i in 0..5 {
-            max_hand.set_card(CardC::new(0, 4));
-        }
-        for i in 0..n_c {
-            for j in i + 1..n_c {
-                let values = [i, j];
-                let mut cards: Vec<CardC> = Vec::new();
-                for k in 0..n_c - 5 {
-                    cards.push(hand.remove_specific_card(&hand.cards[values[k] - k].clone_card()));
-                }
-                if self.winner(&hand.get_value(), &max_hand.get_value()) == 1 {
-                    for _i in 0..5 {
-                        max_hand.remove_a_card();
-                    }
-                    max_hand = hand.clone_hand();
-                }
-                for card in cards {
-                    hand.set_card(card);
-                }
-            }
-        }
-        self.hand = max_hand;
     }
 
     fn winner(&self, value_a: &Vec<u8>, value_b: &Vec<u8>) -> u8 {

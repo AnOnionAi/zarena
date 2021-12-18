@@ -46,37 +46,40 @@ If you don't have Rust, no worries. Download Rust for Linux or Windows Subsystem
 
 ### Usage
 
-You can import the Python classes directly, or create pre-defined environments with `gym`:
+You can import the Python classes directly, or create pre-defined environments with `gym` in this case it is also necessary to import the class:
 
 
 ```python
-
+# import gym to use training environments
 import gym
-from gym_chess import Zarena.ChessEnv
+# from zarena import the training environment of your choice, for: 
+# option 1.- use the python class directly 
+# option 2.- register the environment in gym and use it with gym.make(environment_name)
+from zarena import gym_chess
 
-env = ChessEnv() # Option 1
-env = gym.make('ChessEnv') # Option 2
+env = gym_chess.ChessEnv() # Option 1
+env = gym.make('ChessEnv-v3') # Option 2
 
-# current state
-state = env.state
+# reset the environment and get the initial state observation
+observation = env.reset()
 
-# select a move and convert it into an action
-moves = env.possible_moves
-action = env.move_to_actions(move)
+# obtain legal actions
+actions = env.legal_actions()
 
-# or select an action directly
-actions = env.possible_actions
+# select action according to a criterion, in this case random
+action = random.choice(actions)
 
-# pass it to the env and get the next state
-new_state, reward, done, info = env.step(action)
+# pass it to the env and get the next state observation, reward, if the game is over and environment information
+observation, reward, done, info = env.step(action)
 
-```
+# get the player to play
+env.to_play()
 
-Reset the environment:
+# properly close the game
+env.close()
 
-``` python
-
-initial_state = env.reset()
+# display the game ovservation
+env.render()
 ```
 
 ## Testing
@@ -103,16 +106,77 @@ Note: we haven't found a way to specify the Cargo toml file to either process, s
 ## Game of Gato
 The game of Xs & Os
 
+
+### API
+    
+#### Initialize environment
+
+```python
+>>> env = BlackjackEnv(n_players=1)
+```
+
+- `n_players`: specify the number of players `2<=n_players<=7` (default: `1`)
+
+#### Set actions
+
+```python
+>>> env.step(action)
+```
+
+- `action`: mark a position, could be `0<=action<=8`
+```shell
+> 0 | 1 | 2 
+> 3 | 4 | 5 
+> 6 | 7 | 8 
+```
+
+#### Available opponents
+    
+* random
+* expert
+
 <img src="https://i.imgur.com/qqK1mBc.jpeg" alt="gata" height="400"/>
+
+#### Notes:
+
+Tests not implemented yet. 
 
 ## Blackjack
 
+### API
+    
+#### Initialize environment
+
+```python
+>>> env = BlackjackEnv(n_players=1)
+```
+
+- `n_players`: specify the number of players `2<=n_players<=7` (default: `1`)
+
+
+#### Set actions
+
+```python
+>>> env.step(action)
+```
+
+- `action`: can be
+    * `0` -> stand
+    * `1` -> HIT
+    * `2` -> double down
+    * `3` -> pull apart (currently disabled)
+
 ![21](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
+
+#### Notes:
+
+Tests not implemented yet. 
 
 ## Chess
 
-#### See the chess board and moves
 
+#### See the chess board and moves
+    
 Visualise the current state of the chess game:
 
 ```python
@@ -139,25 +203,27 @@ env.render()
 You can also visualise multiple moves:
 
 ```python
-
-moves = env.possible_moves
-env.render_moves(moves[10:12] + moves[16:18])
-
+>>> moves = env.possible_moves
+>>> env.render_moves(moves[10:12] + moves[16:18])
 ```
 
 ### API
 
 #### Initialize environment
 
-`ChessEnv(player_color="WHITE", opponent="random", log=True, initial_state=DEFAULT_BOARD)`
+```python
+>>> env = ChessEnv(player_color="WHITE", opponent="random", log=True, initial_state=DEFAULT_BOARD)
+```
 
 - `opponent`: can be `"random"`, `"none"` or a function. Tells the environment whether to use a bot that picks a random move, play against self or use a specific bot policy (default: `"random"`)
 - `log`: `True` or `False`, specifies whether to log every move and render every new state (default: `True`)
-- `initial_state`: initial board positions, the default value is the default chess starting board. You can specify a custom board. View scripts `gym_chess/test/v1` for some examples
+- `initial_state`: initial board positions, the default value is the default chess starting board. You can specify a custom board. View scripts `gym_chess/test/` for some examples
 - `player_color`: `"WHITE"` or `"BLACK"`, only useful if playing against a bot (default: `"WHITE"`)
 
 
-`env.get_possible_moves(state=state, player="WHITE", attack=False)`
+```python
+>>> env.get_possible_moves(state=state, player="WHITE", attack=False)
+```
 
 This method will calculate the possible moves. By default they are calculated at the current state for the current player (`state.current_player`).
 
@@ -228,6 +294,7 @@ env.black_queen_castle_possible
 env.white_king_on_the_board
 env.black_king_on_the_board
 ```
+
 ![Fischer](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Bobby_Fischer_1960_in_Leipzig_in_color.jpg/375px-Bobby_Fischer_1960_in_Leipzig_in_color.jpg)
 
 #### Notes:
@@ -236,12 +303,47 @@ En-passant has not been implemented yet.
 
 ## Poker
 
+
+### API
+    
+#### Initialize environment
+
+```python
+>>> env = PokerEnv(n_players=2, infinite_game=True)
+```
+
+- `n_players`: specify the number of players `2<=n_players<=9` (default: `2`)
+- `infinite_game`: `True` or `False`, specify if players get their starting credit back after each round (default: `True`)
+
+#### Set actions
+
+```python
+>>> env.step(action)
+```
+
+- `action`: can be
+    * `0` -> small blind
+    * `1` -> big blind
+    * `2` -> fold
+    * `3` -> check
+    * `4` -> bet
+    * `5` -> call
+    * `6` -> raise to 25
+    * `7` -> raise to 50
+    * `8` -> raise to 100
+    * `9` -> raise to 500
+    * `10` -> raise to 1000
+    * `11` -> all in
+
 ![alt text](https://media.wired.com/photos/5fbe703e534553a88817f988/master/w_640,c_limit/Sec_poker_914262206.jpg)
+
+#### Notes:
+
+Tests not implemented yet. 
 
 ## References
 
 - https://github.com/PyO3/maturin
-- https://github.com/werner-duvaud/muzero-general
 - https://github.com/genyrosk/gym-chess (Thanks to genyrosk for gym-chess)
 - https://github.com/deepmind/open_spiel
 

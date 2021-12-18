@@ -1,1 +1,1 @@
-from zarena.gym_blackjack.envs.blackjack_env import BlackjackEngine
+from zarena.gym_blackjack.envs.blackjack_env import BlackjackEnv

@@ -1,5 +1,5 @@
 import gym
-from zarena import TictactoeEngine
+from zarena.gym_tictactoe import TictactoeEngine
 
 # TICTACTOE GYM ENVIRONMENT CLASS
 # ---------------------------
