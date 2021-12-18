@@ -82,6 +82,13 @@ env.close()
 env.render()
 ```
 
+## Environments id
+
+- Tictactoe: `TictactoeR-v2`
+- Chess: `ChessEnv-v3`
+- Blackjack: `BlackjackR-v1`
+- Poker: `PokerR-v1`
+
 ## Testing
 
 Run all the tests with `pytest`.

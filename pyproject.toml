@@ -19,7 +19,7 @@ pytest = "^6.2.2"
 black = "^20.8b1"
 
 [project]
-name = "my-project"
+name = "zarena"
 version="0.1.0"
 description= "Rust Game Collection with Reninforcement Learning gym environments. This library aims to serve the same purpose as OpenSpiel, except in Rust to make it easier to use & maintain. The current games are gato, blackjack, chess & poker texas hold'em. All of these additionally support Web Assembly. You can play gato & chess against our Artificial Intelligence at Zeti Games"
 long_description= "README.rst"
@@ -31,13 +31,13 @@ authors =[
 keywords = ["rust", "performance", "games", "wasm", "gym-environments", "gyms", "maturin"]
 classifiers = [
     "License :: OSI Approved :: MIT License",
-    "Development Status :: 1 - Alpha",
+    "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
-    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
     "Programming Language :: Rust",
     "Operating System :: POSIX",
     "Operating System :: MacOS :: MacOS X",
-    "Operating System :: Microsoft :: Windows :: Windows 3.1 or Earlier"
+    "Operating System :: Microsoft :: Windows"
 ]
 dependencies = [
     "numpy>=1,<2",
