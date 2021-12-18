@@ -1,5 +1,5 @@
 import gym
-from zarena.zarena import TictactoeEngine  # rust module
+from zarena.gym_tictactoe import TictactoeEngine
 
 # TICTACTOE GYM ENVIRONMENT CLASS
 # ---------------------------
@@ -64,15 +64,12 @@ class TictactoeEnv(gym.Env):
 
     def set_state(self, game_state):
         """
-        Args: 
+        Args:
             game_state: the state to be established in the game
         Returns:
             observation of the game.
         """
-        state = (
-            game_state["to_play"],
-            game_state["board_int"]
-        )
+        state = (game_state["to_play"], game_state["board_int"])
         return self.engine.set_state(state)
 
     def expert_action(self):
@@ -80,4 +77,3 @@ class TictactoeEnv(gym.Env):
 
     def print(self):
         self.engine.print()
-

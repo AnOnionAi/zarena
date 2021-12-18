@@ -1,16 +1,18 @@
+#[cfg(feature = "python")]
+pub mod python;
 #[cfg(feature = "wasm")]
 pub mod wasm;
-#[cfg(feature = "python")]
-pub mod python; 
 
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 
 #[cfg(feature = "wasm")]
-use wasm_bindgen::prelude::*;
-#[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
 
+#[cfg(feature = "python")]
+use pyo3::prelude::*;
 #[cfg(feature = "python")]
 use pyo3::types::PyDict;
 //
@@ -34,9 +36,13 @@ const BISHOP_DESC: &str = &"B";
 const KNIGHT_DESC: &str = &"N";
 const PAWN_DESC: &str = &" ";
 
+#[allow(dead_code)]
 const CASTLE_KING_SIDE_WHITE: &str = "CASTLE_KING_SIDE_WHITE";
+#[allow(dead_code)]
 const CASTLE_QUEEN_SIDE_WHITE: &str = "CASTLE_QUEEN_SIDE_WHITE";
+#[allow(dead_code)]
 const CASTLE_KING_SIDE_BLACK: &str = "CASTLE_KING_SIDE_BLACK";
+#[allow(dead_code)]
 const CASTLE_QUEEN_SIDE_BLACK: &str = "CASTLE_QUEEN_SIDE_BLACK";
 
 #[allow(dead_code)]
@@ -73,6 +79,7 @@ pub enum Color {
 }
 
 impl Color {
+    #[allow(dead_code)]
     fn to_int(&self) -> isize {
         match self {
             Self::White => 1,
@@ -90,6 +97,7 @@ pub enum SquareColor {
 }
 
 #[derive(Debug, Copy, Clone, PartialEq)]
+#[allow(dead_code)]
 pub enum Castle {
     KingSideWhite,
     QueenSideWhite,
@@ -98,6 +106,7 @@ pub enum Castle {
 }
 
 impl Castle {
+    #[allow(dead_code)]
     fn to_str(&self) -> &str {
         match self {
             Castle::KingSideWhite => CASTLE_KING_SIDE_WHITE,
@@ -106,7 +115,7 @@ impl Castle {
             Castle::QueenSideBlack => CASTLE_QUEEN_SIDE_BLACK,
         }
     }
-
+    #[allow(dead_code)]
     fn to_string(&self) -> String {
         self.to_str().to_string()
     }
@@ -249,11 +258,12 @@ pub type Board = [[isize; 8]; 8];
 pub type Square = (isize, isize);
 pub type Move = (Square, Square);
 
+#[allow(dead_code)]
 pub union MoveUnion {
     pub normal_move: Move,
     pub castle: Castle,
 }
-
+#[allow(dead_code)]
 pub struct MoveStruct {
     pub is_castle: bool,
     pub data: MoveUnion,
@@ -278,6 +288,7 @@ pub struct State {
 }
 
 impl State {
+    #[allow(dead_code)]
     pub fn new(
         board: [[isize; 8]; 8],
         current_player: &str,
@@ -320,10 +331,12 @@ impl State {
         };
     }
 
+    #[allow(dead_code)]
     pub fn get_board(&self) -> [[isize; 8]; 8] {
         self.board
     }
 
+    #[allow(dead_code)]
     fn update_player_king_checked(
         &mut self,
         player: Color,
@@ -341,6 +354,7 @@ impl State {
         }
     }
 
+    #[cfg(feature = "python")]
     pub fn to_py_object(&self, dict: &PyDict) {
         dict.set_item(
             "white_king_castle_is_possible",
@@ -403,6 +417,7 @@ pub fn render_board(board: &[[isize; 8]; 8]) {
     println!("    a  b  c  d  e  f  g  h");
 }
 
+#[allow(dead_code)]
 fn array2d_to_vec2d(arr: &[&[isize]]) -> Vec<Vec<isize>> {
     let mut vec: Vec<Vec<isize>> = Vec::new();
     for &row in arr.iter() {
@@ -411,7 +426,7 @@ fn array2d_to_vec2d(arr: &[&[isize]]) -> Vec<Vec<isize>> {
     return vec;
 }
 
-pub fn player_string_to_enum(player: &str) -> Color {
+fn player_string_to_enum(player: &str) -> Color {
     let mut _player: Color = Color::White;
     match player {
         "WHITE" => {
@@ -427,6 +442,7 @@ pub fn player_string_to_enum(player: &str) -> Color {
     return _player;
 }
 
+#[allow(dead_code)]
 fn player_enum_to_string<'a>(player: &Color) -> &'a str {
     let mut _player: &str = "";
     match player {
@@ -444,6 +460,7 @@ fn player_enum_to_string<'a>(player: &Color) -> &'a str {
 // ---------------------------------------------------------
 
 // shortcut
+#[allow(dead_code)]
 pub fn get_all_possible_moves(
     state: &State,
     player: Color,
@@ -473,6 +490,7 @@ pub fn _get_all_possible_moves(
 }
 
 // shortcut function
+#[allow(dead_code)]
 pub fn get_possible_moves(state: &State, player: Color, attack: bool) -> Vec<Move> {
     // squares under attack
     let other_player: Color = get_other_player(player);
@@ -550,6 +568,7 @@ pub fn _get_possible_moves(
 }
 
 // shortcut function
+#[allow(dead_code)]
 pub fn get_possible_castle_moves(state: &State, player: Color, attack: bool) -> Vec<Castle> {
     // squares under attack
     let other_player: Color = get_other_player(player);
@@ -656,7 +675,7 @@ fn _king_is_checked(
 fn get_squares_under_attack_by_player(state: &State, player: Color) -> HashMap<usize, bool> {
     let mut squares_under_attack_map: HashMap<usize, bool> = HashMap::new();
     // bug
-    
+
     let moves = _get_possible_moves(&state, player, true, &squares_under_attack_map);
     for _move in moves.iter() {
         let square_flat = square_tuple_to_flat(_move.1);
@@ -907,7 +926,7 @@ fn pawn_moves(state: &State, player: Color, coords: Square, attack: bool) -> Vec
     let attack_squares: [Square; 2] = [
         (coords.0 - player_int, coords.1 + 1),
         (coords.0 - player_int, coords.1 - 1),
-        ];
+    ];
     let one_step_square: Square = (coords.0 + (1 * -player_int), coords.1);
     let two_step_square: Square = (coords.0 + (2 * -player_int), coords.1);
 
@@ -1231,8 +1250,42 @@ fn square_tuple_to_flat(square: Square) -> usize {
 //     (row as isize, col as isize)
 // }
 
-pub fn convert_move_to_string(_move: Move) -> String {
+#[allow(dead_code)]
+#[cfg(feature = "python")]
+fn convert_py_state<'a>(_py: Python<'a>, state_py: &'a PyDict) -> PyResult<State> {
+    let board: Board = state_py.get_item("board").unwrap().extract()?;
+    let current_player: &str = state_py.get_item("current_player").unwrap().extract()?;
+    let white_king_castle_is_possible: bool = state_py
+        .get_item("white_king_castle_is_possible")
+        .unwrap()
+        .extract()?;
+    let white_queen_castle_is_possible: bool = state_py
+        .get_item("white_queen_castle_is_possible")
+        .unwrap()
+        .extract()?;
+    let black_king_castle_is_possible: bool = state_py
+        .get_item("black_king_castle_is_possible")
+        .unwrap()
+        .extract()?;
+    let black_queen_castle_is_possible: bool = state_py
+        .get_item("black_queen_castle_is_possible")
+        .unwrap()
+        .extract()?;
 
+    // create state
+    let state = State::new(
+        board,
+        current_player,
+        white_king_castle_is_possible,
+        white_queen_castle_is_possible,
+        black_king_castle_is_possible,
+        black_queen_castle_is_possible,
+    );
+    return Ok(state);
+}
+
+#[allow(dead_code)]
+pub fn convert_move_to_string(_move: Move) -> String {
     let _from = (_move.0 .0 as usize, _move.0 .1 as usize);
     let _to = (_move.1 .0 as usize, _move.1 .1 as usize);
     let cols = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -1246,7 +1299,8 @@ pub fn convert_move_to_string(_move: Move) -> String {
     return from_str;
 }
 
-pub fn convert_castle_move_to_string(castle_move: Castle) -> String {
+#[allow(dead_code)]
+fn convert_castle_move_to_string(castle_move: Castle) -> String {
     castle_move.to_string()
 }
 
@@ -1265,7 +1319,8 @@ pub fn convert_castle_move_to_string(castle_move: Castle) -> String {
 //     }
 // }
 
-pub fn convert_move_to_type(_move: &str) -> MoveStruct {
+#[allow(dead_code)]
+fn convert_move_to_type(_move: &str) -> MoveStruct {
     let letters: HashMap<&str, isize> = [
         ("a", 0),
         ("b", 1),
@@ -1329,6 +1384,7 @@ pub fn convert_move_to_type(_move: &str) -> MoveStruct {
     }
 }
 
+#[allow(dead_code)]
 pub fn insufficient_material(board: &Board) -> bool {
     let mut sq_color = 0;
     let mut num_pieces = 0;
@@ -1354,28 +1410,28 @@ pub fn insufficient_material(board: &Board) -> bool {
     }
     // k vs. kn .... or .... k vs. kb
     match num_pieces {
-        3 => match (pieces.get(&BISHOP_ID),  pieces.get(&KNIGHT_ID)) {
-                (Some(1), ..) | (.., Some(1)) => return true,
-                _ => ()
+        3 => match (pieces.get(&BISHOP_ID), pieces.get(&KNIGHT_ID)) {
+            (Some(1), ..) | (.., Some(1)) => return true,
+            _ => (),
         },
-        _ => ()
+        _ => (),
     }
     // kb vs. kb where any number of bishops are all on the same color
     match pieces.get(&BISHOP_ID) {
         Some(x) => match num_pieces - x {
             2 => {
                 let mut sum = 0;
-                    let len = bishops.len();
-                    for elem in bishops {
-                        sum += elem;
-                    }
-                    if sum == 0 || sum == len as i32 {
-                        return true;
-                    }
-            },
-            _ => ()
+                let len = bishops.len();
+                for elem in bishops {
+                    sum += elem;
+                }
+                if sum == 0 || sum == len as i32 {
+                    return true;
+                }
+            }
+            _ => (),
         },
-        None => ()
+        None => (),
     }
 
     false
@@ -1392,13 +1448,14 @@ fn piece_is_on_board(board: &[[isize; 8]; 8], piece_id: isize) -> bool {
     return false;
 }
 
+#[allow(dead_code)]
 pub fn is_game_over(states: &Vec<State>, state: &State, player: Color) -> u8 {
     if checkmate(state, player) {
         return 1;
     }
     if in_stalemate(state, player) {
         return 2;
-    } 
+    }
     if in_threefold_repetition(states) {
         return 3;
     }
@@ -1408,20 +1465,23 @@ pub fn is_game_over(states: &Vec<State>, state: &State, player: Color) -> u8 {
     return 0;
 }
 
+#[allow(dead_code)]
 pub fn in_stalemate(state: &State, player: Color) -> bool {
     if !king_is_checked(state, player) && get_possible_moves(state, player, false).len() == 0 {
         return true;
-    } 
+    }
     false
 }
 
+#[allow(dead_code)]
 pub fn checkmate(state: &State, player: Color) -> bool {
     if king_is_checked(state, player) && get_possible_moves(state, player, false).len() == 0 {
         return true;
-    } 
+    }
     false
 }
 
+#[allow(dead_code)]
 pub fn in_threefold_repetition(states: &Vec<State>) -> bool {
     let mut states_hash: HashMap<State, isize> = HashMap::new();
     for state in states.iter() {
@@ -1434,7 +1494,8 @@ pub fn in_threefold_repetition(states: &Vec<State>) -> bool {
     false
 }
 
-pub fn update_state(state: &mut State) {
+#[allow(dead_code)]
+fn update_state(state: &mut State) {
     // white
     let squares_under_attack_by_black = get_squares_under_attack_by_player(state, Color::Black);
     state.update_player_king_checked(Color::White, &squares_under_attack_by_black);

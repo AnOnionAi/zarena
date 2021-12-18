@@ -12,7 +12,8 @@ from six import StringIO
 from pprint import pprint
 from gym import spaces, error, utils
 from gym.utils import seeding
-from zarena.zarena import ChessEngine  # rust module
+
+from zarena.gym_chess import ChessEngine
 
 EMPTY_SQUARE_ID = 0
 KING_ID = 1
@@ -47,6 +48,7 @@ LOSS_REWARD = 0
 DRAW_REWARD = 0.5
 INVALID_ACTION_REWARD = -1
 
+
 @dataclass
 class Piece:
     id: int
@@ -54,6 +56,7 @@ class Piece:
     desc: str
     type: str
     color: str
+
 
 PIECES = [
     Piece(icon="♙", desc=PAWN_DESC, color=BLACK, type=PAWN, id=-PAWN_ID),
@@ -102,6 +105,7 @@ DEFAULT_BOARD = [
 FILE_NAMES = ["a", "b", "c", "d", "e", "f", "g", "h"]
 RANK_NAMES = ["1", "2", "3", "4", "5", "6", "7", "8"]
 
+
 def highlight(string, background="white", color="gray"):
     return utils.colorize(utils.colorize(string, color), background, highlight=True)
 
@@ -109,12 +113,7 @@ def highlight(string, background="white", color="gray"):
 # CHESS GYM ENVIRONMENT CLASS
 # ---------------------------
 class ChessEnv(gym.Env):
-    def __init__(
-        self,
-        player_color=WHITE,
-        log=True,
-        initial_board=DEFAULT_BOARD
-    ):
+    def __init__(self, player_color=WHITE, log=True, initial_board=DEFAULT_BOARD):
 
         # constants
         self.log = log
@@ -163,15 +162,12 @@ class ChessEnv(gym.Env):
         self.black_queen_castle_is_possible = True
         self.white_king_is_checked = False
         self.black_king_is_checked = False
-        self.white_king_on_the_board = self.piece_is_on_board(
-            self.board, KING_ID)
-        self.black_king_on_the_board = self.piece_is_on_board(
-            self.board, -KING_ID)
+        self.white_king_on_the_board = self.piece_is_on_board(self.board, KING_ID)
+        self.black_king_on_the_board = self.piece_is_on_board(self.board, -KING_ID)
         # update state with engine
         self.state = self.engine.update_state(self.state)
         # pre-calculate possible moves
-        self.possible_moves = self.get_possible_moves(
-            state=self.state, player=WHITE)
+        self.possible_moves = self.get_possible_moves(state=self.state, player=WHITE)
         # If player chooses black, make white opponnent move first
         if self.player == BLACK:
             white_first_move = self.opponent_policy(self)
@@ -182,7 +178,8 @@ class ChessEnv(gym.Env):
             self.move_count += 1
             self.current_player = BLACK
             self.possible_moves = self.get_possible_moves(
-                state=self.state, player=BLACK)
+                state=self.state, player=BLACK
+            )
 
         return self.get_observation()
 
@@ -224,7 +221,7 @@ class ChessEnv(gym.Env):
         if self.have_winner() or len(self.legal_actions(self.switch_player())) == 0:
             self.done = True
         reward = self.get_reward() if self.done else 0
-        
+
         if self.done:
             return self.get_observation(), reward, True, self.info
 
@@ -244,16 +241,16 @@ class ChessEnv(gym.Env):
     def have_winner(self):
 
         # check if there are no possible_moves for self
-        # AKA lose 
+        # AKA lose
         if not self.possible_moves and self.king_is_checked(player=self.current_player):
             return True
-        
+
         # AKA WIN
         opponent_player = self.switch_player()
         self.possible_moves = self.get_possible_moves(player=opponent_player)
         # check if there are no possible_moves for opponent
         if not self.possible_moves and self.king_is_checked(player=opponent_player):
-            return True 
+            return True
 
         return False
 
@@ -301,14 +298,14 @@ class ChessEnv(gym.Env):
     @state.setter
     def state(self, state):
         self.board = state.get("board")
-        self.white_king_castle_is_possible = state.get(
-            "white_king_castle_is_possible")
+        self.white_king_castle_is_possible = state.get("white_king_castle_is_possible")
         self.white_queen_castle_is_possible = state.get(
-            "white_queen_castle_is_possible")
-        self.black_king_castle_is_possible = state.get(
-            "black_king_castle_is_possible")
+            "white_queen_castle_is_possible"
+        )
+        self.black_king_castle_is_possible = state.get("black_king_castle_is_possible")
         self.black_queen_castle_is_possible = state.get(
-            "black_queen_castle_is_possible")
+            "black_queen_castle_is_possible"
+        )
         self.white_king_is_checked = state.get("white_king_is_checked")
         self.black_king_is_checked = state.get("black_king_is_checked")
 
@@ -364,7 +361,7 @@ class ChessEnv(gym.Env):
 
     def is_checkmate(self):
         if not self.king_is_checked():
-            return False 
+            return False
 
     def piece_is_on_board(self, board, piece_id):
         for row in board:
@@ -375,9 +372,15 @@ class ChessEnv(gym.Env):
 
     def player_can_castle(self, player):
         if player == WHITE:
-            return self.white_king_castle_is_possible and self.white_queen_castle_is_possible
+            return (
+                self.white_king_castle_is_possible
+                and self.white_queen_castle_is_possible
+            )
         else:
-            return self.black_king_castle_is_possible and self.black_queen_castle_is_possible
+            return (
+                self.black_king_castle_is_possible
+                and self.black_queen_castle_is_possible
+            )
 
     def get_other_player(self, player):
         if player == WHITE:
@@ -596,11 +599,10 @@ class ChessEnv(gym.Env):
         encoding = "".join([mapping[val] for row in self.board for val in row])
         return encoding
 
-
     def get_observation(self):
-        #TODO - Instead of entire state, player1 and player2
-        #board_player1=numpy.where(self.board == White)
-        #board_player2=numpy.where(self.board == Black)
+        # TODO - Instead of entire state, player1 and player2
+        # board_player1=numpy.where(self.board == White)
+        # board_player2=numpy.where(self.board == Black)
         return [
             # TODO - Only Player 1
             self.board,
@@ -616,6 +618,7 @@ class ChessEnv(gym.Env):
 
     def close(self):
         pass
+
 
 # import random
 # game = ChessEnvV3()

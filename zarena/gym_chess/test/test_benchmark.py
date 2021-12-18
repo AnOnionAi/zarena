@@ -2,12 +2,12 @@ import time
 from copy import copy
 
 import numpy as np
-from gym_chess import ChessEnvV3
-from gym_chess.test.utils import run_test_funcs
+from zarena.gym_chess import ChessEnv
+from zarena.gym_chess.test.utils import run_test_funcs
 
 
 def test_benchmark():
-    env = ChessEnvV3(opponent="none", log=False)
+    env = ChessEnv(log=False)
 
     num_episodes = 10
     num_steps = 100
@@ -39,8 +39,8 @@ def test_benchmark():
     print("Time per episode (s)", diff / num_episodes)
     print("Time per step (s)", diff / total_steps)
 
-    # assert that it's less than 10 seconds
-    assert diff < 1
+    # assert that it's less than 50 seconds
+    assert diff < 10
 
 
 # Total time (s) 0.5776240825653076

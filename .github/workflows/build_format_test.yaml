@@ -1,0 +1,53 @@
+name: python and rust build formt and test
+
+on:
+  pull_request:
+    branches: [ develop, release/*, master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build_and_test:
+    name: Python test
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Create Rust ToolChain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Format 
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+      - name: Production Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release --all-features
+      - name: Set up Python 3.7 
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install poetry
+        uses: Gr1N/setup-poetry@v7
+        with:
+          poetry-version: 1.1.12
+      - name: Install dependencies
+        run: poetry install && poetry build 
+      - name: Format with Black
+        run: poetry run black .
+      - name: Build local package
+        run: poetry run maturin develop --release
+      - name: Test with pytest
+        run: poetry run pytest
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply formatting changes

@@ -1,14 +1,14 @@
 #[cfg(feature = "wasm")]
-use wasm_bindgen::prelude::*;
-#[cfg(feature = "wasm")]
 use serde::{Deserialize, Serialize};
+#[cfg(feature = "wasm")]
+use wasm_bindgen::prelude::*;
 
 #[cfg(feature = "wasm")]
-use crate::{
-    convert_castle_move_to_string, convert_move_to_string, convert_move_to_type,
-    get_all_possible_moves, get_possible_castle_moves, next_state, player_string_to_enum,
-    update_state, Castle, Color, Move, State, in_threefold_repetition, checkmate,
-    in_stalemate, insufficient_material, Board
+use super::{
+    checkmate, convert_castle_move_to_string, convert_move_to_string, convert_move_to_type,
+    get_all_possible_moves, get_possible_castle_moves, in_stalemate, in_threefold_repetition,
+    insufficient_material, next_state, player_string_to_enum, update_state, Board, Castle, Color,
+    Move, State,
 };
 
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
@@ -44,7 +44,12 @@ impl ChessEngine {
         return JsValue::from_serde(&new_state).unwrap();
     }
 
-    pub fn get_possible_moves(&mut self, state_js: &JsValue, _player: &str, attack: bool) -> JsValue {
+    pub fn get_possible_moves(
+        &mut self,
+        state_js: &JsValue,
+        _player: &str,
+        attack: bool,
+    ) -> JsValue {
         console_error_panic_hook::set_once();
 
         // parse arguments
@@ -86,7 +91,7 @@ impl ChessEngine {
         return JsValue::from_serde(&in_stalemate(&state, player)).unwrap();
     }
 
-    pub fn insufficient_material(&mut self,  state_js: &JsValue) -> JsValue {
+    pub fn insufficient_material(&mut self, state_js: &JsValue) -> JsValue {
         console_error_panic_hook::set_once();
         let state: State = state_js.into_serde().unwrap();
         return JsValue::from_serde(&insufficient_material(&state.board)).unwrap();
@@ -112,13 +117,11 @@ impl ChessEngine {
     }
 }
 
-/**
-     - print
-    [dependencies]
-    web-sys = { version="0.3.5", features=[ "console" ] }
+//  - print
+// [dependencies]
+// web-sys = { version="0.3.5", features=[ "console" ] }
 
-    :code
-    use web_sys::console;
-    let serde: JsValue = JsValue::from_serde(&count).unwrap();
-    console::log_1(&serde);
-**/
+// :code
+// use web_sys::console;
+// let serde: JsValue = JsValue::from_serde(&count).unwrap();
+// console::log_1(&serde);

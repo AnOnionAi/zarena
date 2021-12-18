@@ -1,5 +1,5 @@
 import gym
-from zarena.zarena import BlackjackEngine  # rust module
+from zarena.gym_blackjack import BlackjackEngine
 
 # BLACKJACK GYM ENVIRONMENT CLASS
 # ---------------------------
@@ -69,6 +69,7 @@ class BlackjackEnv(gym.Env):
         """
         return self.engine.get_total_players()
 
+
 # print("New Game")
 # game = BlackjackEnv(1)
 # game.reset()
@@ -84,4 +85,3 @@ class BlackjackEnv(gym.Env):
 #     print(reward, done)
 # game.render()
 # print(reward, done)
-

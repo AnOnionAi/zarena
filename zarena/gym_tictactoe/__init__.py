@@ -1,4 +1,5 @@
-from .envs.tictactoe_v2 import TictactoeEnv  # envs
+from zarena.zarena import TictactoeEngine  # rust module
+from zarena.gym_tictactoe.envs.tictactoe import TictactoeEnv  # envs
 from gym.envs.registration import register  # to register envs
 
 register(
