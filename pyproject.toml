@@ -20,7 +20,7 @@ black = "^20.8b1"
 
 [project]
 name = "zarena"
-version="0.1.0"
+version="0.1.1"
 description= "Rust Game Collection with Reninforcement Learning gym environments"
 long_description= "README.md"
 requires-python = ">=3.6"
