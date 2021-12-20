@@ -1,6 +1,6 @@
 [package]
 name = "zarena"
-version = "0.1.0"
+version = "0.1.3"
 authors = ["zetiworld <zetiapp@gmail.com>"]
 edition = "2018"
 
