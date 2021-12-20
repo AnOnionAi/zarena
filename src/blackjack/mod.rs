@@ -13,14 +13,14 @@ pub type Deck = Vec<u8>;
 pub type Card = u8;
 pub type Hand = Vec<Card>;
 #[allow(dead_code)]
-pub type ObservationVals = [[[u8;3];3];3];
+pub type ObservationVals = [[[u8; 3]; 3]; 3];
 
 // Constants
 #[allow(dead_code)]
-pub const DECK: [u8;52] = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-                        2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+pub const DECK: [u8; 52] = [
+    2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3,
+    4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+];
 #[derive(Debug)]
 #[allow(dead_code)]
 pub struct TwentyOne {
@@ -51,9 +51,7 @@ impl TwentyOne {
     }
 
     #[allow(dead_code)]
-    pub fn get_state(
-        &self
-    ) -> (&Vec<Hand>, &Vec<u8>, &Vec<u64>, &Vec<bool>, &Vec<bool>, u8) {
+    pub fn get_state(&self) -> (&Vec<Hand>, &Vec<u8>, &Vec<u64>, &Vec<bool>, &Vec<bool>, u8) {
         (
             &self.players_hand,
             &self.players_value,
