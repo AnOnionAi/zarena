@@ -13,10 +13,7 @@ path = "src/lib.rs"
 lazy_static = "1.4.0"
 itertools = "0.10.1"
 rand = "0.8.4"
-
-[dependencies.pyo3]
-version = "0.15.1"
-features = []
+pyo3 = { version = "0.15.0", features = ["abi3-py36", "extension-module"] }
 
 [profile.dev]
 debug = 2
