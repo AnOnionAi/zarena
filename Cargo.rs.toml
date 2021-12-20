@@ -15,7 +15,7 @@ itertools = "0.10.1"
 rand = "0.8.4"
 
 [dependencies.pyo3]
-version = "0.13.0"
+version = "0.15.1"
 features = []
 
 [profile.dev]
