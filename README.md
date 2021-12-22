@@ -84,10 +84,10 @@ env.render()
 
 ## Environments id
 
-- Tictactoe: `TictactoeR-v2`
+- Tictactoe: `GatoEnv-v2`
 - Chess: `ChessEnv-v3`
-- Blackjack: `BlackjackR-v1`
-- Poker: `PokerR-v1`
+- Blackjack: `BlackjackEnv-v1`
+- Poker: `PokerEnv-v1`
 
 ## Testing
 
