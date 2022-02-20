@@ -358,7 +358,7 @@ Tests not implemented yet.
 Pull Request Are Welcomed! 
 
 ## License 
-MIT 
+GPL-3.0 License
 
 ## Social
 [Discord](https://zetiai.slack.com/archives/C01G0HRJWPK/p1637616128002100)
