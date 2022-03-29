@@ -1,16 +1,16 @@
 import gym
-from zarena.gym_tictactoe import TictactoeEngine
+from zarena.gym_checkers import CheckersEngine
 
-# TICTACTOE GYM ENVIRONMENT CLASS
+# CHECKERS GYM ENVIRONMENT CLASS
 # ---------------------------
-class TictactoeEnv(gym.Env):
+class CheckersEnv(gym.Env):
     """
     Game wrapper.
     """
 
-    def __init__(self, n_players=1):
+    def __init__(self):
         # engine
-        self.engine = TictactoeEngine(n_players)
+        self.engine = CheckersEngine()
 
     def step(self, action):
         """
@@ -72,9 +72,6 @@ class TictactoeEnv(gym.Env):
         """
         state = (game_state["to_play"], game_state["board_int"])
         return self.engine.set_state(state)
-
-    def expert_action(self):
-        return self.engine.expert_action()
 
     def print(self):
         self.engine.print()

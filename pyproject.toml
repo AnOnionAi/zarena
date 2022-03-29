@@ -30,7 +30,7 @@ authors = [
 ] 
 keywords = ["rust", "performance", "games", "wasm", "gym-environments", "gyms", "maturin"]
 classifiers = [
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Development Status :: 2 - Pre-Alpha",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",

@@ -88,6 +88,7 @@ env.render()
 - Chess: `ChessEnv-v3`
 - Blackjack: `BlackjackEnv-v1`
 - Poker: `PokerEnv-v1`
+- Checkers `CheckersEnv-v1`
 
 ## Testing
 
@@ -137,16 +138,7 @@ The game of Xs & Os
 > 6 | 7 | 8 
 ```
 
-#### Available opponents
-    
-* random
-* expert
-
 <img src="https://i.imgur.com/qqK1mBc.jpeg" alt="gata" height="400"/>
-
-#### Notes:
-
-Tests not implemented yet. 
 
 ## Blackjack
 
@@ -175,12 +167,7 @@ Tests not implemented yet.
 
 ![21](https://black-jack.com/es/wp-content/uploads/sites/5/2019/02/blackjack-3.jpg)
 
-#### Notes:
-
-Tests not implemented yet. 
-
 ## Chess
-
 
 #### See the chess board and moves
     
@@ -344,9 +331,74 @@ En-passant has not been implemented yet.
 
 ![alt text](https://media.wired.com/photos/5fbe703e534553a88817f988/master/w_640,c_limit/Sec_poker_914262206.jpg)
 
-#### Notes:
+## Checkers
 
-Tests not implemented yet. 
+### API
+    
+#### Initialize environment
+
+```python
+>>> env = CheckersEnv()
+```
+#### Set actions
+
+```python
+>>> env.step(action)
+```
+
+- `action`: mark a position, could be `0<=action<1024`
+
+To encode the coordinates use something like this:
+```rust
+// positions -> [[from_row, from_col], [to_row, to_col]]
+fn positions_to_action(&self, positions: &Vec<BoardPosition>) -> usize {
+    let from = positions[0].row * 4 + (
+        positions[0].column - if positions[0].row % 2 == 0 {0} else {1}
+    ) / 2;
+    let to = positions[1].row * 4 + (
+        positions[1].column - if positions[1].row % 2 == 0 {0} else {1}
+    ) / 2;
+    from * 32 + to
+}
+```
+
+#### Get State 
+
+```python
+>>> print(env.get_state()) // Return (current_player, board, is_game_over)
+```
+Board:
+
+```shell
+[[0, 3, 0, 3, 0, 3, 0, 3], 
+[3, 0, 3, 0, 3, 0, 3, 0], 
+[0, 3, 0, 3, 0, 3, 0, 3], 
+[0, 0, 0, 0, 0, 0, 0, 0], 
+[0, 0, 0, 0, 0, 0, 0, 0], 
+[1, 0, 1, 0, 1, 0, 1, 0], 
+[0, 1, 0, 1, 0, 1, 0, 1], 
+[1, 0, 1, 0, 1, 0, 1, 0]]
+```
+
+Every integer represents a piece.
+
+Piece IDs:
+
+- `0`: empty
+- `1`: man_1
+- `2`: king_1
+- `3`: man_2
+- `4`: king_2
+
+#### Set State 
+
+```python
+>>> // state -> (current_player, board)
+>>> env.set_state(state) // Return observation
+```
+
+<img src="https://store-images.s-microsoft.com/image/apps.1041.14134228309561141.5f4fe955-4bb7-4a0f-b49f-b2ea0b47fc47.482176d1-bf5b-4691-97e2-3fc400c416c5" alt="gata" height="200"/>
+
 
 ## References
 
@@ -358,7 +410,7 @@ Tests not implemented yet.
 Pull Request Are Welcomed! 
 
 ## License 
-MIT 
+[GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ## Social
 [Discord](https://zetiai.slack.com/archives/C01G0HRJWPK/p1637616128002100)
