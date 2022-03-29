@@ -1,6 +1,6 @@
 [package]
 name = "zarena"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["zetiworld <zetiapp@gmail.com>"]
 edition = "2018"
 
@@ -13,6 +13,7 @@ crate-type = ["cdylib"]
 requires-dist = ["gym>=0,<1", "numpy>=1,<2", "six>=1,<2"]
 
 [dependencies]
+corrosion = { git = "https://github.com/drbassett/corrosion.git" }
 lazy_static = "1.4.0"
 rand = "0.8.4"
 pyo3 = { version = "0.15.0", features = ["abi3-py36", "extension-module"] }

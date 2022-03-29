@@ -1,7 +1,11 @@
+#[macro_use]
+extern crate corrosion;
+
 #[cfg(feature = "python")]
 use pyo3::prelude::*;
 
 mod blackjack;
+mod checkers;
 mod chess;
 mod gato;
 mod poker;
@@ -9,6 +13,8 @@ mod poker;
 // GYMS
 #[cfg(feature = "python")]
 use blackjack::python::BlackjackEngine;
+#[cfg(feature = "python")]
+use checkers::python::CheckersEngine;
 #[cfg(feature = "python")]
 use chess::python::ChessEngine;
 #[cfg(feature = "python")]
@@ -26,6 +32,7 @@ fn zarena(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<BlackjackEngine>()?;
     m.add_class::<PokerEngine>()?;
     m.add_class::<ChessEngine>()?;
+    m.add_class::<CheckersEngine>()?;
 
     Ok(())
 }
