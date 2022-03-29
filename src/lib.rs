@@ -5,22 +5,22 @@ extern crate corrosion;
 use pyo3::prelude::*;
 
 mod blackjack;
+mod checkers;
 mod chess;
 mod gato;
 mod poker;
-mod checkers;
 
 // GYMS
 #[cfg(feature = "python")]
 use blackjack::python::BlackjackEngine;
+#[cfg(feature = "python")]
+use checkers::python::CheckersEngine;
 #[cfg(feature = "python")]
 use chess::python::ChessEngine;
 #[cfg(feature = "python")]
 use gato::python::TictactoeEngine;
 #[cfg(feature = "python")]
 use poker::python::PokerEngine;
-#[cfg(feature = "python")]
-use checkers::python::CheckersEngine;
 
 // PYTHON MODULE
 // ---------------------------------------------------------
