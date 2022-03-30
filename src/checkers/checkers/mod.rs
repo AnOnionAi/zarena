@@ -1,12 +1,7 @@
 mod ai;
 pub use ai::{
-	Direction,
-	find_simple_moves_for_king,
-	find_jump_moves_for_king,
-	find_simple_moves_for_man,
-	find_jump_moves_for_man,
-	JumpMove,
-	SimpleMove
+    find_jump_moves_for_king, find_jump_moves_for_man, find_simple_moves_for_king,
+    find_simple_moves_for_man, Direction, JumpMove, SimpleMove,
 };
 
 mod board;
@@ -19,7 +14,7 @@ mod game;
 pub use game::{Game, GameState, MoveError};
 
 mod input;
-pub use input::{InputError, parse_move, TokenError};
+pub use input::{parse_move, InputError, TokenError};
 
 mod piece;
 pub use piece::{KingPiece, ManPiece, Piece, PieceType};
