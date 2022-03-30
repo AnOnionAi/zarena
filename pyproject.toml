@@ -10,9 +10,9 @@ numpy = "^1.21.1"
 gym = "^0.21.0"
 six = "^1.16.0"
 gy = "^1.0.2"
-Pillow = "^8.4.0"
 # tqdm = "^4.62.3"
 maturin = "^0.12.4"
+Pillow = "^9.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.2"
