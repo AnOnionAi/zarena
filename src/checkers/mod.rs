@@ -74,6 +74,18 @@ struct IntBoardValues {
 	king_2: u8
 }
 
+impl IntBoardValues {
+	fn new_with_same_vale(value: u8) -> Self {
+		IntBoardValues { 
+			empty: value,
+			man_1: value,
+			king_1: value,
+			man_2: value,
+			king_2: value 
+		}
+	}
+}
+
 struct Checkers {
 	game: Game
 }
@@ -141,16 +153,20 @@ impl Checkers {
 		let positions = self.action_to_positions(&action);
 		let move_result = apply_positions_as_move(&mut self.game, positions);
 		let reward = match move_result {
-			Ok(game_state) => match game_state {
-				GameState::InProgress => 0f32,
-				GameState::GameOver {winner_id: _} => 1f32
-			},
+			Ok(game_state) => self.get_reward(game_state),
 			Err(e) => match e {
 				MoveError::InvalidMove => panic!("\n *** Illegal move"),
 				MoveError::ShouldHaveJumped => panic!("\n *** Must take jump")
 			}
 		};
 		(self.get_observation(), reward, self.game.is_game_over())
+	}
+
+	fn get_reward(&self, game_state: GameState) -> f32 {
+		match game_state {
+			GameState::InProgress => 0f32,
+			GameState::GameOver {winner_id: _} => 1f32
+		}
 	}
 
 	fn legal_actions(&self) -> Vec<usize> {
@@ -185,14 +201,16 @@ impl Checkers {
 			man_2: 0,
 			king_2: 0
 		};
-		let values_1 = IntBoardValues {
+		let current_player = self.to_play() * 10;
+		let values_1 = IntBoardValues::new_with_same_vale(current_player);
+		let values_2 = IntBoardValues {
 			empty: 0,
 			man_1: 0,
 			king_1: 0,
 			man_2: 10,
 			king_2: 20
 		};
-		vec![self.get_int_board(values_0), self.get_int_board(values_1)]
+		vec![self.get_int_board(values_0), self.get_int_board(values_1), self.get_int_board(values_2)]
 	}
 
 	fn set_state(&mut self, state: (u8, Vec<Vec<u8>>)) -> Vec<Vec<Vec<u8>>> {

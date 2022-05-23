@@ -77,7 +77,7 @@ impl Tictactoe {
         )
     }
     #[allow(dead_code)]
-    pub fn set_state(&mut self, state: (u8, Vec<Vec<isize>>)) -> Vec<Vec<Vec<usize>>> {
+    pub fn set_state(&mut self, state: (u8, Vec<Vec<isize>>)) -> Vec<Vec<Vec<u8>>> {
         let mut turn: u8 = 0;
         for row in state.1.iter() {
             for item in row {
@@ -152,7 +152,7 @@ impl Tictactoe {
         }
     }
     #[allow(dead_code)]
-    pub fn reset(&mut self) -> Vec<Vec<Vec<usize>>> {
+    pub fn reset(&mut self) -> Vec<Vec<Vec<u8>>> {
         self.turn = 0;
         self.current_player = Player::Crosses;
         self.board = [[TickType::Nil; 3]; 3];
@@ -160,7 +160,7 @@ impl Tictactoe {
         self.get_observation()
     }
     #[allow(dead_code)]
-    pub fn step(&mut self, action: usize) -> (Vec<Vec<Vec<usize>>>, f32, bool) {
+    pub fn step(&mut self, action: usize) -> (Vec<Vec<Vec<u8>>>, f32, bool) {
         let row = action / 3;
         let col = action % 3;
 
@@ -176,12 +176,12 @@ impl Tictactoe {
     fn get_reward(&self) -> f32 {
         if self.done {
             if self.winner.is_some() {
-                return 1.0;
+                return 1f32;
             } else {
-                return 0.5;
+                return 0f32;
             }
         }
-        0.0
+        0f32
     }
 
     pub fn legal_actions(&self) -> Vec<usize> {
@@ -196,24 +196,32 @@ impl Tictactoe {
         legal_actions
     }
 
-    fn get_observation(&self) -> Vec<Vec<Vec<usize>>> {
-        let mut board_player_1 = vec![vec![0 as usize; 3]; 3];
-        let mut board_player_2 = vec![vec![0 as usize; 3]; 3];
+    fn get_observation(&self) -> Vec<Vec<Vec<u8>>> {
+        let mut board_player_1 = vec![vec![0u8;3];3];
+        let mut board_player_2 = vec![vec![0u8;3];3];
+        let mut board_player_3 = vec![vec![0u8;3];3];
         for (i, row) in self.board.iter().enumerate() {
             for (j, item) in row.iter().enumerate() {
                 if *item == TickType::Cross {
-                    board_player_1[i][j] = 1;
+                    board_player_1[i][j] = 10;
                 }
             }
         }
         for (i, row) in self.board.iter().enumerate() {
             for (j, item) in row.iter().enumerate() {
                 if *item == TickType::Nought {
-                    board_player_2[i][j] = 1;
+                    board_player_2[i][j] = self.to_play() * 10;
                 }
             }
         }
-        vec![board_player_1, board_player_2]
+        for (i, row) in self.board.iter().enumerate() {
+            for (j, item) in row.iter().enumerate() {
+                if *item == TickType::Nought {
+                    board_player_3[i][j] = 10;
+                }
+            }
+        }
+        vec![board_player_1, board_player_2, board_player_3]
     }
 
     pub fn place_mark(&mut self, x: usize, y: usize) {

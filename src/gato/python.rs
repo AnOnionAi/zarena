@@ -23,7 +23,7 @@ impl TictactoeEngine {
         Ok(legal_actions)
     }
 
-    pub fn step(&mut self, action: usize) -> PyResult<(Vec<Vec<Vec<usize>>>, f32, bool)> {
+    pub fn step(&mut self, action: usize) -> PyResult<(Vec<Vec<Vec<u8>>>, f32, bool)> {
         let (a, b, c) = self.game.step(action);
         Ok((a, b, c))
     }
@@ -33,7 +33,7 @@ impl TictactoeEngine {
         Ok((turn, to_play, board_int, winner_int, done))
     }
 
-    pub fn set_state(&mut self, state: (u8, Vec<Vec<isize>>)) -> PyResult<Vec<Vec<Vec<usize>>>> {
+    pub fn set_state(&mut self, state: (u8, Vec<Vec<isize>>)) -> PyResult<Vec<Vec<Vec<u8>>>> {
         let observation = self.game.set_state(state);
         Ok(observation)
     }
@@ -42,7 +42,7 @@ impl TictactoeEngine {
         Ok(self.game.to_play())
     }
 
-    pub fn reset(&mut self) -> PyResult<Vec<Vec<Vec<usize>>>> {
+    pub fn reset(&mut self) -> PyResult<Vec<Vec<Vec<u8>>>> {
         let observation = self.game.reset();
         Ok(observation)
     }
