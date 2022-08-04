@@ -6,7 +6,7 @@ authors = ["zetiworld <zetiapp@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-numpy = "^1.21.1"
+numpy = "^1.22.0"
 gym = "^0.21.0"
 six = "^1.16.0"
 gy = "^1.0.2"
