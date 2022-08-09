@@ -40,10 +40,6 @@ If you don't have Rust, no worries. Download Rust for Linux or Windows Subsystem
 
 `poetry run maturin build --release`
 
-#### Build the Web Assembly file
-
-`wasm-pack build --target web -- --features wasm`
-
 ### Usage
 
 You can import the Python classes directly, or create pre-defined environments with `gym` in this case it is also necessary to import the class:
