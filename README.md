@@ -40,7 +40,7 @@ If you don't have Rust, no worries. Download Rust for Linux or Windows Subsystem
 
 `poetry run maturin build --release`
 
-#### Build the Web Assembly file (Web is the name of the web repo)
+#### Build the Web Assembly file
 
 `wasm-pack build --target web -- --features wasm`
 
