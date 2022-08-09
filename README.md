@@ -40,6 +40,10 @@ If you don't have Rust, no worries. Download Rust for Linux or Windows Subsystem
 
 `poetry run maturin build --release`
 
+#### Build the Web Assembly file (Web is the name of the web repo)
+
+`wasm-pack build --target web -- --features wasm`
+
 ### Usage
 
 You can import the Python classes directly, or create pre-defined environments with `gym` in this case it is also necessary to import the class:
@@ -99,13 +103,13 @@ Rust code is formatted with `cargo fmt`.
 
 ## Building the Rust code
 
-The environment uses a chess engine implemented in Rust that uses [PyO3](https://github.com/PyO3/pyo3) Maturin to bind to the Python interpreter. Rust is an amazing compiled language and this project holds 2 configurations:
+The environment uses a chess engine implemented in Rust that uses [PyO3](https://github.com/PyO3/pyo3) Maturin to bind to the Python interpreter. Rust is an amazing compiled language and this project holds 3 configurations:
 
 - `Cargo.py.toml` is used to build the library into a Python module with maturin
 - `Cargo.rs.toml` is used to build directly with `cargo` in Rust to access the library in the `main.rs` script for development
 - `Cargo.wa.toml` is used to build to build for Javascript with Web Assembly. The games can be played via Web Assembly on Zeti's website https://zeti.ai 
 
-Note: we haven't found a way to specify the Cargo toml file to either process, so copy the contents of the config you want to use into `Cargo.toml` to make it work.
+Note: we haven't found a way to specify the Cargo toml file to choose which process, so copy the contents of the config you want to use into `Cargo.toml` to make it work.
 
 ## Game of Gato
 The game of Xs & Os
