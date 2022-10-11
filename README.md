@@ -411,7 +411,7 @@ Pull Request Are Welcomed!
 
 ## License 
 
-[GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.html)
+[MIT](https://opensource.org/licenses/MIT)
 
 ## Social
 [Discord](https://zetiai.slack.com/archives/C01G0HRJWPK/p1637616128002100)
